@@ -1,14 +1,14 @@
 
 <img src='logo/BGUHex.png' align="right" height="139" />
 
-# Analysis of Variance foR Psychologists
+# Analysis of Factorial Designs foR Psychologists
 
 <sub>*Last updated 2020-02-02.*</sub>
 
 This Github repo contains all lesson files used in the graduate-level
-course: *Analysis of Variance foR Psychologists - Practical Applications
-in R*, taught at Ben-Gurion University on the Negev (spring 2019
-semester).
+course: *Analysis of Factorial Designs foR Psychologists - Practical
+Applications in R*, taught at Ben-Gurion University on the Negev (spring
+2019 semester).
 
 The goal is to impart students with the basic tools to fit and evaluate
 statistical models for factorial designs (w/ plots) using
