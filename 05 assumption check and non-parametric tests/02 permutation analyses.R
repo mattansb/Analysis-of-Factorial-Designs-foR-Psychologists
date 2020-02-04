@@ -5,7 +5,7 @@ citation("permuco")
 
 # must do this!
 options(contrasts = c('contr.sum', 'contr.poly'))
-# See appendix of previous lesson about centering factors!
+
 
 # Between-Subject Models --------------------------------------------------
 

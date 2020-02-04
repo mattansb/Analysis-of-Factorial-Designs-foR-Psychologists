@@ -1,7 +1,7 @@
 library(afex)
 
 # Load the functions from Mattan's GitHub
-source("https://gist.github.com/mattansb/e9c5a63a5cc74c4f535534cf740871bf/raw")
+source("residuals_qqplot.R")
 
 # Fit the ANOVA model
 data(obk.long, package = "afex")

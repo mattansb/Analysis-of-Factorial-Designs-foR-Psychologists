@@ -3,7 +3,7 @@
 
 # Analysis of Factorial Designs foR Psychologists
 
-<sub>*Last updated 2020-02-02.*</sub>
+<sub>*Last updated 2020-02-04.*</sub>
 
 This Github repo contains all lesson files used in the graduate-level
 course: *Analysis of Factorial Designs foR Psychologists - Practical
@@ -41,21 +41,23 @@ You will need:
     (optional - but I recommend using an IDE).
 3.  The following packages, listed by lesson:
 
-| Lesson                                                                                                      | Packages                                                                                       |
-| ----------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| [01 ANOVA made easy](/01%20ANOVA%20made%20easy)                                                             | `tidyverse`, `afex`, `emmeans`                                                                 |
-| [02 simple effects and interactions](/02%20simple%20effects%20and%20interactions)                           | `tidyverse`, `afex`, `emmeans`, `AMCP`, `tidyverse`, `afex`, `emmeans`, `AMCP`                 |
-| [03 ANCOVA and effect sized](/03%20ANCOVA%20and%20effect%20sized)                                           | `tidyverse`, `afex`, `emmeans`, `tidyverse`, `afex`, `emmeans`, `tidyverse`, `afex`, `emmeans` |
-| [04 Assumptions checks and non-parametric tests](/04%20Assumptions%20checks%20and%20non-parametric%20tests) | `afex`, `permuco`, `tidyverse`, `car`, `emmeans`                                               |
-| [05 Bayesian and multiple comparisons](/05%20Bayesian%20and%20multiple%20comparisons)                       | `tidyverse`, `afex`, `BayesFactor`, `bayestestR`, `emmeans`                                    |
+| Lesson                                                                                                  | Packages                                                   |
+| ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| [01 ANOVA made easy](/01%20ANOVA%20made%20easy)                                                         | `tidyr`, `afex`, `emmeans`, `ggplot2`, `car`               |
+| [02 interactions and simple effects](/02%20interactions%20and%20simple%20effects)                       | `dplyr`, `afex`, `emmeans`, `AMCP`                         |
+| [03 interaction contrasts](/03%20interaction%20contrasts)                                               | `dplyr`, `afex`, `emmeans`                                 |
+| [04 custom contrasts and effect sizes](/04%20custom%20contrasts%20and%20effect%20sizes)                 | `afex`, `emmeans`, `effectsize`, `dplyr`                   |
+| [05 assumption check and non-parametric tests](/05%20assumption%20check%20and%20non-parametric%20tests) | `afex`, `permuco`, `emmeans`, `car`, `lmerTest`, `ggplot2` |
+| [06 multiple comparisons and Bayesian ANOVA](/06%20multiple%20comparisons%20and%20Bayesian%20ANOVA)     | `dplyr`, `afex`, `BayesFactor`, `bayestestR`, `emmeans`    |
+| [07 ANCOVA](/07%20ANCOVA)                                                                               | `afex`                                                     |
 
 You can install all the packages used by running:
 
     # in alphabetical order:
 
     pkgs <- c(
-      "afex", "AMCP", "BayesFactor", "bayestestR", "car", "emmeans",
-      "permuco", "tidyverse"
+      "afex", "AMCP", "BayesFactor", "bayestestR", "car", "dplyr",
+      "effectsize", "emmeans", "ggplot2", "lmerTest", "permuco", "tidyr"
     )
 
 ``` r
@@ -64,7 +66,7 @@ install.packages(pkgs, dependencies = TRUE)
 
 The package versions used here:
 
-    ##         afex         AMCP  BayesFactor   bayestestR          car      emmeans 
-    ##     "0.26-0"      "0.0.4" "0.9.12-4.2"      "0.5.1"      "3.0-6"      "1.4.4" 
-    ##      permuco    tidyverse 
-    ##      "1.1.0"      "1.3.0"
+    ##         afex         AMCP  BayesFactor   bayestestR          car        dplyr 
+    ##     "0.26-0"      "0.0.4" "0.9.12-4.2"      "0.5.1"      "3.0-6"      "0.8.4" 
+    ##   effectsize      emmeans      ggplot2     lmerTest      permuco        tidyr 
+    ##      "0.1.1"      "1.4.4"      "3.2.1"      "3.1-1"      "1.1.0"      "1.0.2"

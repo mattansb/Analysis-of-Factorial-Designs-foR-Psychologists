@@ -1,4 +1,4 @@
-library(tidyverse)
+library(dplyr)
 library(afex)
 library(BayesFactor)
 library(bayestestR)
@@ -7,9 +7,13 @@ library(bayestestR)
 
 Alcohol_data <- readRDS("Alcohol_data.rds") %>%
   filter(Frequency == '4to7Hz') # Looking only at the Frequency of interest
-glimpse(Alcohol_data)
+head(Alcohol_data)
 
 # Regular ANOVA -----------------------------------------------------------
+
+afex_options(es_aov         = 'pes',
+             correction_aov = 'GG',
+             emmeans_model  = 'univariate')
 
 fit_alcohol_theta <- aov_ez('Subject','ersp',Alcohol_data,
                             within = c('Correctness'),

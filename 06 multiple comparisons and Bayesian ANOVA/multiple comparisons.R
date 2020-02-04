@@ -1,4 +1,3 @@
-library(tidyverse)
 library(afex)
 library(emmeans)
 
@@ -9,7 +8,8 @@ afex_options(es_aov         = 'pes',
 # Load data ---------------------------------------------------------------
 
 Phobia_data <- readRDS("Phobia.rds")
-glimpse(Phobia_data)
+
+head(Phobia_data)
 
 # Fit model ---------------------------------------------------------------
 
@@ -37,7 +37,7 @@ em_Condition <- emmeans(fit,  ~ Condition)
 c_Gender <- contrast(em_Gender, "pairwise")
 c_Gender
 
-c_Phobia <- contrast(em_Phobia, "poly")
+c_Phobia <- contrast(em_Phobia, "consec")
 c_Phobia
 
 c_Condition <- contrast(em_Condition, "pairwise")
@@ -51,7 +51,7 @@ update(c_Condition, adjust = "none")        # No adjusments
 update(c_Condition, adjust = "tukey")       # ONLY good for 2-tailed pairwise comparisons.
 update(c_Condition, adjust = "bonferroni")  # Popular
 update(c_Condition, adjust = "fdr")         # Use when many many contrasts
-? p.adjust # more?
+?p.adjust # more?
 
 update(c_Phobia, adjust = "tukey")          # Will not give tukey!
 
