@@ -3,28 +3,28 @@
 
 # Analysis of Factorial Designs foR Psychologists
 
-<sub>*Last updated 2020-02-04.*</sub>
+<sub>*Last updated 2020-02-05.*</sub>
 
 This Github repo contains all lesson files used in the graduate-level
 course: *Analysis of Factorial Designs foR Psychologists - Practical
 Applications in R*, taught at Ben-Gurion University on the Negev (spring
-2019 semester).
+2019 semester). This course assumes basic competence in R (importing,
+regression modeling, plotting, etc.), a long the lines of the
+prerequisite course, *Advanced Research Methods foR Psychologists*,
+which can be found
+[here](https://github.com/mattansb/Advanced-Research-Methods-foR-Psychologists).
 
 The goal is to impart students with the basic tools to fit and evaluate
-statistical models for factorial designs (w/ plots) using
-[**`afex`**](https://afex.singmann.science/), and and conduct follow-up
+**statistical models for factorial designs (w/ plots) using
+[`afex`](https://afex.singmann.science/)**, and and conduct **follow-up
 analyses (simple effects, planned contrasts, post-hoc test; w/ plots)
-using [**`emmeans`**](https://cran.r-project.org/package=emmeans). This
-course assumes basic competence in R (importing, regression modeling,
-plotting, etc.), a long the lines of the prerequisite course, *Advanced
-Research Methods foR Psychologists*, which can be found
-[here](https://github.com/mattansb/Advanced-Research-Methods-foR-Psychologists).
+using [`emmeans`](https://cran.r-project.org/package=emmeans)**.
+Although the focus is on ANOVAs, the materials regarding follow-up
+analyses (\~80% of the course) are applicable to linear mixed models,
+and even regression with factorial predictors.
 
 **Notes:**
 
-  - Although the focus is on ANOVAs, the matrials regarding follow-up
-    analyses (\~80% of the course) is fit for linear mixed models, and
-    even regression for factorial predictors.
   - This repo contains only materials relating to *Practical
     Applications in R*, and does not contain any theoretical or
     introductory materials.  
@@ -60,9 +60,7 @@ You can install all the packages used by running:
       "effectsize", "emmeans", "ggplot2", "lmerTest", "permuco", "tidyr"
     )
 
-``` r
-install.packages(pkgs, dependencies = TRUE)
-```
+    install.packages(pkgs, dependencies = TRUE)
 
 The package versions used here:
 
