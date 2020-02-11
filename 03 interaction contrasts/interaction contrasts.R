@@ -1,6 +1,7 @@
 library(dplyr)
 library(afex)
 library(emmeans)
+library(ggplot2)
 
 # Back to our coffee data
 
@@ -112,10 +113,11 @@ emmip(coffee_fit, coffee ~ time, CIs = TRUE)
 
 
 
-# 2. The effect of coffee (on Y) by time
+# 2. The effect of coffee (on Y) by time (on X)
 emmeans(coffee_fit, ~ coffee + time) %>%
   contrast(method = "pairwise", by = "time") %>%
-  emmip( ~ time, CIs = TRUE)
+  emmip( ~ time, CIs = TRUE) +
+  geom_hline(yintercept = 0)
 
 
 

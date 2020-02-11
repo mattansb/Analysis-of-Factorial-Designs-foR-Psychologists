@@ -41,9 +41,9 @@ em_freqCorr
 
 # There are many ways to make custom contrasts. Here we will focus on
 # data.frames:
-(contr.Frequency <- data.frame(ThetaVsOthers = c(1,-3,1,1)/3))
+(contr.Frequency <- data.frame(ThetaVsOthers = c(1,-3,1,1)/3)) # why do we divide by 3?
 
-(contr.Correctness <- data.frame(CorrVsIncor = c(-2,1,1)/2,
+(contr.Correctness <- data.frame(CorrVsIncor = c(-2,1,1)/2, # why do we divide by 2?
                                  L1vsL5      = c(0,-1,1)))
 
 
@@ -56,3 +56,17 @@ contrast(em_freqCorr, interaction = list(
   Correctness = contr.Correctness
 ))
 
+# Plotting contrasts ------------------------------------------------------
+
+library(ggplot2)
+
+em_ <- emmeans(ersp_anova, ~ Correctness + Alcohol,
+               at = list(Frequency = "X4to7Hz"))
+# "at" allows to zoom into just some levels. You should rarely use it
+em_
+
+c_ <- contrast(em_, method = contr.Correctness, by = "Alcohol")
+c_
+
+emmip(c_, contrast ~ Alcohol, CIs = TRUE) +
+  geom_hline(yintercept = 0)

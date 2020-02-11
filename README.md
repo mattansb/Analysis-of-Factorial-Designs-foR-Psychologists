@@ -3,7 +3,7 @@
 
 # Analysis of Factorial Designs foR Psychologists
 
-<sub>*Last updated 2020-02-05.*</sub>
+<sub>*Last updated 2020-02-11.*</sub>
 
 This Github repo contains all lesson files used in the graduate-level
 course: *Analysis of Factorial Designs foR Psychologists - Practical
@@ -45,8 +45,8 @@ You will need:
 | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
 | [01 ANOVA made easy](/01%20ANOVA%20made%20easy)                                                         | `tidyr`, `afex`, `emmeans`, `ggplot2`, `car`               |
 | [02 interactions and simple effects](/02%20interactions%20and%20simple%20effects)                       | `dplyr`, `afex`, `emmeans`, `AMCP`                         |
-| [03 interaction contrasts](/03%20interaction%20contrasts)                                               | `dplyr`, `afex`, `emmeans`                                 |
-| [04 custom contrasts and effect sizes](/04%20custom%20contrasts%20and%20effect%20sizes)                 | `afex`, `emmeans`, `effectsize`, `dplyr`                   |
+| [03 interaction contrasts](/03%20interaction%20contrasts)                                               | `dplyr`, `afex`, `emmeans`, `ggplot2`                      |
+| [04 custom contrasts and effect sizes](/04%20custom%20contrasts%20and%20effect%20sizes)                 | `afex`, `emmeans`, `ggplot2`, `effectsize`, `dplyr`        |
 | [05 assumption check and non-parametric tests](/05%20assumption%20check%20and%20non-parametric%20tests) | `afex`, `permuco`, `emmeans`, `car`, `lmerTest`, `ggplot2` |
 | [06 multiple comparisons and Bayesian ANOVA](/06%20multiple%20comparisons%20and%20Bayesian%20ANOVA)     | `dplyr`, `afex`, `BayesFactor`, `bayestestR`, `emmeans`    |
 | [07 ANCOVA](/07%20ANCOVA)                                                                               | `afex`                                                     |
