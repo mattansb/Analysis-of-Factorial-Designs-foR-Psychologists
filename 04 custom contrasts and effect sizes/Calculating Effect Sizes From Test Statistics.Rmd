@@ -29,7 +29,7 @@ $$
 And that 
 
 $$
-F = \frac{SS_{effect} / df_1}{(SS_{effect} + SS_{error}) / df2}
+F = \frac{SS_{effect} / df_1}{SS_{error} / df2}
 $$
 
 ## {.smaller}
@@ -63,7 +63,7 @@ $$
 And that 
 
 $$
-F = \frac{SS_{effect} / df_1}{(SS_{effect} + SS_{error}) / df2}
+F = \frac{SS_{effect} / df_1}{SS_{error} / df2}
 $$
 
 ## {.smaller}
@@ -99,7 +99,7 @@ $$
 And that 
 
 $$
-F = \frac{SS_{effect} / df_1}{(SS_{effect} + SS_{error}) / df2}
+F = \frac{SS_{effect} / df_1}{SS_{error} / df2}
 $$
 
 ## {.smaller}

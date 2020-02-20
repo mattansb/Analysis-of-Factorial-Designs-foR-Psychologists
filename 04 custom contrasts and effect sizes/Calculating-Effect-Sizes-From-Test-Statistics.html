@@ -3120,7 +3120,7 @@ slide:not(.current) .plotly.html-widget{
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section">
 
-<p>These are effects sizes that give a Signal to Noise (S/N) ratio – with the signal = effect, and noise = error.</p>
+<p>These are effects sizes that give a Signal to Noise (S/N) ratio with the signal = effect, and noise = error.</p>
 
 <p>Overall, the idea is to estimate Effect / (Effect + Error).</p>
 
@@ -3135,10 +3135,10 @@ slide:not(.current) .plotly.html-widget{
 <p>And that</p>
 
 <p>\[
-F = \frac{SS_{effect} / df_1}{(SS_{effect} + SS_{error}) / df2}
+F = \frac{SS_{effect} / df_1}{SS_{error} / df2}
 \]</p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-1">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-1" class="smaller">
 
 <p>\(\eta^2_p\) can be approximated by:</p>
 
@@ -3166,10 +3166,10 @@ effectsize::t_to_eta2()</pre>
 <p>And that</p>
 
 <p>\[
-F = \frac{SS_{effect} / df_1}{(SS_{effect} + SS_{error}) / df2}
+F = \frac{SS_{effect} / df_1}{SS_{error} / df2}
 \]</p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-2">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-2" class="smaller">
 
 <p>\(\hat{\eta}^2_P=\epsilon^2_p\) can be approximated by:</p>
 
@@ -3199,10 +3199,10 @@ effectsize::t_to_eta2_adj()</pre>
 <p>And that</p>
 
 <p>\[
-F = \frac{SS_{effect} / df_1}{(SS_{effect} + SS_{error}) / df2}
+F = \frac{SS_{effect} / df_1}{SS_{error} / df2}
 \]</p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-3">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-3" class="smaller">
 
 <p>\(\omega^2_p\) can be approximated by:</p>
 
@@ -3241,7 +3241,7 @@ effectsize::t_to_omega2()</pre>
 t_{contrast} = \sqrt{\frac{SS_{contrast}}{MSE}}
 \]</p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-5">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-5" class="smaller">
 
 <p>Then it is possible to proove that in a <strong>between-subjects design</strong>, <em>Cohen’s d</em> can be approximated by:</p>
 
@@ -3255,7 +3255,7 @@ t_{contrast} = \sqrt{\frac{SS_{contrast}}{MSE}}
 
 <p><sub>Formula for between-subjects design from Wolf, F. M. (1986). Meta-analysis: Quantitative methods for research synthesis (Vol. 59). Sage. Chapter 3 tables 8-9 page 35</sub></p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-6">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-6" class="smaller">
 
 <p>… and it is possible to proove that in a <strong>within-subjects design</strong>, <em>Cohen’s d</em> can be approximated by:</p>
 
@@ -3289,7 +3289,7 @@ t_{contrast} = \sqrt{\frac{SS_{contrast}}{MSE}}
 F_{effect} = \frac{SS_{effect} / df_1}{MSE}
 \]</p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-8">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-8" class="smaller">
 
 <p>Then \(r^2_{alerting}\) can be approximated by:</p>
 
