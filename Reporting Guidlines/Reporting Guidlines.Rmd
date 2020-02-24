@@ -1,0 +1,53 @@
+---
+title: "Reporting Guidlines"
+output: 
+  pdf_document:
+    extra_dependencies: ["xcolor"]
+bibliography: bibliography.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Methods
+
+## `R`
+
+All statistical analyses and plotting were conducted in R [@justR], using the packages described...
+
+## ANOVAs
+
+$XX$ where modeled with ANOVA, with $XX$ as between-subjects factors, and $XX$ as within-subjects factors.
+ANOVA was conducted using "afex" [@Singmanafex].
+A Greenhouse-Geisser adjustment was used to correct for violations of sphericity in the ANOVA.^[\textcolor{red}{Only if you have within-subject factors.}]
+
+## Contrasts
+
+Planned and post-hoc comparisons and contrasts were conducted using "emmeans" [@Lenthemmeans].
+To correct for violations of sphericityusing, multivariate test statistics where used^[\textcolor{red}{Only if you have within-subject factors.}].
+
+## Reporting Bayes Factors
+
+We conducted a Bayesian ANOVA / ANCOVA / repeated measures ANOVA / repeated measures ANCOVA using "BayesFactor" [@MoreyBayesFactor], to test all models that can be created by including or not including a main effect or interaction, with the constraint that if an interaction is included, the corresponding main effects are also included [@rouder2016model].
+Bayes factors were calculated using the JZS priors: a non-informative Jeffreys prior on the variance of the population and a Cauchy prior with default scales^[\textcolor{red}{Change if used any other priors}]  on the standardized effect size [@rouder2012default].
+
+### Reporting Inclusion BFs
+
+We then used Bayesian model averaging (BMA) in [@makowski2019bayestestr]^[\textcolor{red}{Cite JASP it you used JASP}] to obtain the average evidence for each predictor.
+Since each model has a prior probability, it is possible to sum the prior probability of all models that include a predictor of interest (the prior inclusion probability), and of all models that do not include that predictor (the prior exclusion probability).
+After the data are observed, we can similarly consider the sums of the posterior models’ probabilities to obtain the posterior inclusion probability and the posterior exclusion probability.
+The change from prior to posterior inclusion odds is the Inclusion Bayes factor ("$BF_{Inclusion}$"; @clyde2011bayesian; @hinne2019conceptual). 
+For each predictor, averaging was done only across models that did not include any interactions with that predictor; additionally, for each interaction predictor, averaging was done only across models that contained the main effect from which the interaction predictor was comprised. This was done to prevent Inclusion Bayes factors from being contaminated with non-relevant evidence (see @mathot_2017).^[\textcolor{red}{If you use "matched models only".}] 
+
+# Results
+
+## ANOVA
+
+The main effect / interaction was not/significant, $F(x,x)=x$, $MSE=x$, $p=x$, $\eta_p^2=x$...
+
+## Contrasts
+
+Contrast showed that ... a difference of $x$, $95\% CI [x, x]$, $t(x)=x$, $SE=x$, $p=x$, $\eta_p^2=x$...
+
+# References
