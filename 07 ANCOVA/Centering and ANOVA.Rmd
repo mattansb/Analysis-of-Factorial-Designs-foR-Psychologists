@@ -1,0 +1,79 @@
+---
+title: "Centering Variables and ANOVA Tables"
+subtitle: "Why and how to center variables when generating ANOVA tables"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# What Are ANOVA Tables?
+
+ANOVA tables, like regression tables, produce significance tests (and sometimes estimates of effect sizes). Unlike regression tables, where a test if given for each coefficient, in ANOVA tables a test is given by some grouping scheme: by model (of model comparison), of by factor where all coefficients that represent a categorical variable are tested in a joint test. It is the latter table, used usually in analysis of factorial data, that is discussed here.
+
+> Thesis: centering predictors changes the results given by ANOVA tables.
+
+Generally, the results given by ANOVA tables with centered variables are the ones we are interested in.
+
+# Why Center?
+
+In moderation models / models with interaction terms, centering of variables affects the estimates (and thus the joint test and significance) of lower order terms ([Dalal & Zickar, 2011](https://doi.org/10.1177%2F1094428111430540)). It is only after centering variables, do these tests for lower order terms represent what we expect them to - *main effects*, across the levels of all other terms on average ([AFNI](https://afni.nimh.nih.gov/pub/dist/doc/htmldoc/STATISTICS/center.html#centering-with-one-group-of-subjects)).
+
+# How to Center Variables?
+
+*Centering* is mathematical process that gives the 0 of variable $X$ some non-arbitrary meaning. This can be any value, but usually we are interested in the mean of $X$.
+
+## Continuous Variables
+
+Centering of continuous variables is pretty straightforward - we subtract the mean of $X$ from each value of $X$:
+
+$$
+X_{centered} = X-\bar{X}
+$$
+Note that we don't have to subtract the mean; for example, if $X$ is IQ, 0 is meaningless - in fact, it's not even on the scale (with a lower bound of ~50)! I can subtract the mean of my sample, but I can also subtract 100 instead, which is the "population average". Similarly, if $X$ is "age", 0 is a day-old baby, a value that is not usually particularly meaningful.
+
+## Categorical Variables
+
+It would seem line an impossible task - how can you subtract any numeric value from a categorical variable? This is true, but the idea of a "*meaningful 0*" is that in our model giving a value of 0 to this $X$ will represent the average across all level of $X$. When modeling categorical variables, this means setting all dummy variables to 0.
+
+Usually, dummy variables are generated using a treatment scheme, such that 0 represents some "baseline" group. But there are other coding schemes, some of which give 0 the meaning we're looking for - for example, [effects coding](https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faqwhat-is-effect-coding/) ([Aiken, et al., 1991, pp. 127](https://books.google.co.il/books?hl=iw&lr=&id=LcWLUyXcmnkC); [Singmann & Kellen, 2017, pp. 24](http://singmann.org/download/publications/singmann_kellen-introduction-mixed-models.pdf)).^[Unfortunately, this makes the interpretation of the actual coefficient not as straightforward as when using treatment coding...] ^[When conducting ANOVAs with [`afex`](https://cran.r-project.org/package=afex), you don't need to worry about setting effects coding, as `afex` [takes care of this for you](https://github.com/singmann/afex/issues/63). However when conducting ANCOVAs with `afex`, continuous variables [**are not centered**](https://github.com/singmann/afex/issues/59) (but a warning is given), and you have to do that yourself. This is also true for JASP (that has `afex` under the hood) and even for SPSS (but if you're still using SPSS, this might be the least of your problems...).]
+
+In `R` this can be done by setting
+
+```{r, eval=FALSE}
+options(contrasts=c('contr.sum', 'contr.poly'))
+```
+
+Or for a single factor:
+
+```{r, eval=FALSE}
+contrasts(iris$Species) <- contr.sum
+```
+
+
+# Addendum
+
+When generating ANOVA tables, the $SS$ of factor $A$ are computed with all other coefficients held constant at 0 (similar to how coefficients are interpreted as simple slopes in moderation analysis). If factor $B$ has a treatment coding scheme, then when the coefficients of factor $B$ are 0, there actually represent the baseline group, as so the effect for $A$ is actually the simple effect of $A$ and not the main effect!
+
+
+"But wait!", I hear you shout, "When we learned ANOVA is Intro to stats, we weren't taught to center any variables!".
+
+This is true - you didn't explicitly learn this, but taking a closer look at the equations of the various $SS$s will reveal that you've been doing just that all along. 
+
+For $SS_A$:
+$$
+SS_A = n\sum (\bar{X}_{i.}-\bar{X}_{..})^2
+$$
+When $\bar{X}_{i.}$ is itself the mean of group $i$ of factor $A$ *beyond* the levels of factor $B$ (as denoted by the $.$)!
+
+We can even re-write the equation for $SS_A$ to show this explicitly:
+
+$$
+SS_A = n\sum (\bar{X}_{i.}-\bar{X}_{..})^2 = 
+n\sum\sum (\bar{X}_{ij}-(\bar{X}_{.j}-\bar{X}_{..})-(\bar{X}_{ij}-\bar{X}_{.j}-\bar{X}_{ij}+\bar{X}_{..})-\bar{X}_{..})^2
+$$
+
+Where $(\bar{X}_{.j}-\bar{X}_{..})$ is the centering of factor $B$ (subtracting from *all* group means, the total mean).
+
+This is also why centering a variable only affects the low-order effects of *other* variables.
