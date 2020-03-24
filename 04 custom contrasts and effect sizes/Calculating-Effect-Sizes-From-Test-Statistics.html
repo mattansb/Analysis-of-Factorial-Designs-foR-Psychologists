@@ -3116,9 +3116,13 @@ slide:not(.current) .plotly.html-widget{
           </hgroup>
   </slide>
 
-<slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Percent Variance Explained </h2><h3> Really <em>Partial</em> Percent Variance Explained</h3></hgroup><article  id="percent-variance-explained-really-partial-percent-variance-explained">
+<slide class=""><hgroup><h2></h2></hgroup><article  id="section">
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section">
+<p>See <a href='https://easystats.github.io/effectsize/articles/from_test_statistics.html' title=''><em>Effect Size from Test Statistics</em> vignette</a> in the <code>effectsize</code> package.</p>
+
+</article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Percent Variance Explained </h2><h3> Really <em>Partial</em> Percent Variance Explained</h3></hgroup><article  id="percent-variance-explained-really-partial-percent-variance-explained">
+
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-1">
 
 <p>These are effects sizes that give a Signal to Noise (S/N) ratio with the signal = effect, and noise = error.</p>
 
@@ -3138,7 +3142,7 @@ slide:not(.current) .plotly.html-widget{
 F = \frac{SS_{effect} / df_1}{SS_{error} / df2}
 \]</p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-1">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-2">
 
 <p>\(\eta^2_p\) can be approximated by:</p>
 
@@ -3171,7 +3175,7 @@ effectsize::t_to_eta2()</pre>
 F = \frac{SS_{effect} / df_1}{SS_{error} / df2}
 \]</p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-2">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-3">
 
 <p>\(\hat{\eta}^2_P=\epsilon^2_p\) can be approximated by:</p>
 
@@ -3195,7 +3199,7 @@ effectsize::t_to_eta2_adj()</pre>
 <p>Given that:</p>
 
 <p>\[
-\omega^2_p = \frac{SS_{effect}-df_1\times MS_{error}}{SS_{effect} + SS_{error}+MS_w}
+\omega^2_p = \frac{SS_{effect}-df_1\times MS_{error}}{SS_{effect} + SS_{error}+MS_{error}}
 \]</p>
 
 <p>And that</p>
@@ -3204,7 +3208,7 @@ effectsize::t_to_eta2_adj()</pre>
 F = \frac{SS_{effect} / df_1}{SS_{error} / df2}
 \]</p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-3">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-4">
 
 <p>\(\omega^2_p\) can be approximated by:</p>
 
@@ -3223,7 +3227,7 @@ effectsize::t_to_omega2()</pre>
 
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Standardized Differences </h2><h3> AKA <em>Cohen’s d</em></h3></hgroup><article  id="standardized-differences-aka-cohens-d">
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-4">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-5">
 
 <p>This effect size represents the standardized distance between two means (or two weighted means).</p>
 
@@ -3243,7 +3247,7 @@ effectsize::t_to_omega2()</pre>
 t_{contrast} = \sqrt{\frac{SS_{contrast}}{MSE}}
 \]</p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-5">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-6">
 
 <p>Then it is possible to proove that in a <strong>between-subjects design</strong>, <em>Cohen’s d</em> can be approximated by:</p>
 
@@ -3257,7 +3261,7 @@ t_{contrast} = \sqrt{\frac{SS_{contrast}}{MSE}}
 
 <p><sub>Formula for between-subjects design from Wolf, F. M. (1986). Meta-analysis: Quantitative methods for research synthesis (Vol. 59). Sage. Chapter 3 tables 8-9 page 35</sub></p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-6">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-7">
 
 <p>… and it is possible to proove that in a <strong>within-subjects design</strong>, <em>Cohen’s d</em> can be approximated by:</p>
 
@@ -3275,7 +3279,7 @@ t_{contrast} = \sqrt{\frac{SS_{contrast}}{MSE}}
 
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Alerting Correlation </h2><h3> \(r^2_{alerting}\)</h3></hgroup><article  id="alerting-correlation-r2_alerting">
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-7">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-8">
 
 <p>Given that</p>
 
@@ -3291,7 +3295,7 @@ t_{contrast} = \sqrt{\frac{SS_{contrast}}{MSE}}
 F_{effect} = \frac{SS_{effect} / df_1}{MSE}
 \]</p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-8">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-9">
 
 <p>Then \(r^2_{alerting}\) can be approximated by:</p>
 
@@ -3309,7 +3313,7 @@ r^2_{alerting} = \frac{t_{contrast}^2}{F_{effect} \times df_1}
 
 <ul>
 <li><p>This approximation is true <strong><em>ONLY</em></strong> for models assuming homoscedasticity (for between subject factors) and sphericity (for within subject factors) - where t’s and F’s MSE are equal. In all other cases, you would need to calculate the SSs manually.</p></li>
-<li><p>Things get a bit trickier with interaction-contrasts… No easy solution there…</p></li>
+<li><p>Things get very tricky with interaction-contrasts… No easy solution there…</p></li>
 </ul>
 
 <p><sub>Formula from Rosnow, et al. (2000) Contrasts and Correlations in Effect-Size Estimation. <a href='https://doi.org/10.1111%2F1467-9280.00287' title=''>https://doi.org/10.1111%2F1467-9280.00287</a></sub></p></article></slide>

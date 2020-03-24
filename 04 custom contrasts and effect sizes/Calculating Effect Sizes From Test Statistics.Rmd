@@ -10,6 +10,10 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+##
+
+See [*Effect Size from Test Statistics* vignette](https://easystats.github.io/effectsize/articles/from_test_statistics.html) in the `effectsize` package.
+
 # Percent Variance Explained | Really *Partial* Percent Variance Explained
 
 ##
@@ -95,7 +99,7 @@ effectsize::t_to_eta2_adj()
 Given that:
 
 $$
-\omega^2_p = \frac{SS_{effect}-df_1\times MS_{error}}{SS_{effect} + SS_{error}+MS_w}
+\omega^2_p = \frac{SS_{effect}-df_1\times MS_{error}}{SS_{effect} + SS_{error}+MS_{error}}
 $$
 
 And that 
@@ -178,7 +182,7 @@ in `R` this can be done with:
 effectsize::t_to_d(pooled = TRUE)
 ```
 
-<sub>Formula for within-subjects desing from Rosenthal, R. (1991).Meta-analytic procedures for social research. Newbury Park, CA: SAGE Publications, Incorporated.</sub>
+<sub>Formula for within-subjects desing from Rosenthal, R. (1991).Meta-analytic procedures for social research. Newbury Park, CA: SAGE Publications, Incorporated.</sub>  
 
 <sub>Read more at Lakens (2013) Calculating and reporting effect sizes to facilitate cumulative science: a practical primer for t-tests and ANOVAs https://www.psychometrica.de/effect_size.html</sub>
 
@@ -209,7 +213,7 @@ r^2_{alerting} = \frac{t_{contrast}^2}{F_{effect} \times df_1}
 $$
 
 In `R`:
-```{r}
+```{r, eval=FALSE}
 t_and_F_to_r2alerting <- function(t, f, df) {
     t ^ 2 / (f * df)
 }
@@ -219,6 +223,6 @@ t_and_F_to_r2alerting <- function(t, f, df) {
 
 - This approximation is true ***ONLY*** for models assuming homoscedasticity (for  between subject factors) and sphericity (for within subject factors) - where t's and F's MSE are equal. In all other cases, you would need to calculate the SSs manually.
 
-- Things get a bit trickier with interaction-contrasts... No easy solution there...
+- Things get very tricky with interaction-contrasts... No easy solution there...
 
 <sub>Formula from Rosnow, et al. (2000) Contrasts and Correlations in Effect-Size Estimation. https://doi.org/10.1111%2F1467-9280.00287</sub>
