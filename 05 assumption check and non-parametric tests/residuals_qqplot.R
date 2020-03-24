@@ -1,25 +1,30 @@
-residuals_qqplot <- function(object, model = c("univariate","multivariate")){
-  if (!requireNamespace("ggplot2", quietly = TRUE)) {
-    stop("package ggplot2 is required.", call. = FALSE)
-  }
+residuals_qqplot <- function(object, model = c("univariate","multivariate"), qqbands = TRUE){
+  stopifnot(requireNamespace("patchwork"),
+            requireNamespace("ggplot2"),
+            requireNamespace("qqplotr"))
 
   model <- match.arg(model)
 
+  data <- object$data$long
   within <- names(attr(object,"within"))
+  id <- attr(object,'id')
+
 
   if (length(within) > 0L & model=="univariate") {
-    ## make aov object
-    data <- object$data$long
-    id <- attr(object,'id')
-    dv <- attr(object,'dv')
-    terms <- as.formula(object$Anova)[-1]
-    fixed <- paste0(terms, collapse = "+")
-    error <- paste0("Error(",id,"/(",paste0(within,collapse = "*"),")",")")
-    formula <- as.formula(paste0(dv,"~",fixed,"+",error))
-    object_aov <- aov(formula,data)
+    object_aov <- object$aov
+
+    if (is.null(object_aov)) {
+      ## make aov object
+      print("AA")
+      dv <- attr(object,'dv')
+      terms <- as.formula(object$Anova)[-1]
+      fixed <- paste0(terms, collapse = "+")
+      error <- paste0("Error(",id,"/(",paste0(within,collapse = "*"),")",")")
+      formula <- as.formula(paste0(dv,"~",fixed,"+",error))
+      object_aov <- aov(formula,data)
+    }
 
     projections <- proj(object_aov)[-1]
-
     projections <- lapply(projections, function(.x) {
       temp_data <- data.frame(
         id = data[[id]],
@@ -35,11 +40,29 @@ residuals_qqplot <- function(object, model = c("univariate","multivariate")){
     projections <- data.frame(residuals(object$lm),id)
   }
 
-  colnames(projections) <- c("Residuals","Error Term")
+  colnames(projections) <- c("Residuals","Term")
 
-  # plot
-  ggplot2::ggplot(projections,ggplot2::aes(sample = .data$Residuals)) +
-    ggplot2::geom_qq() +
-    ggplot2::geom_qq_line() +
-    ggplot2::facet_wrap(~.data$"Error Term", scales = "free")
+  resids <- split(projections, projections$Term)
+  gg_resids <- lapply(resids, function(.e) {
+    ggplot2::ggplot(mapping = ggplot2::aes(sample = .e$Residuals)) +
+      qqplotr::stat_qq_band() +
+      qqplotr::stat_qq_line() +
+      qqplotr::stat_qq_point() +
+      ggplot2::theme_minimal() +
+      ggplot2::theme(
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank()
+      ) +
+      ggplot2::labs(title = .e$Term[1],
+                    x = "",
+                    y = "")
+  })
+
+  gg_resids[[1]] <- gg_resids[[1]] +
+    ggplot2::labs(x = "Theoretical",
+                  y = "Sample")
+
+  patchwork::wrap_plots(gg_resids)
 }
