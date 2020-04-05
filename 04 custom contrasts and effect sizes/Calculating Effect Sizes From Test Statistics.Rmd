@@ -129,6 +129,27 @@ effectsize::t_to_omega2()
 <sub>Formula from Lakens & Albers (2018) When power analyses based on pilot data are biased: Inaccurate effect size estimators and follow-up bias https://doi-org.ezproxy.bgu.ac.il/10.1016/j.jesp.2017.09.004 & http://daniellakens.blogspot.com/2015/06/why-you-should-use-omega-squared.html</sub>
 
 
+## Partial Cohen's f
+
+Given that:
+
+$$
+f_p = \sqrt{\frac{\eta^2_p}{1-\eta^2_p}}
+$$
+
+And... We already saw how to get $\eta^2_p$ from $F$.
+
+in `R` this can be done with:
+
+```{r, eval=FALSE}
+effectsize::F_to_f()
+effectsize::t_to_f()
+```
+
+Cohen's $f$ is similar to Cohen's $d$ in the context of more than 2 means.
+
+Speaking of which...
+
 # Standardized Differences | AKA *Cohen's d*
 
 ##

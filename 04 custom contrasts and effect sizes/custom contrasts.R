@@ -41,9 +41,10 @@ em_freqCorr
 
 # There are many ways to make custom contrasts. Here we will focus on
 # data.frames:
-(contr.Frequency <- data.frame(ThetaVsOthers = c(1,-3,1,1)/3)) # why do we divide by 3?
+(contr.Frequency <- data.frame(ThetaVsOthers = c(1,-3,1,1)/3))
+# why did we divide by 3?
 
-(contr.Correctness <- data.frame(CorrVsIncor = c(-2,1,1)/2, # why do we divide by 2?
+(contr.Correctness <- data.frame(CorrVsIncor = c(-2,1,1)/2,
                                  L1vsL5      = c(0,-1,1)))
 
 

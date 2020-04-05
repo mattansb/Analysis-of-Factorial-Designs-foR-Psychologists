@@ -1,8 +1,8 @@
 
 #' For ANOVAs we need to prepare our data in two ways:
-#' 1. If we have many observations fer subject / condition, we must aggregate
-#'    the data to a single value per subject / condition. This can be done
-#'    with, for example one of the following:
+#' 1. If we have many observations per subject / condition, we must
+#'    aggregate the data to a single value per subject / condition. This
+#'    can be done with, for example one of the following:
 #'    - `aggregate()`
 #'    - `dplyr`'s `summarise()`
 #'    - `prepdat`'s `prep()`
@@ -40,6 +40,11 @@ head(long_angle_noise)
 
 # 2-Way anova -------------------------------------------------------------
 
+# At first you might think that it's easy to run ANOVAs in R. After all,
+# regressions are easy! And it sure looks like it...
+
+
+## Between subjects
 fit_between <- aov(rt ~ angle * noise,
                    data = long_angle_noise)
 summary(fit_between)
@@ -49,35 +54,50 @@ summary(fit_between)
 
 
 
+## Within subjects
 fit_within <- aov(rt ~ angle * noise + Error(id / (angle * noise)),
                   data = long_angle_noise)
 summary(fit_within)
 
+# But... BOTH OF THESE ARE WRONG!
+# Or at least, these results don't show what you think they show. And that
+# matters. A lot.
 
-# Fitting and testing ANOVAs correctly ------------------------------------
 
-# >>>>>>>>>
-# IMPORTANT
-# <<<<<<<<<
-# when fitting an anova we need to make sure to use:
-#   1. effects factor coding ("centering" factors)
-#   2. type 3 errors
-# If we don't we can get very misleading results!
+## --------------- ##
+## DON'T DO THIS ^ ##
+## --------------- ##
+
+
+
+
+# Fitting and testing ANOVAs CORRECTLY ------------------------------------
+
+
+# For proper ANOVA tables, we need two things:
+#   1. effects coding for factors ("centering" factors)
+#   2. type 3 errors.*
+# However, by default, R uses treatment coding for factors,
+# and Type 1 errors!
+#
+# If you have no idea what I'm even talking about, that's okay - you don't
+# need to - just remember that without these, ANOVA tables will be very
+# misleading!
 # (This is true of any anova-table style result, in LMM, GLM, GLMM, etc...)
-
-# set effects factor coding by default for all
-options(contrasts = c('contr.sum', 'contr.poly'))
-
-fit_between2 <- aov(rt ~ angle * noise,
-                    data = long_angle_noise)
-
+#
+# So how to do this?
+# Well... it's not that easy, and in fact, sometimes not even possible...
+#
+# Unless you use `afex`!
 
 
-# what type 3 errors do
-car::Anova(fit_between, type = 3)
-car::Anova(fit_between2, type = 3) # THIS IS THE CORRECT ONE
 
-# or... we can use `afex`
+
+# * Read more about type 1, 2 & 3 errors:
+# http://md.psych.bio.uni-goettingen.de/mv/unit/lm_cat/lm_cat_unbal_ss_explained.html)
+
+
+
 
 
 # ANOVA made easy ---------------------------------------------------------
@@ -90,14 +110,19 @@ fit <- aov_ez(id = "id", dv = "rt",
 fit
 
 # note some defaults here...
+# - correction of the degrees of freedom (set to Greenhouse-Geisser)
+# - effect size (set to generalized eta squared)
+
+
+
 
 
 # Interactions and simple effects -----------------------------------------
 
 library(emmeans)
-# This whole course will be focused on how to use emmeans - a pkg for follow-up
-# analyses (simple effects, simple slopes, contrasts..).
-# Although we focus here on linear ANOVAs, you can use emmeans with GLM,
+# This whole course will be focused on how to use `emmeans` - a pkg for
+# follow-up analyses (simple effects, simple slopes, contrasts..).
+# Although we focus here on linear ANOVAs, you can use `emmeans` with GLM,
 # HLM, GLMM, Bayesian models, and much much more.
 
 # We saw the interaction was sig... what now?
@@ -108,9 +133,9 @@ joint_tests(fit, by = "angle")
 
 
 
-emmeans(fit,  ~ angle) # what is this?
-emmeans(fit,  ~ noise)
-emmeans(fit,  ~ angle + noise)
+emmeans(fit, ~ angle) # what is this?
+emmeans(fit, ~ noise)
+emmeans(fit, ~ angle + noise)
 
 
 # Plot the data -----------------------------------------------------------
@@ -123,14 +148,14 @@ emmip(fit, noise ~ angle)
 
 # add 95% confidence intervals
 emmip(fit, noise ~ angle, CIs = TRUE)
-emmip(fit,  ~ angle, CIs = TRUE)
+emmip(fit, ~ angle, CIs = TRUE)
 
 
 
 
 # With afex
 afex_plot(fit,  ~ angle,  ~ noise)
-? afex_plot
+?afex_plot
 
 
 
@@ -150,11 +175,18 @@ p1 <- emmeans(fit,  ~ noise + angle) %>%
                 position = position_dodge(.8))
 p1
 
+
+# make pretty
 p1 +
-  # make pretty
+  ggbeeswarm::geom_beeswarm(
+    data = long_angle_noise,
+    aes(angle, rt, group = noise),
+    dodge.width = .8,
+    alpha = 0.4
+  ) +
   labs(x = 'Angle', y = 'Mean RT', fill = 'Noise') +
   scale_fill_manual(values = c('gray', 'red3')) +
   scale_x_discrete(labels = c(0, 4, 8)) +
-  coord_cartesian(ylim = c(400, 850)) +
+  coord_cartesian(ylim = c(300, 850)) +
   theme_bw() +
   theme(legend.position = 'bottom')

@@ -3225,6 +3225,25 @@ effectsize::t_to_omega2()</pre>
 
 <p><sub>Formula from Lakens &amp; Albers (2018) When power analyses based on pilot data are biased: Inaccurate effect size estimators and follow-up bias <a href='https://doi-org.ezproxy.bgu.ac.il/10.1016/j.jesp.2017.09.004' title=''>https://doi-org.ezproxy.bgu.ac.il/10.1016/j.jesp.2017.09.004</a> &amp; <a href='http://daniellakens.blogspot.com/2015/06/why-you-should-use-omega-squared.html' title=''>http://daniellakens.blogspot.com/2015/06/why-you-should-use-omega-squared.html</a></sub></p>
 
+</article></slide><slide class=""><hgroup><h2>Partial Cohen’s f</h2></hgroup><article  id="partial-cohens-f">
+
+<p>Given that:</p>
+
+<p>\[
+f_p = \sqrt{\frac{\eta^2_p}{1-\eta^2_p}}
+\]</p>
+
+<p>And… We already saw how to get \(\eta^2_p\) from \(F\).</p>
+
+<p>in <code>R</code> this can be done with:</p>
+
+<pre class = 'prettyprint lang-r'>effectsize::F_to_f()
+effectsize::t_to_f()</pre>
+
+<p>Cohen’s \(f\) is similar to Cohen’s \(d\) in the context of more than 2 means.</p>
+
+<p>Speaking of which…</p>
+
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Standardized Differences </h2><h3> AKA <em>Cohen’s d</em></h3></hgroup><article  id="standardized-differences-aka-cohens-d">
 
 </article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-5">
