@@ -39,6 +39,8 @@ ersp_anova
 # linear polynomial contrast would confirm our hypothesis.
 # TRUE /  FALSE?
 
+# https://persistentastonishment.blogspot.com/2019/02/increasing-testing-severity-in-multi.html
+
 
 
 # Custom contrasts --------------------------------------------------------
