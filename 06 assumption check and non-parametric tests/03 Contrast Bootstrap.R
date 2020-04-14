@@ -43,12 +43,14 @@ gender_treatment_boot(fit_between) # test that it works
 
 ## 3. run bootstrap
 gender_treatment_boot_result <-
-  Boot(fit_between, gender_treatment_boot, R = 50) # R = 599 at least for alpha of 5%! (Wilcox, 2011, p. 119)
+  Boot(fit_between, gender_treatment_boot, R = 50)
+# R = 599 at least for alpha of 5%! (Wilcox, 2011, p. 119)
 
 
 
 ## 4. confidence intervales
-summary(gender_treatment_boot_result) # original vs. bootstrapped estimate (bootMed) NOTE R < 50! Why?
+# original vs. bootstrapped estimate (bootMed) NOTE R < 50! Why?
+summary(gender_treatment_boot_result)
 confint(gender_treatment_boot_result, type = "bca") # does include zero?
 
 
@@ -87,12 +89,14 @@ gender_treatment_boot(fit_lmm) # test that it works
 
 ## 3. run bootstrap
 gender_treatment_boot_result <-
-  bootMer(fit_lmm, gender_treatment_boot, nsim = 50) # nsim = 599 at least for alpha of 5%! (Wilcox, 2011, p. 119)
+  bootMer(fit_lmm, gender_treatment_boot, nsim = 50)
+# nsim = 599 at least for alpha of 5%! (Wilcox, 2011, p. 119)
 
 
 
 ## 4. confidence intervales
-summary(gender_treatment_boot_result) # original vs. bootstrapped estimate (bootMed) NOTE R < 50! Why?
+# original vs. bootstrapped estimate (bootMed) NOTE R < 50! Why?
+summary(gender_treatment_boot_result)
 confint(gender_treatment_boot_result, type = "perc") # does include zero?
 
 

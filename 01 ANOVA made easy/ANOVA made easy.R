@@ -7,6 +7,7 @@
 #'    - `dplyr`'s `summarise()`
 #'    - `prepdat`'s `prep()`
 #'    - ...
+#'    (Note: if you're using (G)LMMs you can, but don't have to aggregate.)
 #' 2. The data must be in the long format.
 
 # Wide vs long data -------------------------------------------------------
@@ -121,7 +122,7 @@ fit
 
 library(emmeans)
 # This whole course will be focused on how to use `emmeans` - a pkg for
-# follow-up analyses (simple effects, simple slopes, contrasts..).
+# follow-up analyses (simple effects, simple slopes, contrasts...).
 # Although we focus here on linear ANOVAs, you can use `emmeans` with GLM,
 # HLM, GLMM, Bayesian models, and much much more.
 

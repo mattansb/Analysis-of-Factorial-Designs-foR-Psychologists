@@ -53,6 +53,7 @@ contrast(em_time_coffee, method = "consec", by = "coffee")
 
 
 ## interaction contrasts with `interaction = `
+# (ALWAYS NAME THE LIST ELEMENTS!!)
 contrast(em_time_coffee,
          interaction = list(coffee = "pairwise",
                             time = "consec"))
@@ -104,8 +105,8 @@ contrast(em_3way, interaction = list(coffee = "pairwise",
 
 # Sometime we don't care about the means per-se, and we want to visualize
 # how some contrast is different as a function of some other factor.
-# e.g., in stroop tasks we might want to show how the interference effect (on Y)
-# differs by group.
+# e.g., in stroop tasks we might want to show how the interference effect
+# (on Y) differs by group.
 
 
 # 1. Means (on Y) by time and coffee

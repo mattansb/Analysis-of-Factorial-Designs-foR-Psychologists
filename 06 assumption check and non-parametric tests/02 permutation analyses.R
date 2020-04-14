@@ -53,9 +53,9 @@ fit_mixed <- aov_ez('id', 'value', obk.long,
 fit_mixed
 
 # permutation anova
-fit_mixed_p <-
-  aovperm(value ~ treatment * gender * phase * hour + Error(id / (phase * hour)),
-          data = obk.long)
+fit_mixed_p <-aovperm(value ~ treatment * gender * phase * hour +
+                        Error(id / (phase * hour)),
+                      data = obk.long)
 fit_mixed_p
 
 

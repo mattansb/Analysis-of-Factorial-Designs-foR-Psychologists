@@ -3142,7 +3142,7 @@ slide:not(.current) .plotly.html-widget{
 F = \frac{SS_{effect} / df_1}{SS_{error} / df2}
 \]</p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-2">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-2" class="smaller">
 
 <p>\(\eta^2_p\) can be approximated by:</p>
 
@@ -3175,7 +3175,7 @@ effectsize::t_to_eta2()</pre>
 F = \frac{SS_{effect} / df_1}{SS_{error} / df2}
 \]</p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-3">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-3" class="smaller">
 
 <p>\(\hat{\eta}^2_P=\epsilon^2_p\) can be approximated by:</p>
 
@@ -3208,7 +3208,7 @@ effectsize::t_to_eta2_adj()</pre>
 F = \frac{SS_{effect} / df_1}{SS_{error} / df2}
 \]</p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-4">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-4" class="smaller">
 
 <p>\(\omega^2_p\) can be approximated by:</p>
 
@@ -3223,7 +3223,7 @@ F = \frac{SS_{effect} / df_1}{SS_{error} / df2}
 <pre class = 'prettyprint lang-r'>effectsize::F_to_omega2()
 effectsize::t_to_omega2()</pre>
 
-<p><sub>Formula from Lakens &amp; Albers (2018) When power analyses based on pilot data are biased: Inaccurate effect size estimators and follow-up bias <a href='https://doi-org.ezproxy.bgu.ac.il/10.1016/j.jesp.2017.09.004' title=''>https://doi-org.ezproxy.bgu.ac.il/10.1016/j.jesp.2017.09.004</a> &amp; <a href='http://daniellakens.blogspot.com/2015/06/why-you-should-use-omega-squared.html' title=''>http://daniellakens.blogspot.com/2015/06/why-you-should-use-omega-squared.html</a></sub></p>
+<p><sub>Formula from Lakens &amp; Albers (2018) When power analyses based on pilot data are biased: Inaccurate effect size estimators and follow-up bias <a href='https://doi.org/10.1016/j.jesp.2017.09.004' title=''>https://doi.org/10.1016/j.jesp.2017.09.004</a> &amp; <a href='http://daniellakens.blogspot.com/2015/06/why-you-should-use-omega-squared.html' title=''>http://daniellakens.blogspot.com/2015/06/why-you-should-use-omega-squared.html</a></sub></p>
 
 </article></slide><slide class=""><hgroup><h2>Partial Cohen’s f</h2></hgroup><article  id="partial-cohens-f">
 
@@ -3266,9 +3266,9 @@ effectsize::t_to_f()</pre>
 t_{contrast} = \sqrt{\frac{SS_{contrast}}{MSE}}
 \]</p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-6">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-6" class="smaller">
 
-<p>Then it is possible to proove that in a <strong>between-subjects design</strong>, <em>Cohen’s d</em> can be approximated by:</p>
+<p>Then it is possible to prove that in a <strong>between-subjects design</strong>, <em>Cohen’s d</em> can be approximated by:</p>
 
 <p>\[
 \text{Cohen&#39;s } d = \frac{2\times t}{\sqrt{df}}
@@ -3280,9 +3280,9 @@ t_{contrast} = \sqrt{\frac{SS_{contrast}}{MSE}}
 
 <p><sub>Formula for between-subjects design from Wolf, F. M. (1986). Meta-analysis: Quantitative methods for research synthesis (Vol. 59). Sage. Chapter 3 tables 8-9 page 35</sub></p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-7">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-7" class="smaller">
 
-<p>… and it is possible to proove that in a <strong>within-subjects design</strong>, <em>Cohen’s d</em> can be approximated by:</p>
+<p>… and it is possible to prove that in a <strong>within-subjects design</strong>, <em>Cohen’s d</em> can be approximated by:</p>
 
 <p>\[
 \text{Cohen&#39;s } d_z = \frac{t}{\sqrt{df}}
@@ -3292,7 +3292,7 @@ t_{contrast} = \sqrt{\frac{SS_{contrast}}{MSE}}
 
 <pre class = 'prettyprint lang-r'>effectsize::t_to_d(pooled = TRUE)</pre>
 
-<p><sub>Formula for within-subjects desing from Rosenthal, R. (1991).Meta-analytic procedures for social research. Newbury Park, CA: SAGE Publications, Incorporated.</sub></p>
+<p><sub>Formula for within-subjects design from Rosenthal, R. (1991).Meta-analytic procedures for social research. Newbury Park, CA: SAGE Publications, Incorporated.</sub></p>
 
 <p><sub>Read more at Lakens (2013) Calculating and reporting effect sizes to facilitate cumulative science: a practical primer for t-tests and ANOVAs <a href='https://www.psychometrica.de/effect_size.html' title=''>https://www.psychometrica.de/effect_size.html</a></sub></p>
 
@@ -3314,7 +3314,7 @@ t_{contrast} = \sqrt{\frac{SS_{contrast}}{MSE}}
 F_{effect} = \frac{SS_{effect} / df_1}{MSE}
 \]</p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-9">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-9" class="smaller">
 
 <p>Then \(r^2_{alerting}\) can be approximated by:</p>
 
@@ -3331,7 +3331,7 @@ r^2_{alerting} = \frac{t_{contrast}^2}{F_{effect} \times df_1}
 <p><strong>Use this method carefully…</strong></p>
 
 <ul>
-<li><p>This approximation is true <strong><em>ONLY</em></strong> for models assuming homoscedasticity (for between subject factors) and sphericity (for within subject factors) - where t’s and F’s MSE are equal. In all other cases, you would need to calculate the SSs manually.</p></li>
+<li><p>This approximation is true <strong><em>ONLY</em></strong> when \(MSE_{\text{effect}}\) and \(MSE_{\text{contrast}}\) are the same. When is this true? When homoscedasticity (for between subject factors) and sphericity (for within subject factors) are assumed. In all other cases, you would need to calculate the SSs manually.</p></li>
 <li><p>Things get very tricky with interaction-contrasts… No easy solution there…</p></li>
 </ul>
 

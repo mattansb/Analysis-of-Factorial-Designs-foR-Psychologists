@@ -126,7 +126,7 @@ effectsize::F_to_omega2()
 effectsize::t_to_omega2()
 ```
 
-<sub>Formula from Lakens & Albers (2018) When power analyses based on pilot data are biased: Inaccurate effect size estimators and follow-up bias https://doi-org.ezproxy.bgu.ac.il/10.1016/j.jesp.2017.09.004 & http://daniellakens.blogspot.com/2015/06/why-you-should-use-omega-squared.html</sub>
+<sub>Formula from Lakens & Albers (2018) When power analyses based on pilot data are biased: Inaccurate effect size estimators and follow-up bias https://doi.org/10.1016/j.jesp.2017.09.004 & http://daniellakens.blogspot.com/2015/06/why-you-should-use-omega-squared.html</sub>
 
 
 ## Partial Cohen's f
@@ -174,7 +174,7 @@ $$
 
 ## {.smaller}
 
-Then it is possible to proove that in a **between-subjects design**, *Cohen's d* can be approximated by:
+Then it is possible to prove that in a **between-subjects design**, *Cohen's d* can be approximated by:
 
 $$
 \text{Cohen's } d = \frac{2\times t}{\sqrt{df}}
@@ -191,7 +191,7 @@ effectsize::t_to_d()
 
 ## {.smaller}
 
-... and it is possible to proove that in a **within-subjects design**, *Cohen's d* can be approximated by:
+... and it is possible to prove that in a **within-subjects design**, *Cohen's d* can be approximated by:
 
 $$
 \text{Cohen's } d_z = \frac{t}{\sqrt{df}}
@@ -203,7 +203,7 @@ in `R` this can be done with:
 effectsize::t_to_d(pooled = TRUE)
 ```
 
-<sub>Formula for within-subjects desing from Rosenthal, R. (1991).Meta-analytic procedures for social research. Newbury Park, CA: SAGE Publications, Incorporated.</sub>  
+<sub>Formula for within-subjects design from Rosenthal, R. (1991).Meta-analytic procedures for social research. Newbury Park, CA: SAGE Publications, Incorporated.</sub>  
 
 <sub>Read more at Lakens (2013) Calculating and reporting effect sizes to facilitate cumulative science: a practical primer for t-tests and ANOVAs https://www.psychometrica.de/effect_size.html</sub>
 
@@ -242,7 +242,7 @@ t_and_F_to_r2alerting <- function(t, f, df) {
 
 **Use this method carefully...**
 
-- This approximation is true ***ONLY*** for models assuming homoscedasticity (for  between subject factors) and sphericity (for within subject factors) - where t's and F's MSE are equal. In all other cases, you would need to calculate the SSs manually.
+- This approximation is true ***ONLY*** when $MSE_{\text{effect}}$ and $MSE_{\text{contrast}}$ are the same. When is this true? When homoscedasticity (for  between subject factors) and sphericity (for within subject factors) are assumed. In all other cases, you would need to calculate the SSs manually.  
 
 - Things get very tricky with interaction-contrasts... No easy solution there...
 

@@ -13,5 +13,5 @@ fit <- aov_ez('id', 'value', obk.long,
 test_levene(fit)
 test_sphericity(fit)
 residuals_qqplot(fit) # what are we looking for here?
-residuals_qqplot(fit, model = "multi")
+residuals_qqplot(fit, model = "multi") # what are we looking for HERE?
 

@@ -48,7 +48,7 @@ c_Condition
 
 # How do these ajustment methods change the conclusion?
 update(c_Condition, adjust = "none")        # No adjusments
-update(c_Condition, adjust = "tukey")       # ONLY good for 2-tailed pairwise comparisons.
+update(c_Condition, adjust = "tukey")       # ONLY works with pairwise
 update(c_Condition, adjust = "bonferroni")  # Popular
 update(c_Condition, adjust = "fdr")         # Use when many many contrasts
 ?p.adjust # more?

@@ -35,9 +35,16 @@ extract_pkgs <- function(fl) {
       .[[1]] %>% 
       paste0(collapse = "\n")
     
-    pkg_lib <- stringr::str_extract_all(txt, pattern = "(?<=library\\().{1,}(?=\\))")
+    pkg_lib <- stringr::str_extract_all(txt, pattern = "library\\(.+?\\)") %>% 
+      unlist() %>% 
+      stringr::str_remove("library\\(") %>% 
+      stringr::str_remove("\\)")
     
-    pkg_req <- stringr::str_extract_all(txt, pattern = "(?<=require\\().{1,}(?=\\))")
+    
+    pkg_req <- stringr::str_extract_all(txt, pattern = "require\\(.+?\\)") %>% 
+      unlist() %>% 
+      stringr::str_remove("require\\(") %>% 
+      stringr::str_remove("\\)")
     
     pkg_name <- stringr::str_extract_all(txt, pattern = "[a-z|A-Z|0-9]{1,}(?=\\:\\:)")
     

@@ -32,7 +32,9 @@ ersp_anova
 ersp_ancova <- aov_ez('Subject','ersp',Alcohol_data,
                       within = c('Frequency','Correctness'),
                       between = c('Alcohol'),
-                      covariate = 'mograde', factorize = FALSE) # MUST set factorize = FALSE with covariates!
+                      # The new bits:
+                      covariate = 'mograde',
+                      factorize = FALSE) # MUST set `factorize = FALSE`!
 # Note the warning!
 
 ersp_anova
@@ -46,12 +48,14 @@ ersp_ancova
 # Why center the covariate? See Centering Variables for ANOVA.docx for an
 # extremely detailed explanation.
 
-Alcohol_data$mograde_c <- scale(Alcohol_data$mograde, center = TRUE, scale = FALSE)
+Alcohol_data$mograde_c <- scale(Alcohol_data$mograde,
+                                center = TRUE, scale = FALSE)
 
 # Re-Fit model
 ersp_ancova2 <- aov_ez('Subject','ersp',Alcohol_data,
                        within = c('Frequency','Correctness'),
                        between = c('Alcohol'),
+                       # The new bits
                        covariate = 'mograde_c', factorize = FALSE)
 ersp_anova
 ersp_ancova

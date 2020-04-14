@@ -21,9 +21,11 @@ head(coffee_data)
 # 2. For follow-up analysis, a multivariate solution (pp. 728;
 #    not afex's  defult).
 
-afex_options(correction_aov = 'GG', # can also be 'none' for SPSS/statistica equvilant results
-             emmeans_model  = 'multivariate', # can also be 'univariate'
-             es_aov         = 'pes') # for partial-eta-square effect size in the anova table
+afex_options(
+  correction_aov = 'GG', # or 'none' for SPSS/statistica equvilant results
+  emmeans_model  = 'multivariate', # can also be 'univariate'
+  es_aov         = 'pes' # for partial-eta-square in the anova table
+)
 
 
 
@@ -60,6 +62,9 @@ emmip(coffee_fit, ~ time, CIs = TRUE)
 emmeans(coffee_fit, ~ coffee + time)
 emmip(coffee_fit, coffee ~ time, CIs = TRUE)
 
+emmeans(coffee_fit, ~ coffee + time + sex)
+emmip(coffee_fit, coffee ~ time | sex, CIs = TRUE)
+
 # Contrasts ---------------------------------------------------------------
 
 # For contrasts we need:
@@ -86,7 +91,7 @@ summary(c_time, infer = TRUE)
 em_time_coffee <- emmeans(coffee_fit, ~ coffee + time)
 em_time_coffee
 contrast(em_time_coffee, method = "pairwise", by = "coffee")
-contrast(em_time_coffee, method = "poly", by = "coffee") # is this surprising?
+contrast(em_time_coffee, method = "poly", by = "coffee") # surprising?
 
 
 # See contrast weights
