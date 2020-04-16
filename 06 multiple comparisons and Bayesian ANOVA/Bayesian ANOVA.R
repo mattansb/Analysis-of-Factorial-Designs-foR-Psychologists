@@ -27,15 +27,19 @@ afex_plot(fit_alcohol_theta,  ~ Alcohol,  ~ Correctness)
 # Bayesian ----------------------------------------------------------------
 
 # For within/mixed subject models, we need to:
-BF_alcohol_theta <-
-  anovaBF(ersp ~ Correctness * Alcohol + Subject, # 1) add the subject ID
-          data = Alcohol_data,
-          whichRandom = "Subject")                # 2) specify it as a random factor
+BF_alcohol_theta <- anovaBF(
+  # 1) add the subject ID as a predictor
+  ersp ~ Correctness * Alcohol + Subject,
+  # 2) specify it as a random factor
+  whichRandom = "Subject",
+  data = Alcohol_data
+)
 BF_alcohol_theta
+
 
 BF_alcohol_theta[3] / BF_alcohol_theta[4] # What does this mean?
 bayesfactor_inclusion(BF_alcohol_theta) # What do THESE mean?
-bayesfactor_inclusion(BF_alcohol_theta, match_models = TRUE) # What do THESE mean?
+bayesfactor_inclusion(BF_alcohol_theta, match_models = TRUE) # and THESE?
 
 # ADVANCED STUFF ----------------------------------------------------------
 
@@ -43,3 +47,7 @@ bayesfactor_inclusion(BF_alcohol_theta, match_models = TRUE) # What do THESE mea
 # A good place to start:
 #   - Look up `rstanarm`
 #   - Read here https://easystats.github.io/bayestestR/ (I might be biased)
+#
+# Note also that there are frequentist ways of accepting the null, called
+# "Equivalence Testing". See "equivalence testing.R" for how to do this in
+# emmeans (duh).
