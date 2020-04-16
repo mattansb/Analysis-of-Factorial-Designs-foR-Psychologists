@@ -121,6 +121,13 @@ emmeans(coffee_fit, ~ coffee + time) %>%
   geom_hline(yintercept = 0)
 
 
+# Removable interactions --------------------------------------------------
+
+# Some interactions are removable - these are sometimes called ordinal
+# interactions.
+#
+# See "removable interactions.R" for how to deal with these.
+
 
 # Exercise ----------------------------------------------------------------
 
@@ -131,3 +138,7 @@ emmeans(coffee_fit, ~ coffee + time) %>%
 # - Plots
 # interpret your results along the way
 
+
+# HM ----------------------------------------------------------------------
+
+# Confirm w/ contrasts there is no 3-way interaction in the coffee data.

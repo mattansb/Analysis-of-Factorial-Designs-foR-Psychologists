@@ -31,7 +31,8 @@ afex_options(
 
 
 coffee_fit <- aov_ez('ID','alertness',coffee_data,
-                     within = c('time','coffee'), between = 'sex')
+                     within = c('time','coffee'),
+                     between = 'sex')
 
 coffee_fit
 # what's up with the 3-way interaction??
@@ -118,8 +119,3 @@ head(C8E15)
 # 2. Plot the 3-way interaction plot.
 # 3. Conduct follow-up analysis on a significant 2-way interaction.
 #    Explain your results.
-
-
-# HM ----------------------------------------------------------------------
-
-# Confirm w/ contrasts there is no 3-way interaction in the coffee data.
