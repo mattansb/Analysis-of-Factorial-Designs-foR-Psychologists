@@ -112,7 +112,6 @@ describe_posterior(contrasts_posteriors$Contrast, test = NULL)
 
 
 ## 1. extract posterior samples
-#If we want the full model (index = 4), we can:
 model_ave_posterior <- weighted_posteriors(BF_alcohol_theta,
                                            iterations = 4000)
 
