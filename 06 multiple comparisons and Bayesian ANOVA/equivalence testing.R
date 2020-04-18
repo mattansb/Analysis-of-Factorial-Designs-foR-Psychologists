@@ -42,7 +42,7 @@ afex_plot(fit_alcohol_theta,  ~ Alcohol,  ~ Correctness)
 
 # Equivalence testing -----------------------------------------------------
 
-# Q: If the effect for {L1} vs {L5} differ between {Control + ND} vs
+# Q: Is the effect for {L1} vs {L5} differ between {Control + ND} vs
 # {PFAS vs FAS}?
 
 # Let's define those contrasts:

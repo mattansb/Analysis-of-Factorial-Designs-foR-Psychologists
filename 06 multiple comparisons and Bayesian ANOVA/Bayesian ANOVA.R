@@ -41,7 +41,14 @@ BF_alcohol_theta[3] / BF_alcohol_theta[4] # What does this mean?
 bayesfactor_inclusion(BF_alcohol_theta) # What do THESE mean?
 bayesfactor_inclusion(BF_alcohol_theta, match_models = TRUE) # and THESE?
 
+# # If you have any priors (default: equal prior odds for all models)
+# bayesfactor_inclusion(BF_alcohol_theta, prior_odds = )
+
+# If you want any contrasts, you can't use `emmeans`, but it is possible.
+# See "Bayesian contrasts.R".
+
 # ADVANCED STUFF ----------------------------------------------------------
+
 
 # There is A LOT more to be learned about Bayesian testing / estimation.
 # A good place to start:
