@@ -27,15 +27,15 @@ BF_alcohol_theta
 
 # Contrasts ---------------------------------------------------------------
 
-# We can't really compute bayes factors (we can, but with other packages),
-# but we can get CI (credible intervals).
+# We can't really compute bayes factors (we can, but with other packages), but
+# we can get CI (credible intervals).
 # To do this we need to
 # 1. extract posterior samples (easy!)
 # 2. compute the contrasts (hard!)
 # 3. compute the CI (easy!)
 
-# Let's compare the difference between {L1} vs {L5} between {Control + ND}
-# vs {PFAS vs FAS}.
+# Let's compare the difference between {L1} vs {L5} between {Control + ND} vs
+# {PFAS vs FAS}.
 
 
 
@@ -47,8 +47,8 @@ full_mod_posterior <- posterior(BF_alcohol_theta, index = 4,
                                 iterations = 4000)
 full_mod_posterior <- data.frame(full_mod_posterior)
 head(full_mod_posterior)
-# a mess - we have the random effect here too, and a bunch of other stuff
-# (such as mu, sig2, g...).
+# a mess - we have the random effect here too, and a bunch of other stuff (such
+# as mu, sig2, g...).
 
 
 
@@ -79,10 +79,10 @@ contrasts_posteriors <- full_mod_posterior %>%
 # 3. compute the CI
 describe_posterior(contrasts_posteriors$Contrast, test = NULL)
 # The estimate is d = -2.3 95%CI [-15, 10].
-# We can think of this as meaning that when assuming the null is wrong
-# (that there IS an interaction), the most plassible size of the effect is
-# -2.3, but because the HDI (a type of CI) includes 0, then an effect of
-# 0 is also plausible...
+# We can think of this as meaning that when assuming the null is wrong (that
+# there IS an interaction), the most plassible size of the effect is -2.3, but
+# because the HDI (a type of CI) includes 0, then an effect of 0 is also
+# plausible...
 (HDI_full <- plot(hdi(contrasts_posteriors$Contrast)))
 
 
@@ -92,9 +92,8 @@ describe_posterior(contrasts_posteriors$Contrast, test = NULL)
 
 # Method 2 - model averageing (across models) -----------------------------
 
-# But why are we assuming that the full model is the correct one? There
-# ARE other models - some are more supported by the data than the full
-# model!!
+# But why are we assuming that the full model is the correct one? There ARE
+# other models - some are more supported by the data than the full model!!
 # The solution - look at ALL THE MODELS!
 # (This is similar to how the Inclusion Bayes factor looks at all models)
 #
@@ -105,9 +104,9 @@ describe_posterior(contrasts_posteriors$Contrast, test = NULL)
 
 
 
-# The only difference is in step 1 - in stead of sampling from one model,
-# we sample from all models according to their posterior probability.
-# For that, we will use `weighted_posteriors`.
+# The only difference is in step 1 - in stead of sampling from one model, we
+# sample from all models according to their posterior probability. For that, we
+# will use `weighted_posteriors`.
 ?weighted_posteriors
 
 
@@ -121,8 +120,8 @@ model_ave_posterior <- weighted_posteriors(BF_alcohol_theta,
 #                                            iterations = 4000)
 
 head(model_ave_posterior)
-# Still a mess - we have the random effect here too, and a bunch of other
-# stuff (such as mu, sig2, g...).
+# Still a mess - we have the random effect here too, and a bunch of other stuff
+# (such as mu, sig2, g...).
 
 
 
@@ -153,8 +152,8 @@ contrasts_posteriors2 <- model_ave_posterior %>%
 # 3. compute the CI (easy!)
 describe_posterior(contrasts_posteriors2$Contrast, test = NULL)
 # The estimate is d = 0 95%CI [-8, 0.9].
-# We can think of this as meaning that when concidering all the models,
-# the most plassible size of the effect is exactly 0, but small differences
+# We can think of this as meaning that when concidering all the models, the most
+# plassible size of the effect is exactly 0, but small differences
 # included in the HDI are also plausible...
 (HDI_ave <- plot(hdi(contrasts_posteriors2$Contrast)))
 
@@ -169,6 +168,10 @@ HDI_full + HDI_ave +
 
 # Concluding words --------------------------------------------------------
 
-# This is all quite difficult and complicated stuff - feel free to contact
-# me with any questions you may have with your own analysis.
+# This is all quite difficult and complicated stuff - feel free to contact me
+# with any questions you may have with your own analysis.
+#
+# Also note that it is possible to compute Bayes factors for contrasts - but not
+# quite with the BayesFactor package. See:
+# https://easystats.github.io/bayestestR/articles/bayes_factors.html#testing-models-parameters-with-bayes-factors
 

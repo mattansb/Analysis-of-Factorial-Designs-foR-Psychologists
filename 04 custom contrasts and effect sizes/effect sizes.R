@@ -47,9 +47,14 @@ F_to_epsilon2(2.89, 3, 44)
 # practical sense, it is recommended to report the negative number
 # and not a 0.
 
-
 # Also Cohen's f - which is ~Cohen's d for more than 2 means:
 F_to_f(2.89, 3, 44)
+
+# # We can also directly use the model object:
+# eta_squared(ersp_anova)
+# omega_squared(ersp_anova)
+# epsilon_squared(ersp_anova)
+# cohens_f(ersp_anova)
 
 
 
@@ -114,8 +119,7 @@ emmeans(ersp_anova, ~ Correctness) %>%
 
 # r2 alerting -------------------------------------------------------------
 
-## try at home.
-
+## try at home...?
 
 
 
