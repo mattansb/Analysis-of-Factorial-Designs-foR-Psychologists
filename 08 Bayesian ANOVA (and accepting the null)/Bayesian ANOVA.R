@@ -1,13 +1,18 @@
-library(dplyr)
 library(afex)
 library(BayesFactor)
 library(bayestestR)
 
 # Load data ---------------------------------------------------------------
 
-Alcohol_data <- readRDS("Alcohol_data.rds") %>%
-  filter(Frequency == '4to7Hz') # Looking only at the Frequency of interest
+
+Alcohol_data <- subset(readRDS("Alcohol_data.rds"),
+                       # Looking only at the Frequency of interest
+                       Frequency == '4to7Hz')
+
 head(Alcohol_data)
+
+
+
 
 # Regular ANOVA -----------------------------------------------------------
 
@@ -24,6 +29,9 @@ afex_plot(fit_alcohol_theta,  ~ Alcohol,  ~ Correctness)
 # Looks like no interaction. But we can't infer that based on
 # frequentist methods...
 
+
+
+
 # Bayesian ----------------------------------------------------------------
 
 # For within/mixed subject models, we need to:
@@ -37,15 +45,23 @@ BF_alcohol_theta <- anovaBF(
 BF_alcohol_theta
 
 
+
+
 BF_alcohol_theta[3] / BF_alcohol_theta[4] # What does this mean?
 bayesfactor_inclusion(BF_alcohol_theta) # What do THESE mean?
 bayesfactor_inclusion(BF_alcohol_theta, match_models = TRUE) # and THESE?
+
 
 # # If you have any priors (default: equal prior odds for all models)
 # bayesfactor_inclusion(BF_alcohol_theta, prior_odds = )
 
 # If you want any contrasts, you can't use `emmeans`, but it is possible.
 # See "Bayesian contrasts.R".
+
+
+
+
+
 
 # ADVANCED STUFF ----------------------------------------------------------
 

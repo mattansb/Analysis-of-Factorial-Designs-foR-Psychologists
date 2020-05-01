@@ -140,6 +140,7 @@ c_int # take the values from the contrast:
 # Note that 1-2*alpha CI levels are usually used for equivalence tests.
 equi_test_c <- t_to_d(t = -0.565, df_error = 88, ci = 0.9) %>%
   equivalence_test(range = ROPE)
+equi_test_c
 plot(equi_test_c)
 # Undecided - same as above, the effect is both not significantly larger than 0,
 # and also not significantly smaller (in magnitude) than the SESOI.

@@ -5,11 +5,16 @@ afex_options(es_aov         = 'pes',
              correction_aov = 'GG',
              emmeans_model  = 'univariate')
 
+
+
 # Load data ---------------------------------------------------------------
 
 Phobia_data <- readRDS("Phobia.rds")
 
 head(Phobia_data)
+
+
+
 
 # Fit model ---------------------------------------------------------------
 
@@ -19,10 +24,15 @@ fit <- aov_ez("ID", "BehavioralAvoidance", Phobia_data,
 fit
 
 
+
+
 # Plot --------------------------------------------------------------------
 
-afex_plot(fit,  ~ Phobia,  ~ Condition,  ~ Gender)
-emmip(fit, Condition ~ Phobia | Gender, CIs = TRUE)
+afex_plot(fit, ~ Condition, ~ Phobia, ~ Gender)
+emmip(fit, Phobia ~ Condition | Gender, CIs = TRUE)
+
+
+
 
 
 # Contrasts ---------------------------------------------------------------
@@ -44,6 +54,8 @@ c_Condition <- contrast(em_Condition, "pairwise")
 c_Condition
 
 
+
+
 # Adjust p-value ----------------------------------------------------------
 
 # How do these ajustment methods change the conclusion?
@@ -55,12 +67,15 @@ update(c_Condition, adjust = "fdr")         # Use when many many contrasts
 
 update(c_Phobia, adjust = "tukey")          # Will not give tukey!
 
+
 # Combine tests and adjust p vlaues for ALL OF THEM:
 rbind(c_Condition, c_Gender, c_Phobia) # default to bonferroni
 rbind(c_Condition, c_Gender, c_Phobia, adjust = "none")
 rbind(c_Condition, c_Gender, c_Phobia, adjust = "fdr")
 # How are these affected?
 # What about {Implosion - CBT}?
+
+
 
 
 # HW ----------------------------------------------------------------------
