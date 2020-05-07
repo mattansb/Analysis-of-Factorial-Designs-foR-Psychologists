@@ -3,7 +3,7 @@
 
 # Analysis of Factorial Designs foR Psychologists
 
-<sub>*Last updated 2020-05-01.*</sub>
+<sub>*Last updated 2020-05-07.*</sub>
 
 This Github repo contains all lesson files used in the graduate-level
 course: *Analysis of Factorial Designs foR Psychologists - Practical
@@ -51,6 +51,7 @@ You will need:
 | [06 assumption check and non-parametric tests](/06%20assumption%20check%20and%20non-parametric%20tests) | [`afex`](https://CRAN.R-project.org/package=afex), [`permuco`](https://CRAN.R-project.org/package=permuco), [`emmeans`](https://CRAN.R-project.org/package=emmeans), [`car`](https://CRAN.R-project.org/package=car), [`lmerTest`](https://CRAN.R-project.org/package=lmerTest), [`qqplotr`](https://CRAN.R-project.org/package=qqplotr), [`ggplot2`](https://CRAN.R-project.org/package=ggplot2)                                                                                                                                     |
 | [07 multiple comparisons](/07%20multiple%20comparisons)                                                 | [`afex`](https://CRAN.R-project.org/package=afex), [`emmeans`](https://CRAN.R-project.org/package=emmeans)                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | [08 Bayesian ANOVA (and accepting the null)](/08%20Bayesian%20ANOVA%20\(and%20accepting%20the%20null\)) | [`afex`](https://CRAN.R-project.org/package=afex), [`BayesFactor`](https://CRAN.R-project.org/package=BayesFactor), [`bayestestR`](https://CRAN.R-project.org/package=bayestestR), [`dplyr`](https://CRAN.R-project.org/package=dplyr), [`patchwork`](https://CRAN.R-project.org/package=patchwork), [`ggplot2`](https://CRAN.R-project.org/package=ggplot2), [`emmeans`](https://CRAN.R-project.org/package=emmeans), [`effectsize`](https://CRAN.R-project.org/package=effectsize), [`see`](https://CRAN.R-project.org/package=see) |
+| [09 analysis of accuracy in ANOVA vs GLMMs](/09%20analysis%20of%20accuracy%20in%20ANOVA%20vs%20GLMMs)   | [`afex`](https://CRAN.R-project.org/package=afex), [`emmeans`](https://CRAN.R-project.org/package=emmeans)                                                                                                                                                                                                                                                                                                                                                                                                                            |
 
 You can install all the packages used by running:
 
@@ -67,7 +68,7 @@ You can install all the packages used by running:
 The package versions used here:
 
     ##          afex          AMCP   BayesFactor    bayestestR           car 
-    ##      "0.27-2"       "1.0.0"  "0.9.12-4.2"       "0.6.0"       "3.0-7" 
+    ##      "0.27-2"       "1.0.0"  "0.9.12-4.2"     "0.6.0.1"       "3.0-7" 
     ##         dplyr    effectsize       emmeans    ggbeeswarm       ggplot2 
     ## "0.8.99.9002"     "0.3.0.1"       "1.4.5"       "0.6.0"       "3.3.0" 
     ##      lmerTest     patchwork       permuco       qqplotr           see 
