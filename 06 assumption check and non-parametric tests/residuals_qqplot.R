@@ -1,4 +1,49 @@
-residuals_qqplot <- function(object, model = c("univariate", "multivariate"), qqbands = TRUE){
+residuals.afex_aov <- function(object, append = FALSE, ...) {
+  if (length(attr(object, "within")) > 0) {
+    # residuals in long format
+    e <- data.frame(residuals(object$lm))
+    varying <- colnames(e)
+    e[attr(object, "id")] <- object$data$wide[attr(object, "id")]
+    e <- reshape(
+      e,
+      direction = "long",
+      varying = varying,
+      v.name = ".residuals.",
+      times = varying,
+      timevar = ".time.",
+      idvar = attr(object, "id")
+    )
+
+    # add within data
+    code <- data.frame(.time. = varying,
+                       .index. = seq_along(varying))
+    index <- object$data$idata
+    index$.index. <- seq_len(nrow(index))
+    index <- merge(code, index, by = ".index.")
+
+    e <- merge(e, index, by = ".time.")
+    e$.time. <- NULL
+    e$.index. <- NULL
+
+    # add between data
+    between_data <- object$data$long
+    e <- merge(between_data, e, by = c(attr(object, "id"), names(attr(object, "within"))))
+  } else {
+    e <- object$data$long
+    e$.residuals. <- residuals(object$lm)
+  }
+
+  e[[attr(object, "dv")]] <- NULL
+
+  if (append) {
+    return(e)
+  } else {
+    e$.residuals.
+  }
+}
+
+
+residuals_qqplot <- function(object, by_term = FALSE, model = c("univariate", "multivariate"), qqbands = TRUE, return = c("plot", "data")){
   stopifnot(requireNamespace("ggplot2"))
 
   if (qqbands && requireNamespace("qqplotr")) {
@@ -12,46 +57,45 @@ residuals_qqplot <- function(object, model = c("univariate", "multivariate"), qq
   }
 
   model <- match.arg(model)
+  return <- match.arg(return)
 
-  data <- object$data$long
   within <- names(attr(object, "within"))
   id <- attr(object, 'id')
 
+  e <- residuals(object, append = TRUE)
 
-  if (length(within) > 0L & model == "univariate") {
-    object_aov <- object$aov
+  if (!by_term) {
+    e$term <- "residuals"
+  } else if (length(within) > 0L & model == "univariate") {
+    wf <- lapply(within, function(x) c(NA, x))
+    wf <- do.call(expand.grid, wf)
+    wl <- apply(wf, 1, function(x) c(na.omit(x)))
 
-    if (is.null(object_aov)) {
-      ## make aov object
-      print("AA")
-      dv <- attr(object, 'dv')
-      terms <- as.formula(object$Anova)[-1]
-      fixed <- paste0(terms, collapse = "+")
-      error <-
-        paste0("Error(", id, "/(", paste0(within, collapse = "*"), ")", ")")
-      formula <- as.formula(paste0(dv, "~", fixed, "+", error))
-      object_aov <- aov(formula, data)
+    fin_e <- vector("list", length = length(wl))
+    for (i in seq_along(wl)) {
+      temp_f <- c(id, wl[[i]])
+
+      temp_e <- aggregate(e$.residuals., e[, temp_f, drop = F], FUN = mean)
+
+      fin_e[[i]] <- data.frame(
+        term = paste0(temp_f, collapse = ":"),
+        .residuals. = temp_e[[ncol(temp_e)]]
+      )
     }
-
-    projections <- proj(object_aov)[-1]
-    projections <- lapply(projections, function(.x) {
-      temp_data <- data.frame(id = data[[id]],
-                              resid = as.data.frame(.x)$Residuals)
-      unique(temp_data)[[2]]
-    })
-    projections <- stack(projections, )
+    e <- do.call(rbind, fin_e)
   } else if (length(within) > 0L) {
-    resid <- data.frame(residuals(object$lm))
-    projections <- stack(resid)
+    e$term <- apply(e[, within], 1, function(x) paste0(x, collapse = "/"))
   } else {
-    projections <- data.frame(residuals(object$lm), id)
+    e$term <- id
   }
 
-  colnames(projections) <- c("Residuals", "Term")
+  if (return == "data") {
+    return(e[,c("term",".residuals.")])
+  }
 
-  ggplot2::ggplot(projections, ggplot2::aes(sample = .data$Residuals)) +
+  ggplot2::ggplot(e, ggplot2::aes(sample = .data$.residuals.)) +
     qq_stuff +
-    ggplot2::facet_wrap( ~ .data$Term, scales = "free", ) +
+    ggplot2::facet_wrap(~ .data$term, scales = "free") +
     ggplot2::theme_minimal() +
     ggplot2::theme(
       axis.text.x = ggplot2::element_blank(),
