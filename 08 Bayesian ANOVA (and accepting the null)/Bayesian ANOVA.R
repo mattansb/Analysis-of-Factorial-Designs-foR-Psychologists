@@ -32,7 +32,9 @@ afex_plot(fit_alcohol_theta,  ~ Alcohol,  ~ Correctness)
 
 
 
-# Bayesian ----------------------------------------------------------------
+
+# Bayesian Model Comparison -----------------------------------------------
+
 
 # Our goal is to calculate a BF for each term. However, BF are computed per
 # MODEL, not per term. For examples:
@@ -48,7 +50,7 @@ BF_alcohol_theta <- anovaBF(
 )
 BF_alcohol_theta
 
-# We need to find a way to compare models in a way that provied information
+# We need to find a way to compare models in a way that provieds information
 # about specific terms.
 # There are 2 ways to do this:
 
@@ -66,35 +68,29 @@ bayesfactor_inclusion(BF_alcohol_theta, match_models = TRUE) # and THESE?
 
 
 
-## 3. Leave-out-one-term
-BF_alcohol_theta_LOOT <- anovaBF(
-  # 1) add the subject ID as a predictor
-  ersp ~ Correctness * Alcohol + Subject,
-  # 2) specify it as a random factor
-  whichRandom = "Subject",
-  whichModels = "top",
-  data = Alcohol_data
-)
-BF_alcohol_theta_LOOT
-1/BF_alcohol_theta_LOOT[2]
 
+# Type 3 Bayes factors ----------------------------------------------------
 
-
-
-
-
-# Unfortunetly, the defaults in `BayesFactor` for repeated-measures can often
-# produce results that are no in-line of close to those obained with classic
-# ANOVA analysis.
-# The bottom line: where classic ANOVAs account for indevidual differences in
-# effects (the so called subject-by-effect interaction), `anovaBF()` does not.
-# To get BFs that truly corresponde to the classic tests, we need to:
-#   1. Include the random effects in our model.
-#   2. Use the Leave-out-one-term method.
-# You can learn more about this in Jeff Rouder's talk, here:
-# https://www.youtube.com/watch?v=PzHcwS3xbZ8
+# The BFs above do not have a 1:1 correspondance with the classic statistical
+# tests (with typr-3 SS). This is for 2 reasons:
+#   1. Classic (type-3 SS) tests essentially test each term by comparing the
+#     full model to a model without that term.
+#   2. For repeated-measures designs `anovaBF()` does not account for indevidual
+#     differences in effects (the so called subject-by-effect interaction).
+# Not everyone agrees this is a bad thing...
 #
-# The formula will have the general form of:
+# But if YOU decide that you want BFs that truly corresponde to the classic
+# tests, you need to:
+#   1. Use the Leave-out-one-term method.
+#   2. Include all random effects in our model (and in `whichRandom`).
+# (Note that these results cannot be reproduced with JASP!)
+#
+# You can learn more about this top of "which models should be compare to test
+# effects" in Jeff Rouder's talk, here:
+# https://www.youtube.com/watch?v=PzHcwS3xbZ8
+
+
+# The formula must have the general form of:
 dv ~ within1 * within2 * (between1 * between2 + Subject)
 # And instead of `anovaBF()` we must use `generalTestBF()`.
 
@@ -102,7 +98,7 @@ dv ~ within1 * within2 * (between1 * between2 + Subject)
 # In our example:
 BF_type3 <- generalTestBF(
   ersp ~ Correctness * (Alcohol + Subject),
-  whichRandom = "Subject",
+  whichRandom = c("Subject","Correctness:Subject"),
   whichModels = "top",
   data = Alcohol_data
 )
@@ -114,7 +110,7 @@ BF_type3
 
 
 
-
+# Contrasts and Estimates -------------------------------------------------
 
 
 # If you want any contrasts, you can't use `emmeans`, but it is possible.
