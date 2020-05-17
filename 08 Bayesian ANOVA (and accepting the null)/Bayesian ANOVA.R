@@ -46,9 +46,11 @@ BF_alcohol_theta <- anovaBF(
   ersp ~ Correctness * Alcohol + Subject,
   # 2) specify it as a random factor
   whichRandom = "Subject",
+  # method = "laplace", # for large sample sizes
   data = Alcohol_data
 )
 BF_alcohol_theta
+# see ?anovaBF for how to set different priors
 
 # We need to find a way to compare models in a way that provieds information
 # about specific terms.
@@ -100,6 +102,7 @@ BF_type3 <- generalTestBF(
   ersp ~ Correctness * (Alcohol + Subject),
   whichRandom = c("Subject","Correctness:Subject"),
   whichModels = "top",
+  # method = "laplace", # for large sample sizes
   data = Alcohol_data
 )
 BF_type3
