@@ -167,7 +167,7 @@ afex_plot(fit,  ~ angle,  ~ noise)
 
 library(ggplot2)
 ems <- emmeans(fit,  ~ noise + angle) %>%
-  confint()
+  summary()
 
 # basic plot
 p1 <- ggplot(ems, aes(angle, emmean, fill = noise, group = noise)) +
