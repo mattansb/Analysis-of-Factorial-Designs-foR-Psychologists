@@ -2,8 +2,10 @@ library(dplyr)
 library(afex)
 library(emmeans)
 
-# let's look at the coffee_plot.png and get a feel for the data.
-# What effects (and interactions) does it look like we have here?
+# let's look at the coffee_plot.png and get a feel for our data.
+#
+# What marginal (main) effects and interactions does it look like we have here?
+# What conditional (simple) effects does it look like we have here?
 
 coffee_data <- read.csv('coffee.csv') %>%
   mutate(time = factor(time,levels = c('morning','noon','afternoon')))
@@ -11,11 +13,12 @@ head(coffee_data)
 
 
 
+
 # Correcting for sphericity -----------------------------------------------
 
 # As discussed in Designing Experiments and Analyzing Data (pp. 627; course
-# book), sphericity is one of the assumptions of within-subject ANOVA.
-# There are several solutions that do not require this assumption:
+# book), sphericity is one of the assumptions of within-subject ANOVA. There are
+# several solutions that do not require this assumption:
 # 1. For the ANOVA model, the Greenhouse-Geisser (GG) correction
 #    (pp. 630; afex's defult).
 # 2. For follow-up analysis, a multivariate solution (pp. 728;
@@ -44,15 +47,19 @@ afex_plot(coffee_fit, ~ time, ~ coffee, ~sex)
 
 # Simple effects / interactions -------------------------------------------
 
-joint_tests(coffee_fit, by = 'sex') # simple effects / interactions
+# conditional (simple) effects / interactions
+joint_tests(coffee_fit, by = 'sex') # conditional by "by"
 
 
-joint_tests(coffee_fit, by = c('sex','time')) # simple-simple effects (etc)
+joint_tests(coffee_fit, by = c('sex','time'))
+# these effects are conditional by two variables, so they simple-simple effects.
 
 
 
 
 # Estimating means (+plot) ------------------------------------------------
+# For each of these, tell me what (margianl / conditional) effects or
+# interactions can we see.
 
 emmeans(coffee_fit, ~ sex)
 emmip(coffee_fit, ~ sex, CIs = TRUE)
@@ -65,6 +72,9 @@ emmip(coffee_fit, coffee ~ time, CIs = TRUE)
 
 emmeans(coffee_fit, ~ coffee + time + sex)
 emmip(coffee_fit, coffee ~ time | sex, CIs = TRUE)
+
+
+
 
 # Contrasts ---------------------------------------------------------------
 
@@ -81,7 +91,7 @@ contrast(em_time, method = "poly") # is this surprising?
 
 
 ?`contrast-methods` # for more out-of-the-box methods
-
+# In a few lessons we will see how to define specific contrasts of interest.
 
 # for confidence intervals for the estimated contrast:
 c_time <- contrast(em_time, method = "pairwise")
@@ -100,6 +110,7 @@ c_time_simple <- contrast(em_time_coffee, method = "poly", by = "coffee")
 coef(c_time_simple)
 
 
+
 # Exercise ----------------------------------------------------------------
 
 
@@ -108,14 +119,18 @@ data(C8E15)
 
 head(C8E15)
 # The data:
-# Mothers (Parent==1) of four girls (Child==1) and of four boys (Child==2)
-# at each of three ages (7, 10, and 13 months) were observed and recorded
-# during toy-play interactions with their infants. An equal number of
-# fathers (Parent==2) from different families were also observed. The
-# dependent variable to be considered here was the proportion of time
-# parents encouraged pretend play in their children.
+# Mothers (Parent==1) of four girls (Child==1) and of four boys (Child==2) at
+# each of three ages (7, 10, and 13 months) were observed and recorded during
+# toy-play interactions with their infants. An equal number of fathers
+# (Parent==2) from different families were also observed. The dependent variable
+# to be considered here was the proportion of time parents encouraged pretend
+# play in their children.
+#
+# * Note that there are better ways to model proportions! We will talk about
+#   these later in the course.
 
-# 1. conduct a 3-way anova
+
+# 1. Conduct a 3-way anova
 # 2. Plot the 3-way interaction plot.
 # 3. Conduct follow-up analysis on a significant 2-way interaction.
 #    Explain your results.

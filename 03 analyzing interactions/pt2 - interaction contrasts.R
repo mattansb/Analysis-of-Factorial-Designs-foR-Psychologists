@@ -1,7 +1,6 @@
 library(dplyr)
 library(afex)
 library(emmeans)
-library(ggplot2)
 
 # Back to our coffee data
 
@@ -21,14 +20,18 @@ afex_options(correction_aov = 'GG',
 
 
 coffee_fit <- aov_ez('ID','alertness',coffee_data,
-                     within = c('time','coffee'), between = 'sex')
+                     within = c('time','coffee'),
+                     between = 'sex')
 
 
 afex_plot(coffee_fit, ~ time, ~ coffee, ~sex)
 
 
 coffee_fit
-# Today we will try to see why there is not 3-way interaction
+# Today we will try to see why there is no 3-way interaction...
+
+
+
 
 
 # 2-way interaction -------------------------------------------------------
@@ -36,7 +39,8 @@ coffee_fit
 # we will be looking at the time-by-coffee interaction:
 
 ## simple effects
-joint_tests(coffee_fit, by = "coffee") # looking at effect for time
+# looking at the simple effect for time, conditional by the levels of coffee.
+joint_tests(coffee_fit, by = "coffee")
 
 
 ## estimate means
@@ -67,8 +71,9 @@ contrast(em_time_coffee,
 
 ## simple interactions
 joint_tests(coffee_fit, by = "time")
-joint_tests(coffee_fit, by = c("sex", "time"))
 
+## simple-simple effects
+joint_tests(coffee_fit, by = c("sex", "time"))
 
 
 ## estimate means
@@ -78,14 +83,16 @@ em_3way
 emmip(em_3way, coffee ~ time | sex, CIs = TRUE)
 
 
-## Looking at simple-simple effects
-contrast(em_3way, method = "pairwise", by = c("sex", "time"))
+## Looking at the simple-simple effect effect for "coffee"
+contrast(em_3way, method = "pairwise",
+         by = c("sex", "time"))
 
 
 
 
 ## Looking at simple-interaction contrasts
-contrast(em_3way, by = "time",
+contrast(em_3way,
+         by = "time",
          interaction = list(coffee = "pairwise", sex = "pairwise"))
 # what does this mean?
 # how might this explaine the no-3-way interaction?
@@ -93,20 +100,13 @@ contrast(em_3way, by = "time",
 
 
 
-## 3-way interaction contrasts
-contrast(em_3way, interaction = list(coffee = "pairwise",
-                                     sex = "pairwise",
-                                     time = "consec"))
-
-
-
 
 # Plotting contrasts ------------------------------------------------------
 
-# Sometime we don't care about the means per-se, and we want to visualize
-# how some contrast is different as a function of some other factor.
-# e.g., in stroop tasks we might want to show how the interference effect
-# (on Y) differs by group.
+# Sometime we don't care about the means per-se, and we want to visualize how
+# some contrast is different as a function of some other factor. e.g., in stroop
+# tasks we might want to show how the interference effect (on Y) differs by
+# group.
 
 
 # 1. Means (on Y) by time and coffee
@@ -118,7 +118,7 @@ emmip(coffee_fit, coffee ~ time, CIs = TRUE)
 emmeans(coffee_fit, ~ coffee + time) %>%
   contrast(method = "pairwise", by = "time") %>%
   emmip( ~ time, CIs = TRUE) +
-  geom_hline(yintercept = 0)
+  ggplot2::geom_hline(yintercept = 0)
 
 
 # Removable interactions --------------------------------------------------
@@ -126,17 +126,17 @@ emmeans(coffee_fit, ~ coffee + time) %>%
 # Some interactions are removable - these are sometimes called ordinal
 # interactions.
 #
-# See "removable interactions.R" for how to deal with these.
+# See "pt3 - removable interactions.R" for how to deal with these.
 
 
 # Exercise ----------------------------------------------------------------
 
 # Explore of the other 2-way interactions.
 # - Simple effects
-# - Interaction contrasts
 # - Simple effect contrasts
+# - Interaction contrasts
 # - Plots
-# interpret your results along the way
+# Interpret your results along the way...
 
 
 # HM ----------------------------------------------------------------------
