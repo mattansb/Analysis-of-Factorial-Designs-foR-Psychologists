@@ -20,9 +20,9 @@ head(coffee_data)
 # book), sphericity is one of the assumptions of within-subject ANOVA. There are
 # several solutions that do not require this assumption:
 # 1. For the ANOVA model, the Greenhouse-Geisser (GG) correction
-#    (pp. 630; afex's defult).
+#    (pp. 630; afex's default).
 # 2. For follow-up analysis, a multivariate solution (pp. 728;
-#    not afex's  defult).
+#    not afex's  default).
 
 afex_options(
   correction_aov = 'GG', # or 'none' for SPSS/statistica equvilant results
@@ -56,7 +56,6 @@ joint_tests(coffee_fit, by = c('sex','time'))
 
 
 
-
 # Estimating means (+plot) ------------------------------------------------
 # For each of these, tell me what (margianl / conditional) effects or
 # interactions can we see.
@@ -80,7 +79,7 @@ emmip(coffee_fit, coffee ~ time | sex, CIs = TRUE)
 
 # For contrasts we need:
 # 1. The estimated means
-# 2. The contrst method.
+# 2. The contrast method.
 
 
 ## For main effects:
