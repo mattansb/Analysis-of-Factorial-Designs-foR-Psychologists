@@ -1,7 +1,7 @@
 library(afex)
 library(emmeans)
 library(effectsize) # for the effect size functions
-library(dplyr) # for `mutate()` (need version 1.0.0+)
+library(dplyr) # for `mutate()` (need version > 1.0.0)
 
 afex_options(es_aov = 'pes',
              correction_aov = 'GG',
@@ -32,11 +32,12 @@ afex_plot(treatment_aov, ~ phase, ~ treatment)
 
 
 
+
 # (Partial) Percent Variance Explained ------------------------------------
 
 # These are S/N effect sizes.
 # Let's look at the main effect for treatment:
-F_to_eta2(2.91, 2, 13)
+F_to_eta2(f = 2.91, df = 2, df_error = 13)
 # compare to:
 treatment_aov
 # Seems identical! (+ we get CIs!)
@@ -46,9 +47,9 @@ treatment_aov
 # (Epsilon is akin to adjusted R^2):
 F_to_omega2(2.91, 2, 13)
 F_to_epsilon2(2.91, 2, 13)
-# Note that these CAN BE negative; even though this doesn't make any
-# practical sense, it is recommended to report the negative number
-# and not a 0.
+# Note that these CAN BE negative; even though this doesn't make any practical
+# sense, it is recommended to report the negative value and not a 0.
+
 
 # Also Cohen's f - which is ~Cohen's d for more than 2 means:
 F_to_f(2.91, 2, 13)
