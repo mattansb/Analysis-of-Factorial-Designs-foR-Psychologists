@@ -200,7 +200,7 @@ $$
 in `R` this can be done with:
 
 ```{r, eval=FALSE}
-effectsize::t_to_d(pooled = TRUE)
+effectsize::t_to_d(paired = TRUE)
 ```
 
 <sub>Formula for within-subjects design from Rosenthal, R. (1991).Meta-analytic procedures for social research. Newbury Park, CA: SAGE Publications, Incorporated.</sub>  

@@ -3142,7 +3142,7 @@ slide:not(.current) .plotly.html-widget{
 F = \frac{SS_{effect} / df_1}{SS_{error} / df2}
 \]</p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-2" class="smaller">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-2">
 
 <p>\(\eta^2_p\) can be approximated by:</p>
 
@@ -3175,7 +3175,7 @@ effectsize::t_to_eta2()</pre>
 F = \frac{SS_{effect} / df_1}{SS_{error} / df2}
 \]</p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-3" class="smaller">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-3">
 
 <p>\(\hat{\eta}^2_P=\epsilon^2_p\) can be approximated by:</p>
 
@@ -3208,7 +3208,7 @@ effectsize::t_to_eta2_adj()</pre>
 F = \frac{SS_{effect} / df_1}{SS_{error} / df2}
 \]</p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-4" class="smaller">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-4">
 
 <p>\(\omega^2_p\) can be approximated by:</p>
 
@@ -3266,7 +3266,7 @@ effectsize::t_to_f()</pre>
 t_{contrast} = \sqrt{\frac{SS_{contrast}}{MSE}}
 \]</p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-6" class="smaller">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-6">
 
 <p>Then it is possible to prove that in a <strong>between-subjects design</strong>, <em>Cohen’s d</em> can be approximated by:</p>
 
@@ -3280,7 +3280,7 @@ t_{contrast} = \sqrt{\frac{SS_{contrast}}{MSE}}
 
 <p><sub>Formula for between-subjects design from Wolf, F. M. (1986). Meta-analysis: Quantitative methods for research synthesis (Vol. 59). Sage. Chapter 3 tables 8-9 page 35</sub></p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-7" class="smaller">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-7">
 
 <p>… and it is possible to prove that in a <strong>within-subjects design</strong>, <em>Cohen’s d</em> can be approximated by:</p>
 
@@ -3290,7 +3290,7 @@ t_{contrast} = \sqrt{\frac{SS_{contrast}}{MSE}}
 
 <p>in <code>R</code> this can be done with:</p>
 
-<pre class = 'prettyprint lang-r'>effectsize::t_to_d(pooled = TRUE)</pre>
+<pre class = 'prettyprint lang-r'>effectsize::t_to_d(paired = TRUE)</pre>
 
 <p><sub>Formula for within-subjects design from Rosenthal, R. (1991).Meta-analytic procedures for social research. Newbury Park, CA: SAGE Publications, Incorporated.</sub></p>
 
@@ -3314,7 +3314,7 @@ t_{contrast} = \sqrt{\frac{SS_{contrast}}{MSE}}
 F_{effect} = \frac{SS_{effect} / df_1}{MSE}
 \]</p>
 
-</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  id="section-9" class="smaller">
+</article></slide><slide class=""><hgroup><h2></h2></hgroup><article  class="smaller" id="section-9">
 
 <p>Then \(r^2_{alerting}\) can be approximated by:</p>
 
