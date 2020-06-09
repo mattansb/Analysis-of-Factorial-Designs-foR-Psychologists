@@ -88,7 +88,7 @@ You will need:
 
 ```{r, echo=FALSE}
 r_list <- list.files(pattern = ".(R|r)$", recursive = TRUE, full.names = TRUE) %>% 
-  .[!stringr::str_detect(., pattern = "(SOLUTION|logo)")]
+  .[!stringr::str_detect(., pattern = "(solutions|logo)")]
 
 lesson_names <- stringr::str_extract(r_list, pattern = "(?<=(/)).{1,}(?=(/))")
 

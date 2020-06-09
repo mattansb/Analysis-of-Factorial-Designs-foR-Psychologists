@@ -3,7 +3,7 @@
 
 # Analysis of Factorial Designs foR Psychologists
 
-<sub>*Last updated 2020-05-07.*</sub>
+<sub>*Last updated 2020-06-09.*</sub>
 
 This Github repo contains all lesson files used in the graduate-level
 course: *Analysis of Factorial Designs foR Psychologists - Practical
@@ -67,11 +67,9 @@ You can install all the packages used by running:
 
 The package versions used here:
 
-    ##          afex          AMCP   BayesFactor    bayestestR           car 
-    ##      "0.27-2"       "1.0.0"  "0.9.12-4.2"     "0.6.0.1"       "3.0-7" 
-    ##         dplyr    effectsize       emmeans    ggbeeswarm       ggplot2 
-    ## "0.8.99.9002"     "0.3.0.1"       "1.4.5"       "0.6.0"       "3.3.0" 
-    ##      lmerTest     patchwork       permuco       qqplotr           see 
-    ##       "3.1-2"       "1.0.0"       "1.1.0"       "0.0.4"       "0.5.0" 
-    ##         tidyr 
-    ##       "1.0.2"
+    ##         afex         AMCP  BayesFactor   bayestestR          car        dplyr 
+    ##     "0.27-2"      "1.0.0" "0.9.12-4.2"    "0.6.0.1"      "3.0-8"      "1.0.0" 
+    ##   effectsize      emmeans   ggbeeswarm      ggplot2     lmerTest    patchwork 
+    ##    "0.3.1.1"      "1.4.7"      "0.6.0"      "3.3.1"      "3.1-2"      "1.0.0" 
+    ##      permuco      qqplotr          see        tidyr 
+    ##      "1.1.0"      "0.0.4"    "0.5.0.1"      "1.1.0"
