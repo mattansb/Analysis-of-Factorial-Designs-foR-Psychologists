@@ -29,6 +29,7 @@ fit
 # Plot --------------------------------------------------------------------
 
 afex_plot(fit, ~ Condition, ~ Phobia, ~ Gender)
+
 emmip(fit, Phobia ~ Condition | Gender, CIs = TRUE)
 
 
@@ -58,8 +59,8 @@ c_Condition
 
 # Adjust p-value ----------------------------------------------------------
 
-# How do these ajustment methods change the conclusion?
-update(c_Condition, adjust = "none")        # No adjusments
+# How do these adjustment methods change the conclusion?
+update(c_Condition, adjust = "none")        # No adjustments
 update(c_Condition, adjust = "tukey")       # ONLY works with pairwise
 update(c_Condition, adjust = "bonferroni")  # Popular
 update(c_Condition, adjust = "fdr")         # Use when many many contrasts
@@ -76,6 +77,17 @@ rbind(c_Condition, c_Gender, c_Phobia, adjust = "fdr")
 # What about {Implosion - CBT}?
 
 
+
+# Adjust p-values not from `emmeans` --------------------------------------
+
+# Under the hood, `emmeans` uses the `p.adjust()` function, that can be used for
+# adjusting any vector of p-values, using several methods:
+
+ps <- c(0.3327, 0.0184, 0.1283, 0.0004,
+        0.2869, 0.1815, 0.1593, 0.0938, 0.0111)
+
+p.adjust(ps, method = "bonferroni")
+p.adjust(ps, method = "fdr")
 
 
 # HW ----------------------------------------------------------------------
