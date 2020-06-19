@@ -1,8 +1,10 @@
 library(afex)
-
+# library(qqplotr) # also needed
 
 # Fit the ANOVA model
 data(obk.long, package = "afex")
+head(obk.long)
+
 fit <- aov_ez('id', 'value', obk.long,
               between = c('treatment', 'gender'),
               within = c('phase', 'hour'))
@@ -19,13 +21,12 @@ test_sphericity(fit)
 
 
 ## Test normality of residuals
-source("residuals_qqplot.R")
-# Load the function needed for plotting residuals:
-#   - residuals.afex_aov - for getting the residuals from the model.
-#   - residuals_qqplot - for plotting the qq plots right.
-
-residuals_qqplot(fit)
-residuals_qqplot(fit, by_term = TRUE) # what are we looking for here?
-residuals_qqplot(fit, by_term = TRUE, model = "multi") # what are we looking for HERE?
+qqnorm(fit)
+qqnorm(fit, detrend = TRUE)
+qqnorm(fit, type = "univariate") # what are we looking for here?
+qqnorm(fit, type = "multivariate") # and what are we looking for HERE?
 
 
+ggResidpanel::resid_auxpanel(residuals = residuals(fit),
+                             predicted = fitted(fit),
+                             qqbands = TRUE)
