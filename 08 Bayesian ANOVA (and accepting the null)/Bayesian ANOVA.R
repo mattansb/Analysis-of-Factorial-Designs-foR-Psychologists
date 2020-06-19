@@ -26,8 +26,8 @@ fit_alcohol_theta <- aov_ez('Subject','ersp',Alcohol_data,
 fit_alcohol_theta
 
 afex_plot(fit_alcohol_theta,  ~ Alcohol,  ~ Correctness)
-# Looks like no interaction. But we can't infer that based on
-# frequentist methods...
+# Looks like no interaction. But we can't infer that based on frequentist
+# methods...
 
 
 
@@ -52,19 +52,19 @@ BF_alcohol_theta <- anovaBF(
 BF_alcohol_theta
 # see ?anovaBF for how to set different priors
 
-# We need to find a way to compare models in a way that provieds information
+# We need to find a way to compare models in a way that provides information
 # about specific terms.
 # There are 2 ways to do this:
 
 ## 1. Compare any 2 models of choice:
 BF_alcohol_theta[3] / BF_alcohol_theta[4] # What does this mean?
-
+BF_alcohol_theta[4] / BF_alcohol_theta[3]
 
 
 ## 2. Use Bayes model averaging to get an "average" Bayes factor:
 bayesfactor_inclusion(BF_alcohol_theta) # What do THESE mean?
 bayesfactor_inclusion(BF_alcohol_theta, match_models = TRUE) # and THESE?
-
+?bayesfactor_inclusion
 # # If you have any priors (default: equal prior odds for all models)
 # bayesfactor_inclusion(BF_alcohol_theta, prior_odds = )
 
@@ -73,15 +73,15 @@ bayesfactor_inclusion(BF_alcohol_theta, match_models = TRUE) # and THESE?
 
 # Type 3 Bayes factors ----------------------------------------------------
 
-# The BFs above do not have a 1:1 correspondance with the classic statistical
-# tests (with typr-3 SS). This is for 2 reasons:
+# The BFs above do not have a 1:1 correspondence with the classic statistical
+# tests (with type-3 SS). This is for 2 reasons:
 #   1. Classic (type-3 SS) tests essentially test each term by comparing the
 #     full model to a model without that term.
-#   2. For repeated-measures designs `anovaBF()` does not account for indevidual
+#   2. For repeated-measures designs `anovaBF()` does not account for individual
 #     differences in effects (the so called subject-by-effect interaction).
 # Not everyone agrees this is a bad thing...
 #
-# But if YOU decide that you want BFs that truly corresponde to the classic
+# But if YOU decide that you want BFs that truly correspond to the classic
 # tests, you need to:
 #   1. Use the Leave-out-one-term method.
 #   2. Include all random effects in our model (and in `whichRandom`).
