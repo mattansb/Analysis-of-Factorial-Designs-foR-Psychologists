@@ -2,15 +2,15 @@
 library(afex)
 library(emmeans)
 
-# In this lesson, we will be examining different ways of analysing measures that
+# In this lesson, we will be examining different ways of analyzing measures that
 # are categorical by nature.
 # In psychology, one such measure is accuracy - when measured on a single trial,
 # it can only have two values: success or failure. These are usually coded as a
 # 1 or a 0 (but they could just as easily be coded as -0.9 and +34), and then
-# aggragated for each subject and condition by averaging all the 0's and 1's.
+# aggregated for each subject and condition by averaging all the 0's and 1's.
 # The result is a number ranging between 0-1, representing the mean accuracy for
 # that subject/condition.
-# As this is a number, it seems only natural to analyze this dependant variable
+# As this is a number, it seems only natural to analyze this dependent variable
 # using ANOVAs. So let's see what that looks like.
 
 
@@ -76,6 +76,8 @@ emmip(fit_anova, condition ~ congruency, CIs = TRUE)
 afex_plot(fit_anova, ~ congruency, ~ condition)
 
 
+emmeans(fit_anova, ~ condition | congruency)
+
 
 
 
@@ -84,13 +86,13 @@ afex_plot(fit_anova, ~ congruency, ~ condition)
 # It can be argued they are not!
 # For example: is a change from 50% to 51% the same as a change from 98% to 99%?
 #
-# We might even remeber that we learned at some point that binary variables have
-# a binomial sampling distribution. We can see this in the plots - as the mean
-# accuracy is higher, the variance around it is smaller!
+# We might even remember that we learned at some point that binary variables
+# have a binomial sampling distribution. We can see this in the plots - as the
+# mean accuracy is higher, the variance around it is smaller!
 #
 # Perhaps then, what we need is some type of logistic regression? A "repeated
 # measures" logistic regression?
-# We can do just that with generelized linear mixed models (GLMMs)!
+# We can do just that with generalized linear mixed models (GLMMs)!
 
 
 # Suggested reading
@@ -102,7 +104,7 @@ afex_plot(fit_anova, ~ congruency, ~ condition)
 
 
 
-# Anlayzing within GLMM ---------------------------------------------------
+# Analyzing within GLMM ---------------------------------------------------
 
 
 # The syntax of a linear mixed model looks like this:
@@ -131,7 +133,7 @@ acc ~ congruency * condition + (congruency * condition | id)
 
 
 
-# This can take sevral minutes...
+# This can take several minutes...
 fit_glmm <- mixed(
   acc ~ congruency * condition + (congruency * condition | id), 
   data = stroop_e1, 
@@ -198,7 +200,7 @@ emmeans(fit_glmm, ~ condition + congruency)
 
 
 # If we want them on the response scale:
-em_int <- emmeans(fit_glmm, ~ condition + congruency, type = "resp")
+em_int <- emmeans(fit_glmm, ~ condition + congruency, type = "response")
 em_int
 #>  condition congruency    prob       SE  df asymp.LCL asymp.UCL
 #>  control   congruent   0.9847 0.001103 Inf    0.9824    0.9867
