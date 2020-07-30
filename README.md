@@ -3,7 +3,11 @@
 
 # Analysis of Factorial Designs foR Psychologists
 
-<sub>*Last updated 2020-06-22.*</sub>
+[![](https://img.shields.io/badge/Open%20Educational%20Resources-Compatable-brightgreen)](https://creativecommons.org/about/program-areas/education-oer/)
+[![](https://img.shields.io/badge/CC-BY--NC--SA%204.0-lightgray)](http://creativecommons.org/licenses/by-nc-sa/4.0/)  
+[![](https://img.shields.io/badge/Language-R-blue)](http://cran.r-project.org/)
+
+<sub>*Last updated 2020-07-30.*</sub>
 
 This Github repo contains all lesson files used in the graduate-level
 course: *Analysis of Factorial Designs foR Psychologists - Practical
@@ -37,7 +41,7 @@ You will need:
 
 1.  A fresh installation of [**`R`**](https://cran.r-project.org/)
     (preferably version 3.6 or above).
-2.  [RStudio IDE](https://www.rstudio.com/products/rstudio/download/) 
+2.  [RStudio IDE](https://www.rstudio.com/products/rstudio/download/)
     (optional, but recommended).
 3.  The following packages, listed by lesson:
 
@@ -68,8 +72,8 @@ You can install all the packages used by running:
 The package versions used here:
 
     ##         afex         AMCP  BayesFactor   bayestestR          car        dplyr 
-    ##       "0.28"      "1.0.0" "0.9.12-4.2"    "0.6.0.1"      "3.0-8"      "1.0.0" 
+    ##     "0.27-2"      "1.0.0" "0.9.12-4.2"      "0.7.2"      "3.0-8"      "1.0.0" 
     ##   effectsize      emmeans   ggbeeswarm      ggplot2 ggResidpanel    patchwork 
-    ##    "0.3.1.1"      "1.4.7"      "0.6.0"      "3.3.1"      "0.3.0"      "1.0.0" 
+    ##      "0.3.2"      "1.4.8"      "0.6.0"      "3.3.2"      "0.3.0"      "1.0.1" 
     ##      permuco      qqplotr          see        tidyr 
-    ##      "1.1.0"      "0.0.4"    "0.5.0.1"      "1.1.0"
+    ##      "1.1.0"      "0.0.4"      "0.5.2"      "1.1.0"

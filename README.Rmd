@@ -6,12 +6,17 @@ output: github_document
 
 ```{r setup, include=FALSE}
 library(knitr)
-opts_chunk$set(echo = TRUE)
-`%>%` <- dplyr::`%>%`
 
+opts_chunk$set(echo = TRUE)
+
+`%>%` <- dplyr::`%>%`
 ```
 
 # Analysis of Factorial Designs foR Psychologists
+
+[![](https://img.shields.io/badge/Open%20Educational%20Resources-Compatable-brightgreen)](https://creativecommons.org/about/program-areas/education-oer/)
+[![](https://img.shields.io/badge/CC-BY--NC--SA%204.0-lightgray)](http://creativecommons.org/licenses/by-nc-sa/4.0/)  
+[![](https://img.shields.io/badge/Language-R-blue)](http://cran.r-project.org/)
 
 <sub>*Last updated `r Sys.Date()`.*</sub>
 
