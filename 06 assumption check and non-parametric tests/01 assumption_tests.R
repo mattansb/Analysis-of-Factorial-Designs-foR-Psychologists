@@ -21,6 +21,7 @@ test_sphericity(fit)
 
 
 ## Test normality of residuals
+source("qqnorm.afex_aov.R")
 qqnorm(fit)
 qqnorm(fit, detrend = TRUE)
 qqnorm(fit, type = "univariate") # what are we looking for here?
@@ -30,3 +31,5 @@ qqnorm(fit, type = "multivariate") # and what are we looking for HERE?
 ggResidpanel::resid_auxpanel(residuals = residuals(fit),
                              predicted = fitted(fit),
                              qqbands = TRUE)
+
+

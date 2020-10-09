@@ -1,3 +1,4 @@
+
 library(afex)
 library(emmeans)
 library(effectsize) # for the effect size functions
@@ -33,39 +34,37 @@ afex_plot(treatment_aov, ~ phase, ~ treatment)
 
 
 
-# (Partial) Percent Variance Explained ------------------------------------
 
-# These are S/N effect sizes.
-# Let's look at the main effect for treatment:
-F_to_eta2(f = 2.91, df = 2, df_error = 13)
-# compare to:
-treatment_aov
-# Seems identical! (+ we get CIs!)
+# 1. Effect size for ANOVA table ------------------------------------------
 
+# We can use the various functions from `effectsize`, which also return
+# confidence intervals, such as the various Eta-squares:
+eta_squared(treatment_aov)
+eta_squared(treatment_aov, partial = FALSE)
+eta_squared(treatment_aov, generalized = TRUE)
 
-# we can also get Partial Omega and Epsilon
-# (Epsilon is akin to adjusted R^2):
-F_to_omega2(2.91, 2, 13)
-F_to_epsilon2(2.91, 2, 13)
+# But also the Omega and Epsilon Squared:
+omega_squared(treatment_aov)
+epsilon_squared(treatment_aov)
 # Note that these CAN BE negative; even though this doesn't make any practical
 # sense, it is recommended to report the negative value and not a 0.
 
 
-# Also Cohen's f - which is ~Cohen's d for more than 2 means:
-F_to_f(2.91, 2, 13)
 
-# # We can also directly use the model object:
-# eta_squared(treatment_aov)
-# omega_squared(treatment_aov)
-# epsilon_squared(treatment_aov)
-# cohens_f(treatment_aov)
+# Read more about these here:
+# https://easystats.github.io/effectsize/articles/anovaES.html
 
 
 
+
+# 2. Effect size for simple effects ---------------------------------------
+
+# The effect sizes above use the effect's sums-of-squares (SSs). But these are not always 
+# readily available. In such cases we can use shortcuts, based on tests statistics.
 
 
 ## For simple effects
-jt_treatment <- joint_tests(treatment_aov, by = "treatment")
+(jt_treatment <- joint_tests(treatment_aov, by = "treatment"))
 F_to_eta2(jt_treatment$F.ratio, jt_treatment$df1, jt_treatment$df2)
 
 
@@ -74,15 +73,19 @@ joint_tests(treatment_aov, by = "treatment") %>%
   mutate(F_to_eta2(F.ratio, df1, df2))
 
 
+# Here too we can use
+# F_to_epsilon2()
+# F_to_omega2()
+# etc...
 
 
 
 
 
+# 3. For contrasts --------------------------------------------------------
 
 
-
-## For contrasts
+### Eta and friends:
 em_phase <- emmeans(treatment_aov, ~ phase)
 c_phase <- contrast(em_phase, method = "pairwise")
 c_phase <- summary(c_phase)
@@ -98,9 +101,8 @@ emmeans(treatment_aov, ~ phase) %>%
 
 
 
-# Cohen's d ---------------------------------------------------------------
 
-## Between subjects effects:
+### Cohen's d - Between subjects effects:
 emmeans(treatment_aov, ~ treatment) %>%
   contrast(method = "pairwise") %>%
   summary() %>%
@@ -110,19 +112,14 @@ emmeans(treatment_aov, ~ treatment) %>%
 
 
 
-
-
-## Within subjects effects:
+### Cohen's d - Within subjects effects:
 emmeans(treatment_aov, ~ phase) %>%
   contrast(method = "pairwise") %>%
   summary() %>%
   mutate(t_to_d(t.ratio, df, paired = TRUE))
 
 
-
-
-# r2 alerting -------------------------------------------------------------
-
-## try at home...?
+### r2 alerting
+# try at home...?
 
 

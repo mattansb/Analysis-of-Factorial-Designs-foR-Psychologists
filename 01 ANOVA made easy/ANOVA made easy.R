@@ -44,40 +44,6 @@ head(long_angle_noise)
 
 # 2-Way anova -------------------------------------------------------------
 
-# At first you might think that it's easy to run ANOVAs in R. After all,
-# regressions are easy! And it sure looks like it...
-
-
-## Between subjects
-fit_between <- aov(rt ~ angle * noise,
-                   data = long_angle_noise)
-summary(fit_between)
-
-
-
-
-
-
-## Within subjects
-fit_within <- aov(rt ~ angle * noise + Error(id / (angle * noise)),
-                  data = long_angle_noise)
-summary(fit_within)
-
-# But... As it turns out, AVOVAs are harder than you think. An both of the ANOVA
-# tables from the models above aren't showing us the results we want. And that
-# matters. A lot.
-
-# So...
-## --------------- ##
-## DON'T DO THIS ^ ##
-## --------------- ##
-
-
-
-
-# Fitting and testing ANOVAs CORRECTLY ------------------------------------
-
-
 # For proper ANOVA tables, we need two things:
 # 1. effects coding for factors ("centering" factors)
 # 2. type 3 errors.*
@@ -85,24 +51,17 @@ summary(fit_within)
 #
 # If you have no idea what I'm even talking about, that's okay - you don't need
 # to - just remember that without these, ANOVA tables will be very misleading -
-# Especially when you have unbalanced data. (This is true of any anova-table, in
+# especially when you have unbalanced data. (This is true of any anova-table, in
 # GLM, LMM, GLMM, etc...)
 #
-# So how can we do this? Well... it's not that easy...
+# So Although R has a built-in function for conducting ANOVAs - `aov()` - you
+# should NOT USE IT as it will not give you the results you want! Instead you
+# should use the `afex` package.
 #
-# Unless you use `afex`!
-
-
-
-
-# * Read more about type 1, 2 & 3 errors:
+# Read more about why this matters so much here:
+# https://easystats.github.io/effectsize/articles/anovaES.html
 # http://md.psych.bio.uni-goettingen.de/mv/unit/lm_cat/lm_cat_unbal_ss_explained.html)
 
-
-
-
-
-# ANOVA made easy ---------------------------------------------------------
 
 library(afex)
 
@@ -141,6 +100,9 @@ emmeans(fit, ~ angle + noise)
 
 # NOTE: these can be different from the raw means in the data - these are
 # estimates! And that is OKAY!
+
+
+
 
 # Plot the data -----------------------------------------------------------
 

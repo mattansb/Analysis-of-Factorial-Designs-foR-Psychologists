@@ -1,3 +1,4 @@
+
 library(afex)
 
 afex_options(es_aov = 'pes',
@@ -10,6 +11,8 @@ afex_options(es_aov = 'pes',
 # case, a tidy data-frame)
 Alcohol_data <- readRDS("Alcohol_data.rds")
 head(Alcohol_data)
+
+
 
 # Fit ANOVA model ---------------------------------------------------------
 

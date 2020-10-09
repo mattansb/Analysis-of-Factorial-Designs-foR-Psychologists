@@ -42,13 +42,12 @@ BF_alcohol_theta
 # Method 1 - choose your model --------------------------------------------
 
 ## 1. extract posterior samples
-#If we want the full model (index = 4), we can:
-full_mod_posterior <- posterior(BF_alcohol_theta, index = 4,
-                                iterations = 4000)
-full_mod_posterior <- data.frame(full_mod_posterior)
+#If we want the full model (model number 4), we can:
+full_mod_posterior <- insight::get_parameters(BF_alcohol_theta[4])
 head(full_mod_posterior)
 # a mess - we have the random effect here too, and a bunch of other stuff (such
-# as mu, sig2, g...).
+# as mu, sig2, g...). Let's at least make the names reasonable:
+colnames(full_mod_posterior) <- make.names(colnames(full_mod_posterior))
 
 
 
@@ -90,7 +89,7 @@ describe_posterior(contrasts_posteriors$Contrast, test = NULL)
 
 
 
-# Method 2 - model averageing (across models) -----------------------------
+# Method 2 - model averaging (across models) -----------------------------
 
 # But why are we assuming that the full model is the correct one? There ARE
 # other models - some are more supported by the data than the full model!!

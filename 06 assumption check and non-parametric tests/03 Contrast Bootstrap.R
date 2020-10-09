@@ -12,15 +12,16 @@ library(car) # for Boot
 # robust estimation and hypothesis testing (pp. 115-118). Academic press.
 
 
-# MUST do this!
-options(contrasts = c('contr.sum', 'contr.poly'))
-
 data(obk.long, package = "afex")
 
 # Between Subject Models --------------------------------------------------
 
 ## 1. Fit regular anova with `aov`
-fit_between <- aov(value ~ treatment * gender, data = obk.long)
+fit_between <- aov(value ~ treatment * gender,
+                   data = obk.long,
+                   # MUST do this!
+                   contrasts = list(treatment = "contr.sum",
+                                    gender = "contr.sum"))
 
 
 
