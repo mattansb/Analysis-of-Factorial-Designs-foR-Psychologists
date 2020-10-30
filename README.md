@@ -1,5 +1,5 @@
 
-<img src='logo/BGUHex.png' align="right" height="139" />
+<img src='logo/Hex.png' align="right" height="139" />
 
 # Analysis of Factorial Designs foR Psychologists
 
@@ -7,25 +7,25 @@
 [![](https://img.shields.io/badge/CC-BY--NC%204.0-lightgray)](http://creativecommons.org/licenses/by-nc/4.0/)  
 [![](https://img.shields.io/badge/Language-R-blue)](http://cran.r-project.org/)
 
-<sub>*Last updated 2020-10-09.*</sub>
+<sub>*Last updated 2020-10-30.*</sub>
 
-This Github repo contains all lesson files used in the graduate-level
-course: *Analysis of Factorial Designs foR Psychologists - Practical
-Applications in R*, taught at Ben-Gurion University on the Negev (spring
-2019 semester). This course assumes basic competence in R (importing,
-regression modeling, plotting, etc.), along the lines of the
-prerequisite course, *Advanced Research Methods foR Psychologists*,
-which can be found
-[here](https://github.com/mattansb/Advanced-Research-Methods-foR-Psychologists).
+This Github repo contains all lesson files for *Analysis of Factorial
+Designs foR Psychologists*. The goal is to impart students with the
+basic tools to fit and evaluate **statistical models for factorial
+designs (w/ plots) using [`afex`](https://afex.singmann.science/)**, and
+and conduct **follow-up analyses (simple effects, planned contrasts,
+post-hoc test; w/ plots) using
+[`emmeans`](https://cran.r-project.org/package=emmeans)**. Although the
+focus is on ANOVAs, the materials regarding follow-up analyses (\~80% of
+the course) are applicable to linear mixed models, and even regression
+with factorial predictors.
 
-The goal is to impart students with the basic tools to fit and evaluate
-**statistical models for factorial designs (w/ plots) using
-[`afex`](https://afex.singmann.science/)**, and and conduct **follow-up
-analyses (simple effects, planned contrasts, post-hoc test; w/ plots)
-using [`emmeans`](https://cran.r-project.org/package=emmeans)**.
-Although the focus is on ANOVAs, the materials regarding follow-up
-analyses (\~80% of the course) are applicable to linear mixed models,
-and even regression with factorial predictors.
+These topics were taught in the graduate-level course ***Analyses of
+Variance*** (Psych Dep., Ben-Gurion University of the Negev, *Spring,
+2019*). This course assumes basic competence in R (importing, regression
+modeling, plotting, etc.), along the lines of [*Practical Applications
+in R for
+Psychologists*](https://github.com/mattansb/Practical-Applications-in-R-for-Psychologists).
 
 **Notes:**
 
@@ -77,15 +77,15 @@ here:
   - `afex` 0.28-0 (*CRAN*)
   - `AMCP` 1.0.1 (*CRAN*)
   - `BayesFactor` 0.9.12-4.2 (*CRAN*)
-  - `bayestestR` 0.7.2.1 (*Dev*)
+  - `bayestestR` 0.7.5 (*CRAN*)
   - `car` 3.0-10 (*CRAN*)
   - `dplyr` 1.0.2 (*CRAN*)
-  - `effectsize` 0.3.9.001 (*Dev*)
-  - `emmeans` 1.5.1 (*CRAN*)
+  - `effectsize` 0.4.0 (*Dev*)
+  - `emmeans` 1.5.2-1 (*CRAN*)
   - `ggbeeswarm` 0.6.0 (*CRAN*)
   - `ggplot2` 3.3.2 (*CRAN*)
   - `ggResidpanel` 0.3.0 (*CRAN*)
-  - `insight` 0.9.6.1 (*Dev*)
+  - `insight` 0.10.0 (*CRAN*)
   - `patchwork` 1.0.1 (*CRAN*)
   - `permuco` 1.1.0 (*CRAN*)
   - `qqplotr` 0.0.4 (*CRAN*)
