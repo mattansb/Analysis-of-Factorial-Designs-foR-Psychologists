@@ -67,6 +67,9 @@ library(afex)
 
 fit <- aov_ez(id = "id", dv = "rt",
               within = c("angle", "noise"),
+              ## When working with large within-subject datasets, this will
+              ## speed up the fitting considerably!
+              # include_aov = FALSE,
               data = long_angle_noise)
 fit
 
