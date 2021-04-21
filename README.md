@@ -7,7 +7,7 @@
 [![](https://img.shields.io/badge/CC-BY--NC%204.0-lightgray)](http://creativecommons.org/licenses/by-nc/4.0/)  
 [![](https://img.shields.io/badge/Language-R-blue)](http://cran.r-project.org/)
 
-<sub>*Last updated 2020-10-30.*</sub>
+<sub>*Last updated 2021-04-21.*</sub>
 
 This Github repo contains all lesson files for *Analysis of Factorial
 Designs foR Psychologists*. The goal is to impart students with the
@@ -29,10 +29,10 @@ Psychologists*](https://github.com/mattansb/Practical-Applications-in-R-for-Psyc
 
 **Notes:**
 
-  - This repo contains only materials relating to *Practical
+-   This repo contains only materials relating to *Practical
     Applications in R*, and does not contain any theoretical or
     introductory materials.  
-  - Please note that some code does not work *on purpose*, to force
+-   Please note that some code does not work *on purpose*, to force
     students to learn to debug.
 
 ## Setup
@@ -46,16 +46,16 @@ You will need:
 3.  The following packages, listed by lesson:
 
 | Lesson                                                                                                  | Packages                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|---------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [01 ANOVA made easy](/01%20ANOVA%20made%20easy)                                                         | [`tidyr`](https://CRAN.R-project.org/package=tidyr), [`afex`](https://CRAN.R-project.org/package=afex), [`emmeans`](https://CRAN.R-project.org/package=emmeans), [`ggplot2`](https://CRAN.R-project.org/package=ggplot2), [`ggbeeswarm`](https://CRAN.R-project.org/package=ggbeeswarm)                                                                                                                                                                                                                                                                                                        |
 | [02 ANCOVA](/02%20ANCOVA)                                                                               | [`afex`](https://CRAN.R-project.org/package=afex)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | [03 analyzing interactions](/03%20analyzing%20interactions)                                             | [`dplyr`](https://CRAN.R-project.org/package=dplyr), [`afex`](https://CRAN.R-project.org/package=afex), [`emmeans`](https://CRAN.R-project.org/package=emmeans), [`AMCP`](https://CRAN.R-project.org/package=AMCP), [`ggplot2`](https://CRAN.R-project.org/package=ggplot2)                                                                                                                                                                                                                                                                                                                    |
 | [04 custom contrasts](/04%20custom%20contrasts)                                                         | [`afex`](https://CRAN.R-project.org/package=afex), [`emmeans`](https://CRAN.R-project.org/package=emmeans)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | [05 effect sizes](/05%20effect%20sizes)                                                                 | [`afex`](https://CRAN.R-project.org/package=afex), [`emmeans`](https://CRAN.R-project.org/package=emmeans), [`effectsize`](https://CRAN.R-project.org/package=effectsize), [`dplyr`](https://CRAN.R-project.org/package=dplyr)                                                                                                                                                                                                                                                                                                                                                                 |
-| [06 assumption check and non-parametric tests](/06%20assumption%20check%20and%20non-parametric%20tests) | [`afex`](https://CRAN.R-project.org/package=afex), [`qqplotr`](https://CRAN.R-project.org/package=qqplotr), [`ggResidpanel`](https://CRAN.R-project.org/package=ggResidpanel), [`permuco`](https://CRAN.R-project.org/package=permuco), [`emmeans`](https://CRAN.R-project.org/package=emmeans), [`car`](https://CRAN.R-project.org/package=car), [`ggplot2`](https://CRAN.R-project.org/package=ggplot2)                                                                                                                                                                                      |
+| [06 assumption check and non-parametric tests](/06%20assumption%20check%20and%20non-parametric%20tests) | [`afex`](https://CRAN.R-project.org/package=afex), [`ggeffects`](https://CRAN.R-project.org/package=ggeffects), [`performance`](https://CRAN.R-project.org/package=performance), [`parameters`](https://CRAN.R-project.org/package=parameters), [`permuco`](https://CRAN.R-project.org/package=permuco), [`emmeans`](https://CRAN.R-project.org/package=emmeans), [`car`](https://CRAN.R-project.org/package=car)                                                                                                                                                                              |
 | [07 multiple comparisons](/07%20multiple%20comparisons)                                                 | [`afex`](https://CRAN.R-project.org/package=afex), [`emmeans`](https://CRAN.R-project.org/package=emmeans)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| [08 Bayesian ANOVA (and accepting the null)](/08%20Bayesian%20ANOVA%20\(and%20accepting%20the%20null\)) | [`afex`](https://CRAN.R-project.org/package=afex), [`BayesFactor`](https://CRAN.R-project.org/package=BayesFactor), [`bayestestR`](https://CRAN.R-project.org/package=bayestestR), [`dplyr`](https://CRAN.R-project.org/package=dplyr), [`patchwork`](https://CRAN.R-project.org/package=patchwork), [`insight`](https://CRAN.R-project.org/package=insight), [`ggplot2`](https://CRAN.R-project.org/package=ggplot2), [`emmeans`](https://CRAN.R-project.org/package=emmeans), [`effectsize`](https://CRAN.R-project.org/package=effectsize), [`see`](https://CRAN.R-project.org/package=see) |
-| [09 ANOVA vs (G)LMMs](/09%20ANOVA%20vs%20\(G\)LMMs)                                                     | [`afex`](https://CRAN.R-project.org/package=afex), [`emmeans`](https://CRAN.R-project.org/package=emmeans), [`patchwork`](https://CRAN.R-project.org/package=patchwork)                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| [08 Bayesian ANOVA (and accepting the null)](/08%20Bayesian%20ANOVA%20(and%20accepting%20the%20null))   | [`afex`](https://CRAN.R-project.org/package=afex), [`BayesFactor`](https://CRAN.R-project.org/package=BayesFactor), [`bayestestR`](https://CRAN.R-project.org/package=bayestestR), [`dplyr`](https://CRAN.R-project.org/package=dplyr), [`patchwork`](https://CRAN.R-project.org/package=patchwork), [`insight`](https://CRAN.R-project.org/package=insight), [`ggplot2`](https://CRAN.R-project.org/package=ggplot2), [`emmeans`](https://CRAN.R-project.org/package=emmeans), [`effectsize`](https://CRAN.R-project.org/package=effectsize), [`see`](https://CRAN.R-project.org/package=see) |
+| [09 ANOVA vs (G)LMMs](/09%20ANOVA%20vs%20(G)LMMs)                                                       | [`afex`](https://CRAN.R-project.org/package=afex), [`emmeans`](https://CRAN.R-project.org/package=emmeans), [`patchwork`](https://CRAN.R-project.org/package=patchwork)                                                                                                                                                                                                                                                                                                                                                                                                                        |
 
 You can install all the packages used by running:
 
@@ -63,33 +63,37 @@ You can install all the packages used by running:
 
     pkgs <- c(
       "afex", "AMCP", "BayesFactor", "bayestestR", "car", "dplyr",
-      "effectsize", "emmeans", "ggbeeswarm", "ggplot2", "ggResidpanel",
-      "insight", "patchwork", "permuco", "qqplotr", "see", "tidyr"
+      "effectsize", "emmeans", "ggbeeswarm", "ggeffects", "ggplot2",
+      "insight", "parameters", "patchwork", "performance", "permuco",
+      "see", "tidyr"
     )
 
     install.packages(pkgs, dependencies = TRUE)
 
 <details>
+<summary>
+<i>Package Versions</i>
+</summary>
 
-<summary><i>Package Versions</i></summary> The package versions used
-here:
+The package versions used here:
 
-  - `afex` 0.28-0 (*CRAN*)
-  - `AMCP` 1.0.1 (*CRAN*)
-  - `BayesFactor` 0.9.12-4.2 (*CRAN*)
-  - `bayestestR` 0.7.5 (*CRAN*)
-  - `car` 3.0-10 (*CRAN*)
-  - `dplyr` 1.0.2 (*CRAN*)
-  - `effectsize` 0.4.0 (*Dev*)
-  - `emmeans` 1.5.2-1 (*CRAN*)
-  - `ggbeeswarm` 0.6.0 (*CRAN*)
-  - `ggplot2` 3.3.2 (*CRAN*)
-  - `ggResidpanel` 0.3.0 (*CRAN*)
-  - `insight` 0.10.0 (*CRAN*)
-  - `patchwork` 1.0.1 (*CRAN*)
-  - `permuco` 1.1.0 (*CRAN*)
-  - `qqplotr` 0.0.4 (*CRAN*)
-  - `see` 0.6.0 (*CRAN*)
-  - `tidyr` 1.1.2 (*CRAN*)
+-   `afex` 0.28-1 (*CRAN*)
+-   `AMCP` 1.0.1 (*CRAN*)
+-   `BayesFactor` 0.9.12-4.2 (*CRAN*)
+-   `bayestestR` 0.9.0 (*Dev*)
+-   `car` 3.0-10 (*CRAN*)
+-   `dplyr` 1.0.5 (*CRAN*)
+-   `effectsize` 0.4.4-1 (*Dev*)
+-   `emmeans` 1.5.5-1 (*CRAN*)
+-   `ggbeeswarm` 0.6.0 (*CRAN*)
+-   `ggeffects` 1.0.2 (*CRAN*)
+-   `ggplot2` 3.3.3 (*CRAN*)
+-   `insight` 0.13.2.1 (*Dev*)
+-   `parameters` 0.13.0 (*CRAN*)
+-   `patchwork` 1.1.1 (*CRAN*)
+-   `performance` 0.7.1 (*Dev*)
+-   `permuco` 1.1.0 (*CRAN*)
+-   `see` 0.6.3 (*Dev*)
+-   `tidyr` 1.1.2 (*CRAN*)
 
 </details>
