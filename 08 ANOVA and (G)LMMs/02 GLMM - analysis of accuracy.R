@@ -72,7 +72,6 @@ fit_anova
 
 # Hmmm... looks like there is no interaction.
 # We can also see this visually:
-emmip(fit_anova, condition ~ congruency, CIs = TRUE)
 afex_plot(fit_anova, ~ congruency, ~ condition)
 
 
@@ -162,15 +161,8 @@ fit_glmm
 # logistic scale - where things look somewhat different!
 
 
-emmip(fit_glmm, condition ~ congruency, CIs = TRUE)
-# Note that the y-axis is NOT accuracy, but the logit(accuracy). We can ask for
-# the plot on the response scale with:
-emmip(fit_glmm, condition ~ congruency, CIs = TRUE, type = "response")
-# where the interaction is "gone".
-
-
-# # afex_plot alwyas gives results on the response scale:
-# afex_plot(fit_glmm, ~ congruency, ~ condition) 
+afex_plot(fit_glmm, ~ condition, ~ congruency, CIs = TRUE)
+# The interaction is "gone".
 
 
 

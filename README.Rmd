@@ -7,9 +7,68 @@ output: github_document
 ```{r setup, include=FALSE}
 library(knitr)
 
-opts_chunk$set(echo = TRUE)
+opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
-`%>%` <- dplyr::`%>%`
+extract_pkgs <- function(fl) {
+  if (length(fl) == 1) {
+    txt <- read.delim(fl, header = FALSE)[[1]] |> 
+      paste0(collapse = "\n")
+    
+    pkg_lib <- stringr::str_extract_all(txt, pattern = "(?<=library\\().{1,}?(?=\\))")
+    
+    pkg_req <- stringr::str_extract_all(txt, pattern = "(?<=require\\().{1,}?(?=\\))")
+    
+    pkg_name <- stringr::str_extract_all(txt, pattern = "[a-z|A-Z|0-9]{1,}(?=\\:\\:)")
+    
+    pkgs <- c(pkg_lib, pkg_req, pkg_name)
+    
+  } else if (length(fl) > 1) {
+    pkgs <- sapply(fl, extract_pkgs)
+  }
+  
+  pkgs |>
+    unlist(recursive = TRUE) |> 
+    as.vector() |> 
+    unique()
+}
+
+make_pkg_table <- function(pkgs) {
+  # pkgs <- pkgs[sapply(pkgs, function(x) length(x) > 0)]
+  
+  new_pkgs <- lapply(seq_along(pkgs), function(i) {
+    lesson_pkgs <- pkgs[[i]]
+    prev_lesson_pkgs <- unlist(head(pkgs,i-1))
+    
+    !lesson_pkgs %in% prev_lesson_pkgs
+  })
+  
+  
+  ps <- sapply(seq_along(pkgs), function(idx) {
+    x <- pkgs[[idx]]
+    is_new <- ifelse(new_pkgs[[idx]], "**", "")
+    paste0(
+      glue::glue("[{is_new}`{x}`{is_new}](https://CRAN.R-project.org/package={x})"),
+      collapse = ", "
+    )
+  })
+  
+  c("|Lesson|Packages|\n|----|----|\n", # header
+    glue::glue("|[{folder}](/{folder})|{ps}|\n\n",
+             folder = names(pkgs))) |> 
+    paste0(collapse = "")
+}
+
+get_src <- function(pkg) {
+  pd <- packageDescription(pkg)
+  if (is.null(src <- pd$Repository)) {
+    if (!is.null(src <- pd$GithubRepo)) {
+      src <- paste0("Github: ",pd$GithubUsername,"/",src)
+    } else {
+      src <- "Local version"
+    }
+  }
+  return(src)
+}
 ```
 
 # Analysis of Factorial Designs foR Psychologists
@@ -32,69 +91,16 @@ These topics were taught in the graduate-level course ***Analyses of Variance***
 
 ## Setup
 
-```{r, echo=FALSE}
-extract_pkgs <- function(fl) {
-  `%>%` <- dplyr::`%>%`
-  
-  if (length(fl) == 1) {
-    txt <- read.delim(fl, header = FALSE) %>% 
-      .[[1]] %>% 
-      paste0(collapse = "\n")
-    
-    pkg_lib <- stringr::str_extract_all(txt, pattern = "library\\(.+?\\)") %>% 
-      unlist() %>% 
-      stringr::str_remove("library\\(") %>% 
-      stringr::str_remove("\\)")
-    
-    
-    pkg_req <- stringr::str_extract_all(txt, pattern = "require\\(.+?\\)") %>% 
-      unlist() %>% 
-      stringr::str_remove("require\\(") %>% 
-      stringr::str_remove("\\)")
-    
-    pkg_name <- stringr::str_extract_all(txt, pattern = "[a-z|A-Z|0-9]{1,}(?=\\:\\:)")
-    
-    pkgs <- c(pkg_lib, pkg_req, pkg_name)
-    
-  } else if (length(fl) > 1) {
-    pkgs <- sapply(fl, extract_pkgs)
-  }
-  
-  
-  pkgs %>%
-    unlist(recursive = TRUE) %>%
-    unique()
-}
-
-make_pkg_table <- function(pkgs) {
-  `%>%` <- dplyr::`%>%`
-  
-  pkgs <- pkgs[sapply(pkgs, function(x) length(x) > 0)]
-  
-  ps <- sapply(pkgs, function(x){
-    paste0(
-      glue::glue("[`{x}`](https://CRAN.R-project.org/package={x})"),
-      collapse = ", "
-    )
-  })
-  
-  glue::glue("|[{folder}](/{folder})|{ps}|\n\n",
-             folder = names(pkgs)) %>% 
-    c("|Lesson|Packages|\n|----|----|\n", .) %>% # header
-    paste0(collapse = "")
-}
-```
-
 
 You will need:
 
-1. A fresh installation of [**`R`**](https://cran.r-project.org/) (preferably version 3.6 or above).
+1. A fresh installation of [**`R`**](https://cran.r-project.org/) (preferably version 4.1 or above).
 2. [RStudio IDE](https://www.rstudio.com/products/rstudio/download/) (optional, but recommended).
 3. The following packages, listed by lesson:
 
 ```{r, echo=FALSE}
-r_list <- list.files(pattern = ".(R|r)$", recursive = TRUE, full.names = TRUE) %>% 
-  .[!stringr::str_detect(., pattern = "(solutions|logo)")]
+r_list <- list.files(pattern = ".(R|r)$", recursive = TRUE, full.names = TRUE) |> 
+  Filter(f = \(x) !stringr::str_detect(x, pattern = "(SOLUTION|logo)"))
 
 lesson_names <- stringr::str_extract(r_list, pattern = "(?<=(/)).{1,}(?=(/))")
 
@@ -103,54 +109,41 @@ r_list <- split(r_list, lesson_names)
 pkgs <- lapply(r_list, extract_pkgs)
 
 print_pkgs <- make_pkg_table(pkgs)
-
 ```
 
 `r print_pkgs`
 
+<sub>*(Bold denotes the first lesson in which the package was used.)*</sub>
+
 You can install all the packages used by running:
 
 ```{r echo=FALSE, comment = "", warning=FALSE}
+unique_pkgs <- pkgs |> 
+  unlist(recursive = TRUE) |> 
+  unique() |> sort()
 
-pkgs <- pkgs %>% 
-  unlist(recursive = TRUE) %>% 
-  unique() %>% sort()
+packinfo <- installed.packages(fields = c("Package", "Version"))
+V <- packinfo[unique_pkgs,"Version"]
+src <- sapply(unique_pkgs, get_src)
 
 cat("# in alphabetical order:")
 
-pkgs %>% {
-  capture.output(dput(.))
-} %>% {
-  capture.output(cat("pkgs <-", ., fill = 80))
-} %>%
+cat("pkgs <-", dput(unique_pkgs) |> capture.output(), fill = 80) |> 
+  capture.output() |> 
   styler::style_text()
 
-cat("install.packages(pkgs, dependencies = TRUE)")
+cat('install.packages(pkgs, repos = c("https://easystats.r-universe.dev", getOption("repos")))')
 ```
 
 <details>
 <summary><i>Package Versions</i></summary>
-The package versions used here:
+
+Run on `r osVersion`, with R version `r packageVersion("base")`.
+
+The packages used here:
+
 ```{r, echo=FALSE}
-packinfo <- installed.packages(fields = c("Package", "Version"))
-
-get_src <- function(pkg) {
-  pd <- packageDescription(pkg)
-  if (is.null(src <- pd$Repository)) {
-    if (!is.null(src <- pd$GithubRepo)) {
-      src <- paste0("Github: ",pd$GithubUsername,"/",src)
-    } else {
-      src <- "Dev"
-    }
-  }
-  return(src)
-}
-
-V <- packinfo[pkgs,"Version"]
-src <- sapply(pkgs, get_src)
-# setNames(paste0(V, " (", src,")"), pkgs)
-
-v_info <- paste0(glue::glue(" - `{pkgs}` {V} (*{src}*)"), collapse = "\n")
+v_info <- paste0(glue::glue(" - `{unique_pkgs}` {V} (*{src}*)"), collapse = "\n")
 ```
 
 `r v_info`

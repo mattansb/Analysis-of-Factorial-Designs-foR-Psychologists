@@ -1,18 +1,111 @@
 
-# For ANOVAs we need to prepare our data in two ways:
+
+# We've already seen how to deal with categorical predictors, and categorical
+# moderators in a regression model. , our regression model is
+# equivalent to an ANOVA.
+#
+# Although ANOVA is just a type of regression model (where all of our predictors
+# are categorical and we model all of the possible interactions), researchers
+# working with factorial data often present their models as a single ANOVA with
+# all the interactions (instead of building a series of models and comparing
+# them hierarchically).
+#
+# Although R has a built-in function for conducting ANOVAs - `aov()` - you
+# should NOT USE IT as it will not give you the results you want!
+#
+#
+#
+#
+#
+# To be clear:
+#
+#           .-"""-.
+#          / _   _ \
+#          ](_' `_)[
+#          `-. N ,-'
+#         8==|   |==8
+#            `---'
+#
+#  >>>> DO NOT USE `aov()`! <<<<
+#
+# 
+# To obtain proper ANOVA tables, we need:
+# 1. Effects coding of our factors.
+# 2. Type 3 sums-of-squares.
+#
+# (Go read about these requirments and why they are important here:
+# https://shouldbewriting.netlify.app/posts/2021-05-25-everything-about-anova)
+#
+# Though it is possible to do this in base-R, we will be using the `afex`
+# package, which takes care of all of that behind the scenes and gives the
+# desired and expected ANOVA results.
+
+
+
+library(afex) # for ANOVA
+library(emmeans) # for follow up analysis
+library(effectsize) # for effect sizes
+library(ggeffects) # for plotting
+
+
+
+
+# A Between Subjects Design -----------------------------------------------
+
+
+Phobia <- readRDS("Phobia.rds")
+head(Phobia)
+
+
+
+## 1. Build a model ----
+m_aov <- aov_ez(id = "ID", dv = "BehavioralAvoidance",
+                between = c("Condition", "Gender"),
+                data = Phobia,
+                anova_table = list(es = "pes")) # pes = partial eta squared
+
+# We get all effects, their sig and effect size (partial eta square)
+m_aov
+
+
+
+
+# We can use functions from `effectsize` to get confidence intervals for various
+# effect sizes:
+eta_squared(m_aov, partial = TRUE)
+?eta_squared # see more types
+
+
+
+## 2. Explore the model ----
+ggemmeans(m_aov, c("Condition", "Gender")) |>
+  plot(add.data = TRUE, connect.lines = TRUE)
+# see also:
+# afex_plot(m_aov, ~ Condition, ~ Gender)
+
+
+
+
+
+
+
+
+
+# Repeated Measures Design ------------------------------------------------
+
+
+## Wide vs long data
+# For repeated measures ANOVAs we need to prepare our data in two ways:
 # 1. If we have many observations per subject / condition, we must aggregate
-#   the data to a single value per subject / condition. This can be done with,
-#   for example one of the following:
-#    - `aggregate()`
+#   the data to a single value per subject / condition. This can be done with:
 #    - `dplyr`'s `summarise()`
 #    - `prepdat`'s `prep()`
-#    - ...
-#    (Note: if you're using (G)LMMs you can, but don't have to aggregate.)
-# 2. The data must be in the long format.
+#    - etc...
+# 2. The data must be in the LONG format.
 
-# Wide vs long data -------------------------------------------------------
 
-angle_noise <- read.csv('angle-noise_wide.csv')
+mindful_work_stress <- readRDS("mindful_work_stress.rds")
+
 
 
 # WIDE DATA has:
@@ -20,8 +113,7 @@ angle_noise <- read.csv('angle-noise_wide.csv')
 # 2. Between-subject variables have a column
 # 3. Repeated measures are stored across columns, and the within-subject are
 #   stored in column names
-head(angle_noise)
-
+head(mindful_work_stress)
 
 
 
@@ -30,136 +122,43 @@ head(angle_noise)
 # 1. One row per each OBSERVATION,
 # 2. A column for each variable (including the subject ID!)
 # 3. Repeated measures are stored across rows.
-library(tidyr)
-long_angle_noise <- angle_noise %>%
-  pivot_longer(
-    cols = absent_angle0:present_angle8,
-    names_to = c("noise", "angle"),
-    names_sep = "_",
-    values_to = 'rt',
-  )
+mindful_work_stress_long <- mindful_work_stress |>
+  tidyr::pivot_longer(cols = c(T1,T2),
+                      names_to = "Time",
+                      values_to = "work_stress")
 
-head(long_angle_noise)
+head(mindful_work_stress_long)
 
 
-# 2-Way anova -------------------------------------------------------------
-
-# For proper ANOVA tables, we need two things:
-# 1. effects coding for factors ("centering" factors)
-# 2. type 3 errors.*
-# However, by default, R uses treatment coding for factors, and Type 1 errors!
-#
-# If you have no idea what I'm even talking about, that's okay - you don't need
-# to - just remember that without these, ANOVA tables will be very misleading -
-# especially when you have unbalanced data. (This is true of any anova-table, in
-# GLM, LMM, GLMM, etc...)
-#
-# So Although R has a built-in function for conducting ANOVAs - `aov()` - you
-# should NOT USE IT as it will not give you the results you want! Instead you
-# should use the `afex` package.
-#
-# Read more about why this matters so much here:
-# https://easystats.github.io/effectsize/articles/anovaES.html
-# http://md.psych.bio.uni-goettingen.de/mv/unit/lm_cat/lm_cat_unbal_ss_explained.html)
 
 
-library(afex)
+## 1. Build a model ----
+fit_mfs <- aov_ez("id", "work_stress",
+                  between = "Family_status",
+                  within = "Time",
+                  data = mindful_work_stress_long,
+                  anova_table = list(es = "pes"))
+fit_mfs
 
-fit <- aov_ez(id = "id", dv = "rt",
-              within = c("angle", "noise"),
-              ## When working with large within-subject datasets, this will
-              ## speed up the fitting considerably!
-              # include_aov = FALSE,
-              data = long_angle_noise)
-fit
+eta_squared(fit_mfs, partial = TRUE)
 
-# note some defaults here...
-# - correction of the degrees of freedom (set to Greenhouse-Geisser)
-# - effect size (set to generalized eta squared)
+# Repeated measures are really just one way of saying that there are multiple
+# levels in our data. Although rm-ANOVA can deal with simple cases like the ones
+# presented here, for more complex data structures (more nesting, more than one
+# random effects factor, modeling of a continuous predictor, etc.) HLM/LMM are
+# required (which you can learn next semester).
+# see `vignette("afex_mixed_example", package = "afex")` for an example of how
+# to run HLM/LMM ANOVAs.
 
 
 
 
 
-# Interactions and simple effects -----------------------------------------
-
-library(emmeans)
-# This whole course will be focused on how to use `emmeans` - a pkg for
-# follow-up analyses (simple effects, simple slopes, contrasts...). Although we
-# focus here on linear ANOVAs, you can use `emmeans` with GLM, HLM, GLMM,
-# Bayesian models, and much much more.
-
-
-# We saw the interaction was sig... what now?
-# Simple effects!
-joint_tests(fit, by = "noise")
-joint_tests(fit, by = "angle")
-
-
-# We can also get the estimated means:
-emmeans(fit, ~ angle) # what is this?
-emmeans(fit, ~ noise)
-emmeans(fit, ~ angle + noise)
-
-# NOTE: these can be different from the raw means in the data - these are
-# estimates! And that is OKAY!
+## 2. Explore the model ----
+ggemmeans(fit_mfs, c("Time", "Family_status")) |>
+  plot(add.data = TRUE, connect.lines = TRUE)
 
 
 
-
-# Plot the data -----------------------------------------------------------
-
-# simple plotting function
-emmip(fit, noise ~ angle)
-# (Again, these plots show the estimated means!)
-
-
-
-# add 95% confidence intervals
-emmip(fit, noise ~ angle, CIs = TRUE)
-emmip(fit, ~ angle, CIs = TRUE)
-
-
-
-
-# With afex
-afex_plot(fit,  ~ angle,  ~ noise)
-?afex_plot
-
-
-
-
-
-library(ggplot2)
-ems <- emmeans(fit,  ~ noise + angle) %>%
-  summary()
-
-# basic plot
-p1 <- ggplot(ems, aes(angle, emmean, fill = noise, group = noise)) +
-  geom_col(position = position_dodge(.8),
-           width = .8) +
-  geom_point(position = position_dodge(.8)) +
-  geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL),
-                width = .1,
-                position = position_dodge(.8))
-p1
-
-
-# make pretty
-p1 +
-  ggbeeswarm::geom_beeswarm(
-    data = long_angle_noise,
-    aes(angle, rt, group = noise),
-    dodge.width = .8,
-    alpha = 0.4
-  ) +
-  labs(x = 'Angle', y = 'Mean RT', fill = 'Noise') +
-  scale_fill_manual(values = c('grey', 'red3')) +
-  scale_x_discrete(labels = c(0, 4, 8)) +
-  coord_cartesian(ylim = c(300, 850)) +
-  theme_bw() +
-  theme(legend.position = 'bottom')
-
-
-
+# Contrast analysis...
 

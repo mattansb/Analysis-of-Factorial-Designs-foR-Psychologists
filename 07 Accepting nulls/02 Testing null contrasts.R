@@ -1,11 +1,10 @@
-library(dplyr)
+
 library(afex)
 library(emmeans)
 
-
-# The logic behind equivalence testing is to test if an observed effect is
-# significantly smaller then some small effect - an effect so small we would
-# consider it "not interesting".
+# For null contrasts we will use equivalence testing - test if an observed
+# effect is significantly smaller then some small effect - an effect so small we
+# would consider it "not interesting".
 #
 # See some of Daniel Lakens's work:
 # https://doi.org/10.1177/2515245918770963
@@ -14,8 +13,9 @@ library(emmeans)
 
 # Load data ---------------------------------------------------------------
 
-Alcohol_data <- readRDS("Alcohol_data.rds") %>%
-  filter(Frequency == '4to7Hz') # Looking only at the Frequency of interest
+Alcohol_data <- readRDS("Alcohol_data.rds") |>
+  # Looking only at the Frequency of interest
+  dplyr::filter(Frequency == '4to7Hz')
 head(Alcohol_data)
 
 
@@ -70,10 +70,11 @@ c_int
 
 
 ## 1. Define your SESOI (smallest effect size of interest)
-# Many ways to do this... Here I'll use a 1/10 of the dependant variables
+# Many ways to do this... Here I'll use a 1/10 of the dependent variables
 # standard deviation:
 (SESOI <- sd(Alcohol_data$ersp)/10)
 # Is this a good benchmark? Maybe...
+# I encorage you to this what a tiny difference would be, and not use sd/10.
 
 
 
@@ -92,65 +93,14 @@ test(c_int, delta = SESOI)
 
 
 
-# Equivalence testing for effect sizes ------------------------------------
 
-# (Might need the development version of effectsize for this to work.)
+# Using standardized differences ------------------------------------------
 
+# TODO: explain these choices:
+sigma <- sqrt(fit_alcohol_theta$anova_table[3, "MSE"])
+edf <- fit_alcohol_theta$anova_table[3, "den Df"]
 
-
-# We can also use standerdized effect sizes.
-library(effectsize)
-library(see)
-
-### Ex 1: Partial Eta Square
-
-## 1. Define your SESOI
-# We will consider an effect smaller than 0.15 to be small.
-SESOI <- 0.15
-# Is this a good benchmark? Maybe...
-
-
-## 2. Test
-equi_test <- fit_alcohol_theta %>%
-  eta_squared() %>%
-  equivalence_test(range = SESOI)
-equi_test
-plot(equi_test)
-# Looks like our effect size (of 0.08) is significantly smaller than our SESOI!
-
-
-
-
-
-
-
-### Ex 2: Cohen's d
-# Same idea...
-
-## 1. Define your SESOI
-# Here we need to define a range - a ROPE (Region of Practical Equivalence).
-# We will consider an effect smaller in magnitude than 0.2 to be small.
-ROPE <- c(-0.2, 0.2)
-# Is this a good benchmark? Maybe...
-
-
-
-## 2. Test
-c_int # take the values from the contrast:
-# Note that 1-2*alpha CI levels are usually used for equivalence tests.
-equi_test_c <- t_to_d(t = -0.565, df_error = 88, ci = 0.9) %>%
-  equivalence_test(range = ROPE)
-equi_test_c
-plot(equi_test_c)
-# Undecided - same as above, the effect is both not significantly larger than 0,
-# and also not significantly smaller (in magnitude) than the SESOI.
-
-
-
-# -------------------------------------------------------------------------
-
-
-
-
-# (In this example we've conducted equivalence tests for an interaction,
-# but these can be used for any analysis...)
+c_intz <- eff_size(c_int, method = "identity",
+                   sigma = sigma,
+                   edf = edf)
+test(c_intz, delta = 0.1)
