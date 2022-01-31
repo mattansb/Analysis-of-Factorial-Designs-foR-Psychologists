@@ -107,5 +107,6 @@ em_treat
 
 contrast(em_treat, method = "pairwise")
 
+# Etc....
 
 

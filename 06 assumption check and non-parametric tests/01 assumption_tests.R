@@ -37,8 +37,9 @@ fit <- aov_ez('id', 'value', obk.long,
 # However, if we have a continuous covariate (in an ANCOVA), we should check the
 # linearity of the covariate.
 
-plot(ggemmeans(fit, c("age", "phase", "hour")),
-     residuals = TRUE, residuals.line = TRUE)
+
+ggemmeans(fit, c("age", "phase", "hour")) |>
+  plot(residuals = TRUE, residuals.line = TRUE)
 
 
 
@@ -56,7 +57,7 @@ plot(ggemmeans(fit, c("age", "phase", "hour")),
 check_collinearity(fit)
 
 # Not looking good...
-# Seems like the "age" covariate is causing some trouble. Do we really need it?
+# Seems like the "age" covariable is causing some trouble. Do we really need it?
 
 
 
@@ -80,6 +81,45 @@ check_collinearity(fit)
 
 
 
+
+
+
+## 1. Homogeneity of Variance -------------------
+# AKA Homoscedasticity
+
+
+# (Note that this assumption is only relevant if we have between-subject groups
+# in our design.)
+check_homogeneity(fit)
+
+# A more general version of this assumption is that of heteroskedasticity:
+check_heteroskedasticity(fit)
+
+# >>> What to do if violated? <<<
+# Switch to non-parametric tests!
+
+
+
+
+
+
+## 1b. Sphericity -------------------------------
+
+# For within-subject conditions, we have an additional assumption, that of
+# sphericity.
+check_sphericity(fit)
+
+
+
+# >>> What to do if violated? <<<
+# - Use the Greenhouse-Geisser correction in the ANOVA table.
+# - For contrasts, use the multivariate option.
+# It's that easy!
+
+
+
+
+
 ## 1. Normality (of residuals) ------------------
 
 # The least important assumption. Mild violations can be tolerated (but not if
@@ -90,7 +130,6 @@ check_collinearity(fit)
 normtest <- check_normality(fit)
 
 # But you should really LOOK at the residuals:
-plot(normtest, type = "density")
 plot(normtest, type = "qq", detrend = FALSE)
 
 parameters::describe_distribution(residuals(fit)) # Skewness & Kurtosis
@@ -106,40 +145,6 @@ parameters::describe_distribution(residuals(fit)) # Skewness & Kurtosis
 #   function, or a completely different model family. Or...
 # 2. Switch to non-parametric tests!
 
-
-
-
-
-
-## 2. Homogeneity of Variance -------------------
-# AKA Homoscedasticity
-
-
-# (Note that this assumption is only relevant if we have between-subject groups
-# in our design.)
-check_homogeneity(fit)
-
-
-# >>> What to do if violated? <<<
-# Switch to non-parametric tests!
-
-
-
-
-
-
-## 2b. Sphericity -------------------------------
-
-# For within-subject conditions, we have an additional assumption, that of
-# sphericity.
-check_sphericity(fit)
-
-
-
-# >>> What to do if violated? <<<
-# - Use the Greenhouse-Geisser correction in the ANOVA table.
-# - For contrasts, use the multivariate option.
-# It's that easy!
 
 
 

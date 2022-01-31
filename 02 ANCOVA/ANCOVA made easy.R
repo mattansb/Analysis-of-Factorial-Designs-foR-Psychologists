@@ -32,7 +32,7 @@ ersp_anova
 # Keep in mind that some have argued that the use (or misuse) of ANCOVA
 # should be avoided. See: http://doi.org/10.1037//0021-843X.110.1.40
 
-ersp_ancova <- aov_ez('Subject','ersp',Alcohol_data,
+ersp_ancova <- aov_ez('Subject', 'ersp', Alcohol_data,
                       within = c('Frequency','Correctness'),
                       between = c('Alcohol'),
                       # The new bits:
@@ -46,9 +46,10 @@ ersp_ancova
 
 
 
-# Center the covariate and re-fit the model -------------------------------
+# Center the covariable and re-fit the model -------------------------------
 
-# Why center the covariate? See Centering Variables for ANOVA.docx for an
+# Why center the covariable?
+# See `Centering-and-ANOVA.html` for an
 # extremely detailed explanation.
 
 Alcohol_data$mograde_c <- scale(Alcohol_data$mograde,

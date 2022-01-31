@@ -1,8 +1,7 @@
 
 library(afex)
 library(emmeans)
-library(effectsize) # for the effect size functions
-library(dplyr) # for `mutate()` (need version > 1.0.0)
+library(effectsize)
 
 afex_options(es_aov = 'pes',
              correction_aov = 'GG',
@@ -24,8 +23,8 @@ head(obk.long)
 # Fit ANOVA model ---------------------------------------------------------
 
 # for this example we will test the effects for treatment * phase (time):
-treatment_aov <- aov_ez("id", "value", obk.long, 
-                        between = "treatment", 
+treatment_aov <- aov_ez("id", "value", obk.long,
+                        between = "treatment",
                         within = "phase")
 treatment_aov
 
@@ -59,8 +58,9 @@ epsilon_squared(treatment_aov)
 
 # 2. Effect size for simple effects ---------------------------------------
 
-# The effect sizes above use the effect's sums-of-squares (SSs). But these are not always 
-# readily available. In such cases we can use shortcuts, based on tests statistics.
+# The effect sizes above use the effect's sums-of-squares (SSs). But these are
+# not always readily available. In such cases we can use shortcuts, based on
+# tests statistics.
 
 
 ## For simple effects
@@ -69,7 +69,7 @@ F_to_eta2(jt_treatment$F.ratio, jt_treatment$df1, jt_treatment$df2)
 
 
 # We can put it all together with `dplyr`:
-joint_tests(treatment_aov, by = "treatment") %>%
+joint_tests(treatment_aov, by = "treatment") |>
   mutate(F_to_eta2(F.ratio, df1, df2))
 
 
@@ -77,6 +77,9 @@ joint_tests(treatment_aov, by = "treatment") %>%
 # F_to_epsilon2()
 # F_to_omega2()
 # etc...
+
+
+# But note that these shortcuts only apply to the *partial* effect sizes.
 
 
 
@@ -88,38 +91,23 @@ joint_tests(treatment_aov, by = "treatment") %>%
 ### Eta and friends:
 em_phase <- emmeans(treatment_aov, ~ phase)
 c_phase <- contrast(em_phase, method = "pairwise")
-c_phase <- summary(c_phase)
-t_to_eta2(c_phase$t.ratio, c_phase$df)
 
-# We can put it all together with `dplyr`:
-emmeans(treatment_aov, ~ phase) %>%
-  contrast(method = "pairwise") %>%
-  summary() %>%
-  mutate(t_to_eta2(t.ratio, df))
+c_phase
+# Here we have the raw differences.
+# But sometimes we want (why?) standardized differences.
 
+# For that we need the standardizing factor - sigma (this is akin to the
+# pooled-sd in Cohen's d), and it's df.
+# We can get both from out anova table!
 
+# Sigma is the sqrt(MSE) of the relevant effect:
+sig <- sqrt(treatment_aov$anova_table["phase", "MSE"])
+sig.df <- treatment_aov$anova_table["phase", "den Df"]
 
+# We can then use the eff_size() function to convert our contrasts to
+# standardized differences:
+eff_size(c_phase, method = "identity",
+         sigma = sig, edf = sig.df)
 
-
-
-### Cohen's d - Between subjects effects:
-emmeans(treatment_aov, ~ treatment) %>%
-  contrast(method = "pairwise") %>%
-  summary() %>%
-  mutate(t_to_d(t.ratio, df))
-# note the CI are not adjusted for multiple comps, so might give different
-# results compared to adjusted p-values.
-
-
-
-### Cohen's d - Within subjects effects:
-emmeans(treatment_aov, ~ phase) %>%
-  contrast(method = "pairwise") %>%
-  summary() %>%
-  mutate(t_to_d(t.ratio, df, paired = TRUE))
-
-
-### r2 alerting
-# try at home...?
 
 

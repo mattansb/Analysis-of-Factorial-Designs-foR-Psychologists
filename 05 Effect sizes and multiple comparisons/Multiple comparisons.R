@@ -25,26 +25,44 @@ fit
 
 
 
-
-# Plot --------------------------------------------------------------------
-
 afex_plot(fit, ~ Condition, ~ Phobia, ~ Gender)
 
-emmip(fit, Phobia ~ Condition | Gender, CIs = TRUE)
+# Update contrasts ----------------------------------------------------------
+
+em_all.means <- emmeans(fit, ~ Condition + Phobia)
+c_cond.by.pho <- contrast(em_all.means, method = "pairwise", by = "Phobia")
+
+c_cond.by.pho
+# Note that we automatically get p-value correction for 3 tests (within each
+# level of Phobia). By default we get Tukey (different contrast methods have
+# different default correction methods), but we can use other types:
+
+update(c_cond.by.pho, adjust = "none")
+update(c_cond.by.pho, adjust = "holm")
+update(c_cond.by.pho, adjust = "fdr")
+
+?p.adjust # more?
+
+# We can also have the correction applied to all contrasts (not just in groups
+# of 3):
+update(c_cond.by.pho, adjust = "holm", by = NULL)
+
+# Or split in some other way:
+update(c_cond.by.pho, adjust = "fdr", by = "contrast")
 
 
 
 
 
-# Contrasts ---------------------------------------------------------------
+# Combine contrasts -------------------------------------------------------
 
-# We don't have any a priori hypotheses... let's explore!
+# Let's explore!
 
 em_Gender <- emmeans(fit,  ~ Gender)
 em_Phobia <- emmeans(fit,  ~ Phobia)
 em_Condition <- emmeans(fit,  ~ Condition)
 
-# different contrasts have different default correction methods
+
 c_Gender <- contrast(em_Gender, "pairwise")
 c_Gender
 
@@ -53,20 +71,6 @@ c_Phobia
 
 c_Condition <- contrast(em_Condition, "pairwise")
 c_Condition
-
-
-
-
-# Adjust p-value ----------------------------------------------------------
-
-# How do these adjustment methods change the conclusion?
-update(c_Condition, adjust = "none")        # No adjustments
-update(c_Condition, adjust = "tukey")       # ONLY works with pairwise
-update(c_Condition, adjust = "bonferroni")  # Popular
-update(c_Condition, adjust = "fdr")         # Use when many many contrasts
-?p.adjust # more?
-
-update(c_Phobia, adjust = "tukey")          # Will not give tukey!
 
 
 # Combine tests and adjust p vlaues for ALL OF THEM:
@@ -93,12 +97,6 @@ p.adjust(ps, method = "fdr")
 # HW ----------------------------------------------------------------------
 
 # 1. Compute the following contrasts for the Phobia-by-Condition
-#    interaction:
-#    A - Pairwise contrasts between all levels of Condition within each
-#        Phobia level
-#    B - Polynomial contrasts between all levels of Phobia within each
-#        Condition.
-# 2. For each of the sets of contrasts, use 2 adjusment methods (none /
-#    bonferroni / tukey / fdr).
-# 3. Bind both sets of contrasts, and use the same adjustment methods from
-#    Q2. How do the results differ from Q2?
+#    interaction: Polynomial contrasts between all levels of Phobia within each
+#    Condition.
+# 2. Use 2 adjusment methods (none / bonferroni / tukey / fdr).
