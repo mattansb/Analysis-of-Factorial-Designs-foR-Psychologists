@@ -92,4 +92,4 @@ p.adjust(ps, method = "fdr")
 # 1. Compute the following contrasts for the Phobia-by-Condition
 #    interaction: Polynomial contrasts between all levels of Phobia within each
 #    Condition.
-# 2. Use 2 adjusment methods (none / bonferroni / tukey / fdr).
+# 2. Use 2 adjustment methods (none / holm / tukey / fdr).
