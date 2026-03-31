@@ -32,7 +32,7 @@
 # 2. Type 3 sums-of-squares.
 #
 # (Go read about these requirments and why they are important here:
-# https://shouldbewriting.netlify.app/posts/2021-05-25-everything-about-anova)
+# https://blog.msbstats.info/posts/2021-05-25-everything-about-anova/)
 #
 # Though it is possible to do this in base-R, we will be using the `afex`
 # package, which takes care of all of that behind the scenes and gives the

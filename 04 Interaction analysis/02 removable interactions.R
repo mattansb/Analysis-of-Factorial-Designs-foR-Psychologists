@@ -101,4 +101,4 @@ c_diff_of_diff_log
 #   interaction can be significant on the log scale. For example, when analyzing
 #   mean accuracy (which you should be doing with glm / glmms).
 #   See examples:
-#   https://shouldbewriting.netlify.app/posts/2020-04-13-estimating-and-testing-glms-with-emmeans/
+#   https://blog.msbstats.info/posts/2020-04-13-estimating-and-testing-glms-with-emmeans/
