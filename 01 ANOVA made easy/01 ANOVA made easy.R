@@ -39,12 +39,13 @@
 # desired and expected ANOVA results.
 
 library(afex) # for ANOVA
+
 library(effectsize) # for effect sizes
 
 
 # A Between Subjects Design -----------------------------------------------
 
-Phobia <- readRDS("Phobia.rds")
+Phobia <- readRDS("data/Phobia.rds")
 head(Phobia)
 
 
@@ -82,7 +83,7 @@ afex_plot(m_aov, ~Condition, ~Gender)
 #    - etc...
 # 2. The data must be in the LONG format.
 
-mindful_work_stress <- readRDS("mindful_work_stress.rds")
+mindful_work_stress <- readRDS("data/mindful_work_stress.rds")
 
 
 # WIDE DATA has:

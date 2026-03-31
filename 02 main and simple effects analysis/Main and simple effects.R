@@ -90,19 +90,9 @@ joint_tests(m_aov, by = "Gender")
 
 ### Step 2. Estimate the contrasts (conditionally) ----
 
-(c_simpeff <- contrast(
-  em_Condition_by_Gender,
-  method = "pairwise",
-  by = "Gender"
-))
+contrast(em_Condition_by_Gender, method = "pairwise", by = "Gender")
 
-# Note that we have an mvt correction for each of the 2 contrasts.
-# We can have any other type of correction:
-update(c_simpeff, adjust = "holm")
-update(c_simpeff, adjust = "fdr")
-# Or even have the corrections done on all 6 contrasts:
-update(c_simpeff, adjust = "holm", by = NULL) # by = NULL removes partitioning
-
+# Note that we have an mvt correction for each of the 2 contrasts. We will see how to change this later on in our course.
 
 # Same, but with custom contrasts:
 contrast(em_Condition_by_Gender, method = w, by = "Gender")

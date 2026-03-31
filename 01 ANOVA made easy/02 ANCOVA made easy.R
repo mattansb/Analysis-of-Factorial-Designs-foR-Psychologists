@@ -9,7 +9,7 @@ afex_options(
 
 # Load data (is RDS file - these are R files the contain objects, in our
 # case, a tidy data-frame)
-Alcohol_data <- readRDS("Alcohol_data.rds")
+Alcohol_data <- readRDS("data/Alcohol_data.rds")
 head(Alcohol_data)
 
 
@@ -24,8 +24,8 @@ ersp_anova <- aov_ez(
 )
 ersp_anova
 
-# But mothers education level is related to the outcome..
-# We probably would want to control for it - reduce the MSE..
+# We would like to control for mothers education level as it confounds the
+# Alcohol->ERSP relationship.
 
 # Fit ANCOVA model --------------------------------------------------------
 

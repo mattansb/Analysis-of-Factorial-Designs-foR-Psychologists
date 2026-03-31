@@ -1,6 +1,6 @@
 ---
-title: "Centering Variables and ANOVA Tables"
-subtitle: "Why and how to center variables when generating ANOVA tables"
+title: "Centering Variables and AN(C)OVA Tables"
+subtitle: "Why and how to center variables when generating AN(C)OVA tables"
 format:
     html:
         embed-resources: true
