@@ -1,11 +1,9 @@
-
 library(afex)
 library(effectsize)
 library(lme4)
 library(bayestestR)
 
 # Load data ---------------------------------------------------------------
-
 
 Alcohol_data <- readRDS("Alcohol_data.rds") |>
   # Looking only at the Frequency of interest
@@ -14,27 +12,26 @@ Alcohol_data <- readRDS("Alcohol_data.rds") |>
 head(Alcohol_data)
 
 
-
-
 # Regular ANOVA -----------------------------------------------------------
 
-afex_options(es_aov         = 'pes',
-             correction_aov = 'GG',
-             emmeans_model  = 'univariate')
+afex_options(
+  es_aov = 'pes',
+  correction_aov = 'GG',
+  emmeans_model = 'univariate'
+)
 
-fit_alcohol_theta <- aov_ez('Subject','ersp',Alcohol_data,
-                            within = c('Correctness'),
-                            between = c('Alcohol'))
+fit_alcohol_theta <- aov_ez(
+  'Subject',
+  'ersp',
+  Alcohol_data,
+  within = c('Correctness'),
+  between = c('Alcohol')
+)
 fit_alcohol_theta
 
-afex_plot(fit_alcohol_theta,  ~ Alcohol,  ~ Correctness)
+afex_plot(fit_alcohol_theta, ~Alcohol, ~Correctness)
 # Looks like no interaction. But we can't infer that based on a non-significant
 # p-value alone!
-
-
-
-
-
 
 # Method 1: equivalence testing --------------------------------------------
 
@@ -50,15 +47,6 @@ eta_squared(fit_alcohol_theta, alternative = "two.sided", ci = 0.90)
 # small. Thus, we cannot reject the hypothesis that the effect is non-inferior =
 # we cannot rule out the option that there is some non-null effect.
 
-
-
-
-
-
-
-
-
-
 # Method 2: BIC comparisons -----------------------------------------------
 
 # We can use the BIC (relative measure of fit) to see of removing the
@@ -68,13 +56,17 @@ eta_squared(fit_alcohol_theta, alternative = "two.sided", ci = 0.90)
 # Unfortunately, we cannot use an ANOVA for this - we must switch to a
 # regression (or in our case a mixed regression model).
 
-m_full <- lmer(ersp ~ Correctness * Alcohol + (1 | Subject),
-               REML = FALSE,
-               data = Alcohol_data)
+m_full <- lmer(
+  ersp ~ Correctness * Alcohol + (1 | Subject),
+  REML = FALSE,
+  data = Alcohol_data
+)
 
-m_no.interaction <- lmer(ersp ~ Correctness + Alcohol + (1 | Subject),
-                         REML = FALSE,
-                         data = Alcohol_data)
+m_no.interaction <- lmer(
+  ersp ~ Correctness + Alcohol + (1 | Subject),
+  REML = FALSE,
+  data = Alcohol_data
+)
 
 
 bayesfactor_models(m_no.interaction, denominator = m_full)
@@ -83,15 +75,10 @@ bayesfactor_models(m_no.interaction, denominator = m_full)
 # the data compared to the full model, giving strong support for a lack of an
 # interaction!
 
-
-
 # The down side to this method is that it can only be easily applied to the
 # highest level effects (in out example, only to the 2-way interaction).
 
-
-
 # Method 3. GO FULL BAYES ---------------------------------------------------
-
 
 # There is A LOT more to be learned about Bayesian testing / estimation.
 # A good place to start:

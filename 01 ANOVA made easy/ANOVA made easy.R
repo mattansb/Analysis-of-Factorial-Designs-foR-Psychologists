@@ -1,5 +1,3 @@
-
-
 # We've already seen how to deal with categorical predictors, and categorical
 # moderators in a regression model. , our regression model is
 # equivalent to an ANOVA.
@@ -28,7 +26,7 @@
 #
 #  >>>> DO NOT USE `aov()`! <<<<
 #
-# 
+#
 # To obtain proper ANOVA tables, we need:
 # 1. Effects coding of our factors.
 # 2. Type 3 sums-of-squares.
@@ -40,34 +38,29 @@
 # package, which takes care of all of that behind the scenes and gives the
 # desired and expected ANOVA results.
 
-
-
 library(afex) # for ANOVA
 library(emmeans) # for follow up analysis
 library(effectsize) # for effect sizes
 library(ggeffects) # for plotting
 
 
-
-
 # A Between Subjects Design -----------------------------------------------
-
 
 Phobia <- readRDS("Phobia.rds")
 head(Phobia)
 
 
-
 ## 1. Build a model ----
-m_aov <- aov_ez(id = "ID", dv = "BehavioralAvoidance",
-                between = c("Condition", "Gender"),
-                data = Phobia,
-                anova_table = list(es = "pes")) # pes = partial eta squared
+m_aov <- aov_ez(
+  id = "ID",
+  dv = "BehavioralAvoidance",
+  between = c("Condition", "Gender"),
+  data = Phobia,
+  anova_table = list(es = "pes")
+) # pes = partial eta squared
 
 # We get all effects, their sig and effect size (partial eta square)
 m_aov
-
-
 
 
 # We can use functions from `effectsize` to get confidence intervals for various
@@ -76,23 +69,13 @@ eta_squared(m_aov, partial = TRUE)
 ?eta_squared # see more types
 
 
-
 ## 2. Explore the model ----
 ggemmeans(m_aov, c("Condition", "Gender")) |>
   plot(add.data = TRUE, connect.lines = TRUE)
 # see also:
 # afex_plot(m_aov, ~ Condition, ~ Gender)
 
-
-
-
-
-
-
-
-
 # Repeated Measures Design ------------------------------------------------
-
 
 ## Wide vs long data
 # For repeated measures ANOVAs we need to prepare our data in two ways:
@@ -103,9 +86,7 @@ ggemmeans(m_aov, c("Condition", "Gender")) |>
 #    - etc...
 # 2. The data must be in the LONG format.
 
-
 mindful_work_stress <- readRDS("mindful_work_stress.rds")
-
 
 
 # WIDE DATA has:
@@ -116,28 +97,29 @@ mindful_work_stress <- readRDS("mindful_work_stress.rds")
 head(mindful_work_stress)
 
 
-
-
 # LONG DATA (also known as 'tidy data'), has:
 # 1. One row per each OBSERVATION,
 # 2. A column for each variable (including the subject ID!)
 # 3. Repeated measures are stored across rows.
 mindful_work_stress_long <- mindful_work_stress |>
-  tidyr::pivot_longer(cols = c(T1,T2),
-                      names_to = "Time",
-                      values_to = "work_stress")
+  tidyr::pivot_longer(
+    cols = c(T1, T2),
+    names_to = "Time",
+    values_to = "work_stress"
+  )
 
 head(mindful_work_stress_long)
 
 
-
-
 ## 1. Build a model ----
-fit_mfs <- aov_ez("id", "work_stress",
-                  between = "Family_status",
-                  within = "Time",
-                  data = mindful_work_stress_long,
-                  anova_table = list(es = "pes"))
+fit_mfs <- aov_ez(
+  "id",
+  "work_stress",
+  between = "Family_status",
+  within = "Time",
+  data = mindful_work_stress_long,
+  anova_table = list(es = "pes")
+)
 fit_mfs
 
 eta_squared(fit_mfs, partial = TRUE)
@@ -150,15 +132,8 @@ eta_squared(fit_mfs, partial = TRUE)
 # see `vignette("afex_mixed_example", package = "afex")` for an example of how
 # to run HLM/LMM ANOVAs.
 
-
-
-
-
 ## 2. Explore the model ----
 ggemmeans(fit_mfs, c("Time", "Family_status")) |>
   plot(add.data = TRUE, connect.lines = TRUE)
 
-
-
 # Contrast analysis...
-

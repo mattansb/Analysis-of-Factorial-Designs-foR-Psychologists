@@ -1,23 +1,25 @@
-
 library(afex)
-library(ggeffects)    # for partial residual plots
-library(performance)  # for check_*
+library(ggeffects) # for partial residual plots
+library(performance) # for check_*
 
 # Fit the ANOVA model
 data(obk.long, package = "afex")
 
-fit <- aov_ez('id', 'value', obk.long,
-              between = c('treatment', 'gender'),
-              within = c('phase', 'hour'),
-              covariate = "age", factorize = FALSE) # Fitting an ANCOVA
+fit <- aov_ez(
+  'id',
+  'value',
+  obk.long,
+  between = c('treatment', 'gender'),
+  within = c('phase', 'hour'),
+  covariate = "age",
+  factorize = FALSE
+) # Fitting an ANCOVA
 
 # As ANOVAs are a special case of linear regression (*), it has the same
 # assumptions as linear regression. These assumptions can generally be split
 # into two:
 # - Assumptions of the Model
 # - Assumptions of the Significant tests
-
-
 
 # Assumptions of the Model ------------------------------------------------
 
@@ -28,7 +30,6 @@ fit <- aov_ez('id', 'value', obk.long,
 # regression to a scale outcome? This will necessarily be a bad fit... If the
 # answer to any of these is yes, you should concider moving on to GLMMs.
 
-
 ## 1. "Linearity" -------------------------------
 
 # Linear regression has this assumption, but for ANOVA this usually isn't
@@ -37,12 +38,8 @@ fit <- aov_ez('id', 'value', obk.long,
 # However, if we have a continuous covariate (in an ANCOVA), we should check the
 # linearity of the covariate.
 
-
 ggemmeans(fit, c("age", "phase", "hour")) |>
   plot(residuals = TRUE, residuals.line = TRUE)
-
-
-
 
 
 ## 2. No Collinearity ---------------------------
@@ -59,11 +56,7 @@ check_collinearity(fit)
 # Not looking good...
 # Seems like the "age" covariable is causing some trouble. Do we really need it?
 
-
-
-
 # Assumptions of the Significance tests -----------------------------------
-
 
 # Generally speaking, these assumptions are what allows us to convert Z and t
 # values into probabilities (p-values). So any violation of these assumptions
@@ -77,16 +70,8 @@ check_collinearity(fit)
 # between the observations and we would therefor want to account for this by
 # using a within/mixed ANOVA.
 
-
-
-
-
-
-
-
 ## 1. Homogeneity of Variance -------------------
 # AKA Homoscedasticity
-
 
 # (Note that this assumption is only relevant if we have between-subject groups
 # in our design.)
@@ -98,11 +83,6 @@ check_heteroskedasticity(fit)
 # >>> What to do if violated? <<<
 # Switch to non-parametric tests!
 
-
-
-
-
-
 ## 1b. Sphericity -------------------------------
 
 # For within-subject conditions, we have an additional assumption, that of
@@ -110,21 +90,15 @@ check_heteroskedasticity(fit)
 check_sphericity(fit)
 
 
-
 # >>> What to do if violated? <<<
 # - Use the Greenhouse-Geisser correction in the ANOVA table.
 # - For contrasts, use the multivariate option.
 # It's that easy!
 
-
-
-
-
 ## 1. Normality (of residuals) ------------------
 
 # The least important assumption. Mild violations can be tolerated (but not if
 # they suggest that the wrong kind of model was fitted!)
-
 
 # Shapiro-Wilk test for the normality (of THE RESIDUALS!!!)
 normtest <- check_normality(fit)
@@ -134,18 +108,9 @@ plot(normtest, type = "qq", detrend = FALSE)
 
 parameters::describe_distribution(residuals(fit)) # Skewness & Kurtosis
 
-
-
-
-
 # >>> What to do if violated? <<<
 # This means that we shouldn't have used a Gaussian likelihood function (the
 # normal distribution) in our model - so we can:
 # 1. Try using a better one (using GLMMs)... A skewed or heavy tailed likelihood
 #   function, or a completely different model family. Or...
 # 2. Switch to non-parametric tests!
-
-
-
-
-

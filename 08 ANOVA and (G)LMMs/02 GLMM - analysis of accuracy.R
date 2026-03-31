@@ -1,4 +1,3 @@
-
 library(afex)
 library(emmeans)
 
@@ -13,17 +12,9 @@ library(emmeans)
 # As this is a number, it seems only natural to analyze this dependent variable
 # using ANOVAs. So let's see what that looks like.
 
-
 # This lesson is based on the following documentation:
 # http://singmann.github.io/afex/doc/afex_analysing_accuracy_data.html
 # It goes into further details and is worth a read.
-
-
-
-
-
-
-
 
 # Here we have data from a 2*2 within-subject design:
 stroop_e1 <- readRDS("stroop_e1.rds")
@@ -36,31 +27,28 @@ head(stroop_e1)
 #              (we will use these later)
 # (This is real data from: https://doi.org/10.1177/0956797620904990)
 
-
 # The question: does ego depletion moderate the classic stroop effect on
 # accuracy? In other words: is there a condition X congruency interaction?
-
-
-
-
-
-
-
 
 # Analyzing with repeated measures anova ----------------------------------
 # (reminder: a linear model)
 
+afex_options(
+  correction_aov = 'GG',
+  emmeans_model = 'multivariate',
+  es_aov = 'pes'
+)
 
-afex_options(correction_aov = 'GG',
-             emmeans_model  = 'multivariate',
-             es_aov         = 'pes')
 
-
-fit_anova <- aov_ez("id", "acc", stroop_e1,
-                    within = c("congruency", "condition"))
+fit_anova <- aov_ez(
+  "id",
+  "acc",
+  stroop_e1,
+  within = c("congruency", "condition")
+)
 fit_anova
 #> Anova Table (Type 3 tests)
-#> 
+#>
 #> Response: acc
 #>                 Effect     df  MSE          F   pes p.value
 #> 1           congruency 1, 252 0.01 242.95 ***  .491   <.001
@@ -69,16 +57,12 @@ fit_anova
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '+' 0.1 ' ' 1
 
-
 # Hmmm... looks like there is no interaction.
 # We can also see this visually:
-afex_plot(fit_anova, ~ congruency, ~ condition)
+afex_plot(fit_anova, ~congruency, ~condition)
 
 
 emmeans(fit_anova, ~ condition | congruency)
-
-
-
 
 
 # However... ANOVA is a type of liner model. But are accuracies linear?
@@ -93,18 +77,11 @@ emmeans(fit_anova, ~ condition | congruency)
 # measures" logistic regression?
 # We can do just that with generalized linear mixed models (GLMMs)!
 
-
 # Suggested reading
 # http://doi.org/10.1016/j.jml.2007.11.007
 # https://doi.org/10.1890/10-0340.1
 
-
-
-
-
-
 # Analyzing within GLMM ---------------------------------------------------
-
 
 # The syntax of a linear mixed model looks like this:
 #  Y ~ Fixed_effects + (Random_effects | random_variable)
@@ -114,7 +91,6 @@ emmeans(fit_anova, ~ condition | congruency)
 #   are nested - in our case, they are nested in the subjects.
 # (This is an oversimplification, better read up on this some more:
 # http://doi.org/10.4324/9780429318405-2)
-
 
 # In our case, the formula looks like this:
 acc ~ congruency * condition + (congruency * condition | id)
@@ -128,14 +104,10 @@ acc ~ congruency * condition + (congruency * condition | id)
 # information to "weights = " (Again, read more here:
 # http://singmann.github.io/afex/doc/afex_analysing_accuracy_data.html)
 
-
-
-
-
 # This can take several minutes...
 fit_glmm <- mixed(
-  acc ~ congruency * condition + (congruency * condition | id), 
-  data = stroop_e1, 
+  acc ~ congruency * condition + (congruency * condition | id),
+  data = stroop_e1,
   weights = stroop_e1$n, # how many trials are the mean accuracies based on?
   family = "binomial", # the type of distribution
   method = "LRT" # this will give us the proper type 3 errors
@@ -143,7 +115,7 @@ fit_glmm <- mixed(
 
 fit_glmm
 #> Mixed Model Anova Table (Type 3 tests, LRT-method)
-#> 
+#>
 #> Model: acc ~ congruency * condition + (congruency * condition | id)
 #> Data: stroop_e1
 #> Df full model: 14
@@ -160,12 +132,8 @@ fit_glmm
 # How can that be?? It is because the scale on which the model is tested is the
 # logistic scale - where things look somewhat different!
 
-
-afex_plot(fit_glmm, ~ condition, ~ congruency, CIs = TRUE)
+afex_plot(fit_glmm, ~condition, ~congruency, CIs = TRUE)
 # The interaction is "gone".
-
-
-
 
 # Follow-up analyses ------------------------------------------------------
 
@@ -175,10 +143,6 @@ afex_plot(fit_glmm, ~ condition, ~ congruency, CIs = TRUE)
 joint_tests(fit_glmm)
 # Note that df2 = Inf. In this case, we can compute Chisq = F.ratio * df1
 
-
-
-
-
 ## 2. Contrasts
 emmeans(fit_glmm, ~ condition + congruency)
 #>  condition congruency  emmean     SE  df asymp.LCL asymp.UCL
@@ -186,10 +150,9 @@ emmeans(fit_glmm, ~ condition + congruency)
 #>  deplete   congruent     3.87 0.0710 Inf      3.74      4.01
 #>  control   incongruent   2.35 0.0618 Inf      2.23      2.47
 #>  deplete   incongruent   2.27 0.0623 Inf      2.14      2.39
-#> 
-#> Results are given on the logit (not the response) scale. 
+#>
+#> Results are given on the logit (not the response) scale.
 #> Confidence level used: 0.95
-
 
 # If we want them on the response scale:
 em_int <- emmeans(fit_glmm, ~ condition + congruency, type = "response")
@@ -199,31 +162,25 @@ em_int
 #>  deplete   congruent   0.9797 0.001415 Inf    0.9767    0.9823
 #>  control   incongruent 0.9128 0.004920 Inf    0.9026    0.9219
 #>  deplete   incongruent 0.9060 0.005304 Inf    0.8951    0.9159
-#> 
-#> Confidence level used: 0.95 
+#>
+#> Confidence level used: 0.95
 #> Intervals are back-transformed from the logit scale
-
 
 # We can do any contrast we want:
 contrast(em_int, "pairwise", by = "condition")
 #>  congruency = congruent:
 #>   contrast          odds.ratio    SE  df z.ratio p.value
-#>   control / deplete       1.33 0.106 Inf 3.647   0.0003 
-#> 
+#>   control / deplete       1.33 0.106 Inf 3.647   0.0003
+#>
 #>  congruency = incongruent:
 #>   contrast          odds.ratio    SE  df z.ratio p.value
-#>   control / deplete       1.09 0.070 Inf 1.275   0.2023 
-#> 
+#>   control / deplete       1.09 0.070 Inf 1.275   0.2023
+#>
 #> Tests are performed on the log odds ratio scale
 
 # Note that we get the odds ratio as the estimate, and that we have z values
 # instead of t values.
 
-
-
-
-
 # But we can also test contrasts on the response scale...
 # Read more (with examples):
 # https://shouldbewriting.netlify.app/posts/2020-04-13-estimating-and-testing-glms-with-emmeans/
-
