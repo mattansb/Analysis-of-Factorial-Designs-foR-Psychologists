@@ -34,9 +34,8 @@ head(stroop_e1)
 # (reminder: a linear model)
 
 afex_options(
-  correction_aov = 'GG',
-  emmeans_model = 'multivariate',
-  es_aov = 'pes'
+  es_aov = 'pes',
+  correction_aov = 'GG'
 )
 
 

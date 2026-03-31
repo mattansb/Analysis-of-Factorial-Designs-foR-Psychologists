@@ -20,8 +20,7 @@ head(Alcohol_data)
 
 afex_options(
   es_aov = 'pes',
-  correction_aov = 'GG',
-  emmeans_model = 'univariate'
+  correction_aov = 'GG'
 )
 
 fit_alcohol_theta <- aov_ez(

@@ -1,6 +1,6 @@
 # We've already seen how to deal with categorical predictors, and categorical
-# moderators in a regression model. , our regression model is
-# equivalent to an ANOVA.
+# moderators in a regression model. , our regression model is equivalent to an
+# ANOVA.
 #
 # Although ANOVA is just a type of regression model (where all of our predictors
 # are categorical and we model all of the possible interactions), researchers
@@ -39,9 +39,7 @@
 # desired and expected ANOVA results.
 
 library(afex) # for ANOVA
-library(emmeans) # for follow up analysis
 library(effectsize) # for effect sizes
-library(ggeffects) # for plotting
 
 
 # A Between Subjects Design -----------------------------------------------
@@ -56,8 +54,8 @@ m_aov <- aov_ez(
   dv = "BehavioralAvoidance",
   between = c("Condition", "Gender"),
   data = Phobia,
-  anova_table = list(es = "pes")
-) # pes = partial eta squared
+  anova_table = list(es = "pes") # pes = partial eta squared
+)
 
 # We get all effects, their sig and effect size (partial eta square)
 m_aov
@@ -66,14 +64,12 @@ m_aov
 # We can use functions from `effectsize` to get confidence intervals for various
 # effect sizes:
 eta_squared(m_aov, partial = TRUE)
+eta_squared(m_aov, ci = 0.9, alternative = "two.sided")
 ?eta_squared # see more types
 
 
 ## 2. Explore the model ----
-ggemmeans(m_aov, c("Condition", "Gender")) |>
-  plot(add.data = TRUE, connect.lines = TRUE)
-# see also:
-# afex_plot(m_aov, ~ Condition, ~ Gender)
+afex_plot(m_aov, ~Condition, ~Gender)
 
 # Repeated Measures Design ------------------------------------------------
 
@@ -113,8 +109,8 @@ head(mindful_work_stress_long)
 
 ## 1. Build a model ----
 fit_mfs <- aov_ez(
-  "id",
-  "work_stress",
+  id = "id",
+  dv = "work_stress",
   between = "Family_status",
   within = "Time",
   data = mindful_work_stress_long,
@@ -122,7 +118,7 @@ fit_mfs <- aov_ez(
 )
 fit_mfs
 
-eta_squared(fit_mfs, partial = TRUE)
+eta_squared(fit_mfs)
 
 # Repeated measures are really just one way of saying that there are multiple
 # levels in our data. Although rm-ANOVA can deal with simple cases like the ones
@@ -133,7 +129,6 @@ eta_squared(fit_mfs, partial = TRUE)
 # to run HLM/LMM ANOVAs.
 
 ## 2. Explore the model ----
-ggemmeans(fit_mfs, c("Time", "Family_status")) |>
-  plot(add.data = TRUE, connect.lines = TRUE)
+afex_plot(fit_mfs, ~Time, ~Family_status)
 
 # Contrast analysis...

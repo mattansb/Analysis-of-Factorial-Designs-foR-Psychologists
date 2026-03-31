@@ -4,8 +4,7 @@ library(effectsize)
 
 afex_options(
   es_aov = 'pes',
-  correction_aov = 'GG',
-  emmeans_model = 'multivariate'
+  correction_aov = 'GG'
 )
 
 

@@ -92,7 +92,7 @@ check_sphericity(fit)
 
 # >>> What to do if violated? <<<
 # - Use the Greenhouse-Geisser correction in the ANOVA table.
-# - For contrasts, use the multivariate option.
+# - For contrasts, use the multivariate option (this is actually the default).
 # It's that easy!
 
 ## 1. Normality (of residuals) ------------------

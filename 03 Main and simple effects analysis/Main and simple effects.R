@@ -1,4 +1,10 @@
 library(afex)
+
+afex_options(
+  es_aov = 'pes',
+  correction_aov = 'GG'
+)
+
 library(emmeans)
 library(ggeffects)
 
@@ -13,9 +19,8 @@ m_aov <- aov_ez(
   id = "ID",
   dv = "BehavioralAvoidance",
   between = c("Condition", "Gender"),
-  data = Phobia,
-  anova_table = list(es = "pes")
-) # pes = partial eta squared
+  data = Phobia
+)
 
 # We get all effects, their sig and effect size (partial eta square)
 m_aov
@@ -37,8 +42,7 @@ m_aov
 
 # Only the main effect for Condition was significant. Let's conduct a contrast on
 # the main effect.
-ggemmeans(m_aov, "Condition") |>
-  plot(add.data = TRUE, connect.lines = TRUE)
+afex_plot(m_aov, ~Condition)
 
 
 ### Step 1. Get estimated means ----
@@ -56,7 +60,9 @@ contrast(em_Condition, method = "pairwise")
 w <- data.frame(
   "Implosion vs Other2" = c(-1, 2, -1) / 2, # make sure each "side" sums to 1!
   "Implosion vs Other" = c(-1, 2, -1),
-  "Desens vs CBT" = c(-1, 0, 1)
+  "Desens vs CBT" = c(-1, 0, 1),
+
+  check.names = FALSE
 )
 w
 
@@ -68,8 +74,7 @@ contrast(em_Condition, method = w)
 # A "simple" effect, is the effect of some variable, conditional on some other
 # variable.
 
-ggemmeans(m_aov, c("Condition", "Gender")) |>
-  plot(add.data = TRUE, connect.lines = TRUE, facet = TRUE)
+afex_plot(m_aov, ~Condition, ~Gender)
 
 
 # We can "split" our model *by* some variable to see the effects conditional on
@@ -94,10 +99,10 @@ joint_tests(m_aov, by = "Gender")
 
 # Note that we have an mvt correction for each of the 2 contrasts.
 # We can have any other type of correction:
-update(c_simpeff, adjust = "bonf")
+update(c_simpeff, adjust = "holm")
 update(c_simpeff, adjust = "fdr")
 # Or even have the corrections done on all 6 contrasts:
-update(c_simpeff, adjust = "bonf", by = NULL) # by = NULL removes partitioning
+update(c_simpeff, adjust = "holm", by = NULL) # by = NULL removes partitioning
 
 
 # Same, but with custom contrasts:

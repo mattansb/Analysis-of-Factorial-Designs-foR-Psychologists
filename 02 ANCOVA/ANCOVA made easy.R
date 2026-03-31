@@ -2,8 +2,7 @@ library(afex)
 
 afex_options(
   es_aov = 'pes',
-  correction_aov = 'GG',
-  emmeans_model = 'univariate'
+  correction_aov = 'GG'
 )
 
 # Load Data ---------------------------------------------------------------
@@ -17,11 +16,11 @@ head(Alcohol_data)
 # Fit ANOVA model ---------------------------------------------------------
 
 ersp_anova <- aov_ez(
-  'Subject',
-  'ersp',
-  Alcohol_data,
+  id = 'Subject',
+  dv = 'ersp',
   within = c('Frequency', 'Correctness'),
-  between = c('Alcohol')
+  between = c('Alcohol'),
+  data = Alcohol_data
 )
 ersp_anova
 
@@ -34,15 +33,16 @@ ersp_anova
 # should be avoided. See: http://doi.org/10.1037//0021-843X.110.1.40
 
 ersp_ancova <- aov_ez(
-  'Subject',
-  'ersp',
-  Alcohol_data,
+  id = 'Subject',
+  dv = 'ersp',
   within = c('Frequency', 'Correctness'),
   between = c('Alcohol'),
+  data = Alcohol_data,
+
   # The new bits:
   covariate = 'mograde',
-  factorize = FALSE
-) # MUST set `factorize = FALSE`!
+  factorize = FALSE # MUST set `factorize = FALSE`!
+)
 # Note the warning!
 
 ersp_anova
@@ -55,19 +55,16 @@ ersp_ancova
 # See `Centering-and-ANOVA.html` for an
 # extremely detailed explanation.
 
-Alcohol_data$mograde_c <- scale(
-  Alcohol_data$mograde,
-  center = TRUE,
-  scale = FALSE
-)
+Alcohol_data$mograde_c <- datawizard::center(Alcohol_data$mograde)
 
 # Re-Fit model
 ersp_ancova2 <- aov_ez(
-  'Subject',
-  'ersp',
-  Alcohol_data,
+  id = 'Subject',
+  dv = 'ersp',
   within = c('Frequency', 'Correctness'),
   between = c('Alcohol'),
+  data = Alcohol_data,
+
   # The new bits
   covariate = 'mograde_c',
   factorize = FALSE
@@ -78,4 +75,4 @@ ersp_ancova2 # Huge difference!
 
 # Follow up analysis ------------------------------------------------------
 
-# use emmeans as usual (:
+# as usual ...

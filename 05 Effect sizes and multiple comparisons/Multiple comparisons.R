@@ -3,8 +3,7 @@ library(emmeans)
 
 afex_options(
   es_aov = 'pes',
-  correction_aov = 'GG',
-  emmeans_model = 'univariate'
+  correction_aov = 'GG'
 )
 
 
