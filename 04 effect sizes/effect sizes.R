@@ -1,6 +1,6 @@
 library(afex)
 
-library(emmeans)
+library(emmeans) # TODO: add {marginaleffects} examples
 library(effectsize)
 
 afex_options(

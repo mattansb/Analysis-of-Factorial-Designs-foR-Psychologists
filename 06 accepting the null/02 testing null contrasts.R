@@ -1,6 +1,6 @@
 library(afex)
 
-library(emmeans)
+library(emmeans) # TODO: add {marginaleffects} examples
 
 afex_options(
   es_aov = 'pes',

@@ -2,7 +2,6 @@ library(afex)
 
 library(emmeans)
 
-
 afex_options(
   es_aov = 'pes',
   correction_aov = 'GG'
@@ -10,6 +9,11 @@ afex_options(
 
 Phobia <- readRDS("Phobia.rds")
 head(Phobia)
+
+# We will also see how we can use the {marginaleffects} package to conduct main
+# and simple effects analyses, but as will be evident, it is a bit more
+# complicated to use for analysis of factorial designs than {emmeans}.
+library(marginaleffects)
 
 
 # 1. Fit the model --------------------------------------------------------
@@ -48,11 +52,20 @@ afex_plot(m_aov, ~Condition)
 (em_Condition <- emmeans(m_aov, ~Condition))
 # Note the footnote!
 
+# We can also get the estimated means with {marginaleffects}:
+avg_predictions(m_aov, variables = "Condition")
+
+
 ### Step 2. Estimate the contrasts ----
 contrast(em_Condition, method = "pairwise")
 
-
 ?`emmc-functions` # see for different types of built-in contrast weights.
+
+# We can also do this with {marginaleffects}, by specifying the hypothesis
+# argument:
+avg_predictions(m_aov, variables = "Condition", hypothesis = ~revpairwise)
+
+?hypotheses # see for different types of built-in contrast weights.
 
 
 # But we can also build custom contrast weights!
@@ -66,7 +79,7 @@ w <- data.frame(
 w
 
 contrast(em_Condition, method = w)
-
+avg_predictions(m_aov, variables = "Condition", hypothesis = as.matrix(w))
 
 ## B. Simple Effect Analysis (Condition by Gender) ========
 
@@ -81,21 +94,62 @@ afex_plot(m_aov, ~Condition, ~Gender)
 # are differences between the levels of Gender within each condition:
 joint_tests(m_aov, by = "Gender")
 
+# We can also do this with {marginaleffects}, but it is a bit more complicated,
+# as we need to manually specify the joint test we're interested in.
+
+# Joint effect of Condition for Females:
+avg_predictions(
+  m_aov,
+  variables = "Condition",
+  newdata = datagrid(Gender = "F"),
+  hypothesis = ~reference
+) |>
+  hypotheses(joint = TRUE)
+
+# Joint effect of Condition for Males:
+avg_predictions(
+  m_aov,
+  variables = "Condition",
+  newdata = datagrid(Gender = "M"),
+  hypothesis = ~reference
+) |>
+  hypotheses(joint = TRUE)
+
 
 # We can then conduct a contrast analysis for each simple effect...
 
 ### Step 1. Get estimated means ----
 (em_Condition_by_Gender <- emmeans(m_aov, ~ Condition + Gender))
-
+avg_predictions(m_aov, variables = c("Gender", "Condition"))
 
 ### Step 2. Estimate the contrasts (conditionally) ----
 
 contrast(em_Condition_by_Gender, method = "pairwise", by = "Gender")
+avg_predictions(
+  m_aov,
+  variables = c("Gender", "Condition"),
+  hypothesis = ~ revpairwise | Gender
+)
 
-# Note that we have an mvt correction for each of the 2 contrasts. We will see how to change this later on in our course.
+# Note that we have an mvt correction for each of the 2 contrasts in emmeans,
+# but no correction in marginaleffects. We will see how to change this later on
+# in our course.
 
 # Same, but with custom contrasts:
 contrast(em_Condition_by_Gender, method = w, by = "Gender")
+
+# We need to wrap the contrast weights in a function to be able to use them with
+# marginaleffects
+# https://github.com/vincentarelbundock/marginaleffects/issues/1707
+wf <- \(x) {
+  drop(t(w) %*% x)
+}
+
+avg_predictions(
+  m_aov,
+  variables = c("Gender", "Condition"),
+  hypothesis = ~ I(wf(x)) | Gender
+)
 
 # Exercise ----------------------------------------------------------------
 

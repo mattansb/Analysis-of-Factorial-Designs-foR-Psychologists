@@ -1,6 +1,6 @@
 library(afex) # for ANOVA
 
-library(emmeans) # for follow up analysis
+library(emmeans) # for follow up analysis # TODO: add {marginaleffects} examples
 
 afex_options(
   es_aov = 'pes',

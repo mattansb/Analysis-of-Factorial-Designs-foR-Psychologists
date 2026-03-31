@@ -49,7 +49,7 @@ You will need:
 | Lesson | Packages |
 |:---|:---|
 | [01 ANOVA made easy](01%20ANOVA%20made%20easy//) | `afex`, `effectsize`, `tidyr`, `datawizard` |
-| [02 main and simple effects analysis](02%20main%20and%20simple%20effects%20analysis//) | `afex`, `emmeans` |
+| [02 main and simple effects analysis](02%20main%20and%20simple%20effects%20analysis//) | `afex`, `emmeans`, `marginaleffects` |
 | [03 interaction analysis](03%20interaction%20analysis//) | `afex`, `emmeans`, `afex`, `emmeans` |
 | [04 effect sizes](04%20effect%20sizes//) | `afex`, `emmeans`, `effectsize`, `dplyr` |
 | [05 multiple comparisons](05%20multiple%20comparisons//) | `afex`, `emmeans` |
@@ -76,6 +76,7 @@ You can install all the R packages used by running:
         "cran::emmeans", # 2.0.2
         "cran::ggeffects", # 2.3.2
         "cran::lmerTest", # 3.2-1
+        "github::vincentarelbundock/marginaleffects", # 0.32.0.4
         "cran::patchwork", # 1.3.2
         "cran::permuco", # 1.1.3
         "cran::tidyverse" # 2.0.0
