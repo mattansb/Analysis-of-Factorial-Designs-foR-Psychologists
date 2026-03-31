@@ -13,7 +13,7 @@ afex_options(
 # What marginal (main) effects and interactions does it look like we have here?
 # What conditional (simple) effects does it look like we have here?
 
-coffee_data <- read.csv('coffee.csv')
+coffee_data <- read.csv('data/coffee.csv')
 coffee_data$time <- factor(
   coffee_data$time,
   levels = c('morning', 'noon', 'afternoon')

@@ -7,7 +7,7 @@ afex_options(
   correction_aov = 'GG'
 )
 
-stroop_data <- readRDS("dyslexia_stroop.rds")
+stroop_data <- readRDS("data/dyslexia_stroop.rds")
 head(stroop_data)
 # This is (fake) data from an experiment where participants with dyslexia and
 # control participants performed a Stroop task.
