@@ -17,11 +17,12 @@ head(Phobia_data)
 # Fit model ---------------------------------------------------------------
 
 fit <- aov_ez(
-  "ID",
-  "BehavioralAvoidance",
-  Phobia_data,
-  between = c("Gender", "Phobia", "Condition")
+  id = "ID",
+  dv = "BehavioralAvoidance",
+  between = c("Gender", "Phobia", "Condition"),
+  data = Phobia_data
 )
+
 fit
 
 
@@ -36,7 +37,6 @@ c_cond.by.pho
 # Note that we automatically get p-value correction for 3 tests (within each
 # level of Phobia). By default we get Tukey (different contrast methods have
 # different default correction methods), but we can use other types:
-
 update(c_cond.by.pho, adjust = "none")
 update(c_cond.by.pho, adjust = "holm")
 update(c_cond.by.pho, adjust = "fdr")

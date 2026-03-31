@@ -1,4 +1,5 @@
 library(afex)
+
 library(ggeffects) # for partial residual plots
 library(performance) # for check_*
 
@@ -6,14 +7,17 @@ library(performance) # for check_*
 data(obk.long, package = "afex")
 
 fit <- aov_ez(
-  'id',
-  'value',
-  obk.long,
+  id = 'id',
+  dv = 'value',
+
   between = c('treatment', 'gender'),
   within = c('phase', 'hour'),
+  data = obk.long,
+
+  # Fitting an ANCOVA
   covariate = "age",
   factorize = FALSE
-) # Fitting an ANCOVA
+)
 
 # As ANOVAs are a special case of linear regression (*), it has the same
 # assumptions as linear regression. These assumptions can generally be split
@@ -28,7 +32,7 @@ fit <- aov_ez(
 # right KIND of model!
 # Are you fitting a linear model to binary data? Are you fitting an ordinal
 # regression to a scale outcome? This will necessarily be a bad fit... If the
-# answer to any of these is yes, you should concider moving on to GLMMs.
+# answer to any of these is yes, you should consider moving on to GLMMs.
 
 ## 1. "Linearity" -------------------------------
 
@@ -39,17 +43,17 @@ fit <- aov_ez(
 # linearity of the covariate.
 
 ggemmeans(fit, c("age", "phase", "hour")) |>
-  plot(residuals = TRUE, residuals.line = TRUE)
+  plot(show_residuals = TRUE, show_residuals_line = TRUE)
 
 
-## 2. No Collinearity ---------------------------
+## 2. Low Collinearity ---------------------------
 
-# You may have heard that while regression can tolerate low collinearity, ANOVA cannot
-# tolerate ANY collinearity. Strictly speaking, this is not true - the ANOVA model will fit just fine, it will produce
-# correct estimates, etc.
+# You may have heard that while regression can tolerate low collinearity, ANOVA
+# cannot tolerate ANY collinearity. Strictly speaking, this is not true - the
+# ANOVA model will fit just fine, it will produce correct estimates, etc.
 # What will be a problem is OUR interpretation of the effects. Instead of being
-# the "effect of A on Y", we will need to interpret our effects as we would in
-# a regression model: "the UNIQUE effect of A on Y". Bummer.
+# the "effect of A on Y", we will need to interpret our effects as we would in a
+# regression model: "the UNIQUE effect of A on Y". Bummer.
 
 check_collinearity(fit)
 
@@ -81,7 +85,8 @@ check_homogeneity(fit)
 check_heteroskedasticity(fit)
 
 # >>> What to do if violated? <<<
-# Switch to non-parametric tests!
+# - Switch to non-parametric tests
+# - Use robust standard errors (e.g., using the sandwich package).
 
 ## 1b. Sphericity -------------------------------
 
@@ -105,8 +110,6 @@ normtest <- check_normality(fit)
 
 # But you should really LOOK at the residuals:
 plot(normtest, type = "qq", detrend = FALSE)
-
-parameters::describe_distribution(residuals(fit)) # Skewness & Kurtosis
 
 # >>> What to do if violated? <<<
 # This means that we shouldn't have used a Gaussian likelihood function (the

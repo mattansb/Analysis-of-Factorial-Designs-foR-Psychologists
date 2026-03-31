@@ -1,6 +1,4 @@
 library(permuco) # for permutations
-citation("permuco")
-
 
 # MUST do this!
 options(contrasts = c('contr.sum', 'contr.poly'))
@@ -14,8 +12,6 @@ fit_between_p
 
 
 # Within-Subject Models ---------------------------------------------------
-
-# load data
 
 fit_within_p <- aovperm(
   value ~ phase * hour + Error(id / (phase * hour)),

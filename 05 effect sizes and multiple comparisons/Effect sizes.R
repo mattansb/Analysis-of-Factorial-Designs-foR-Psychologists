@@ -1,4 +1,5 @@
 library(afex)
+
 library(emmeans)
 library(effectsize)
 
@@ -21,11 +22,11 @@ head(obk.long)
 
 # for this example we will test the effects for treatment * phase (time):
 treatment_aov <- aov_ez(
-  "id",
-  "value",
-  obk.long,
+  id = "id",
+  dv = "value",
   between = "treatment",
-  within = "phase"
+  within = "phase",
+  data = obk.long
 )
 treatment_aov
 
@@ -62,7 +63,7 @@ F_to_eta2(jt_treatment$F.ratio, jt_treatment$df1, jt_treatment$df2)
 
 # We can put it all together with `dplyr`:
 joint_tests(treatment_aov, by = "treatment") |>
-  mutate(F_to_eta2(F.ratio, df1, df2))
+  dplyr::mutate(F_to_eta2(F.ratio, df1, df2))
 
 
 # Here too we can use
