@@ -1,12 +1,24 @@
 library(afex)
+
 library(emmeans)
+
+afex_options(
+  es_aov = 'pes',
+  correction_aov = 'GG'
+)
 
 stroop_data <- readRDS("dyslexia_stroop.rds")
 head(stroop_data)
 # This is (fake) data from an experiment where participants with dyslexia and
-# control participants performed a stroop task.
+# control participants performed a Stroop task.
 
-fit <- aov_ez("id", "mRT", stroop_data, within = "condition", between = "Group")
+fit <- aov_ez(
+  id = "id",
+  dv = "mRT",
+  within = "condition",
+  between = "Group",
+  data = stroop_data
+)
 fit
 # We have an interaction! Let's take a look...
 
@@ -24,6 +36,7 @@ emmip(fit, Group ~ condition, CIs = TRUE)
 
 ## 1. Get conditional means
 em_ <- emmeans(fit, ~ condition + Group)
+em_
 
 
 ## 2. Contrasts

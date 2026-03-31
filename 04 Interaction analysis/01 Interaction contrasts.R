@@ -1,6 +1,11 @@
 library(afex) # for ANOVA
+
 library(emmeans) # for follow up analysis
-library(ggeffects) # for plotting
+
+afex_options(
+  es_aov = 'pes',
+  correction_aov = 'GG'
+)
 
 
 # let's look at the coffee_plot.png and get a feel for our data.
@@ -17,19 +22,16 @@ head(coffee_data)
 
 
 coffee_fit <- aov_ez(
-  'ID',
-  'alertness',
-  coffee_data,
+  id = 'ID',
+  dv = 'alertness',
   within = c('time', 'coffee'),
   between = 'sex',
-  anova_table = list(es = "pes")
+  data = coffee_data
 )
 
 coffee_fit
 # what's up with the 3-way interaction??
-
-ggemmeans(coffee_fit, c("time", "coffee", "sex")) |>
-  plot(connect.lines = TRUE)
+afex_plot(coffee_fit, ~time, ~coffee, ~sex)
 
 
 # We will be looking at the Coffee-by-Time interaction.
@@ -42,8 +44,7 @@ ggemmeans(coffee_fit, c("time", "coffee", "sex")) |>
 # We are looking at a 2-way interaction in a 3-way design, so this means we are
 # averaging over the levels sex.
 
-ggemmeans(coffee_fit, c("time", "coffee")) |>
-  plot(connect.lines = TRUE, facet = TRUE)
+afex_plot(coffee_fit, ~time, ~coffee)
 
 
 ## Test simple effects ========
@@ -70,7 +71,9 @@ contrast(em_time.coffee, method = "poly", by = "coffee") # note p-value correcti
 
 w.time <- data.frame(
   "wakeup vs later" = c(-2, 1, 1) / 2, # make sure each "side" sums to (+/-)1!
-  "start vs end of day" = c(-1, 0, 1)
+  "start vs end of day" = c(-1, 0, 1),
+
+  check.names = FALSE
 )
 w.time # Are these orthogonal contrasts?
 cor(w.time)
