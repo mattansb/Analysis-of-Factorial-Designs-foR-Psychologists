@@ -1,13 +1,12 @@
 library(afex)
 
+library(emmeans)
+
+
 afex_options(
   es_aov = 'pes',
   correction_aov = 'GG'
 )
-
-library(emmeans)
-library(ggeffects)
-
 
 Phobia <- readRDS("Phobia.rds")
 head(Phobia)
