@@ -1,7 +1,13 @@
 library(afex)
+library(lmerTest)
+
 library(effectsize)
-library(lme4)
 library(bayestestR)
+
+afex_options(
+  es_aov = 'pes',
+  correction_aov = 'GG'
+)
 
 # Load data ---------------------------------------------------------------
 
@@ -14,17 +20,12 @@ head(Alcohol_data)
 
 # Regular ANOVA -----------------------------------------------------------
 
-afex_options(
-  es_aov = 'pes',
-  correction_aov = 'GG'
-)
-
 fit_alcohol_theta <- aov_ez(
-  'Subject',
-  'ersp',
-  Alcohol_data,
-  within = c('Correctness'),
-  between = c('Alcohol')
+  id = 'Subject',
+  dv = 'ersp',
+  within = 'Correctness',
+  between = 'Alcohol',
+  data = Alcohol_data
 )
 fit_alcohol_theta
 
@@ -46,7 +47,7 @@ eta_squared(fit_alcohol_theta, alternative = "two.sided", ci = 0.90)
 # small. Thus, we cannot reject the hypothesis that the effect is non-inferior =
 # we cannot rule out the option that there is some non-null effect.
 
-# Method 2: BIC comparisons -----------------------------------------------
+# Method 2: AIC/BIC comparisons -----------------------------------------------
 
 # We can use the BIC (relative measure of fit) to see of removing the
 # interaction from our model provides with an equally good but more parsimonious
@@ -67,15 +68,23 @@ m_no.interaction <- lmer(
   data = Alcohol_data
 )
 
+AIC(m_full, m_no.interaction)
+# AIC lower for the restricted model.
 
+BIC(m_full, m_no.interaction)
+# BIC lower for the restricted model. We can use the BIC approximation to get a
+# Bayes Factor:
 bayesfactor_models(m_no.interaction, denominator = m_full)
 
-# It seems like that no-interaction model is over 3000 times more supported by
-# the data compared to the full model, giving strong support for a lack of an
+# It seems like that no-interaction model is about 50,000 times more supported
+# by the data compared to the full model, giving strong support for a lack of an
 # interaction!
 
 # The down side to this method is that it can only be easily applied to the
 # highest level effects (in out example, only to the 2-way interaction).
+
+# Learn more about multi-level models here:
+# https://github.com/mattansb/Hierarchical-Linear-Models-foR-Psychologists
 
 # Method 3. GO FULL BAYES ---------------------------------------------------
 
