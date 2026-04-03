@@ -138,17 +138,10 @@ avg_predictions(
 # Same, but with custom contrasts:
 contrast(em_Condition_by_Gender, method = w, by = "Gender")
 
-# We need to wrap the contrast weights in a function to be able to use them with
-# marginaleffects
-# https://github.com/vincentarelbundock/marginaleffects/issues/1707
-wf <- \(x) {
-  drop(t(w) %*% x)
-}
-
 avg_predictions(
   m_aov,
   variables = c("Gender", "Condition"),
-  hypothesis = ~ I(wf(x)) | Gender
+  hypothesis = ~ I(drop(t(w) %*% x)) | Gender
 )
 
 # Exercise ----------------------------------------------------------------
