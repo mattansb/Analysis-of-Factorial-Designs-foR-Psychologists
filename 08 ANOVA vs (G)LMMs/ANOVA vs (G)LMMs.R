@@ -2,7 +2,7 @@ library(patchwork)
 
 library(afex)
 
-library(emmeans) # TODO: add {marginaleffects} examples
+library(emmeans)
 
 emm_options(lmer.df = "satterthwaite")
 

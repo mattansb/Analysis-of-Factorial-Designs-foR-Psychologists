@@ -8,7 +8,7 @@
 [![](https://img.shields.io/badge/CC-BY--NC%204.0-lightgray)](http://creativecommons.org/licenses/by-nc/4.0/)
 [![](https://img.shields.io/badge/Language-R-blue.png)](http://cran.r-project.org/)
 
-<sub>*Last updated 2026-03-31.*</sub>
+<sub>*Last updated 2026-04-04.*</sub>
 
 This Github repo contains all lesson files for *Analysis of Factorial
 Designs foR Psychologists*. The goal is to impart students with the
@@ -16,9 +16,10 @@ basic tools to fit and evaluate **statistical models for factorial
 designs (w/ plots) using [`afex`](https://afex.singmann.science/)**, and
 and conduct **follow-up analyses (simple effects, planned contrasts,
 post-hoc test; w/ plots) using
-[`emmeans`](https://cran.r-project.org/package=emmeans)**. Although the
-focus is on ANOVAs, the materials regarding follow-up analyses (~80% of
-the course) are applicable to [linear mixed
+[`emmeans`](https://rvlenth.github.io/emmeans/) (or
+[`marginaleffects`](https://marginaleffects.com/))**. Although the focus
+is on ANOVAs, the materials regarding follow-up analyses (~80% of the
+course) are applicable to [linear mixed
 models](https://github.com/mattansb/Hierarchical-Linear-Models-foR-Psychologists),
 and really any regression model with factorial predictors.
 
@@ -50,10 +51,10 @@ You will need:
 |:---|:---|
 | [01 ANOVA made easy](01%20ANOVA%20made%20easy//) | `afex`, `effectsize`, `tidyr`, `datawizard` |
 | [02 main and simple effects analysis](02%20main%20and%20simple%20effects%20analysis//) | `afex`, `emmeans`, `marginaleffects` |
-| [03 interaction analysis](03%20interaction%20analysis//) | `afex`, `emmeans`, `afex`, `emmeans` |
-| [04 effect sizes](04%20effect%20sizes//) | `afex`, `emmeans`, `effectsize`, `dplyr` |
-| [05 multiple comparisons](05%20multiple%20comparisons//) | `afex`, `emmeans` |
-| [06 accepting the null](06%20accepting%20the%20null//) | `afex`, `lmerTest`, `effectsize`, `bayestestR`, `emmeans`, `dplyr` |
+| [03 interaction analysis](03%20interaction%20analysis//) | `afex`, `emmeans`, `marginaleffects`, `ggplot2` |
+| [04 effect sizes](04%20effect%20sizes//) | `afex`, `emmeans`, `marginaleffects`, `effectsize`, `dplyr` |
+| [05 multiple comparisons](05%20multiple%20comparisons//) | `dplyr`, `afex`, `emmeans`, `marginaleffects` |
+| [06 accepting the null](06%20accepting%20the%20null//) | `afex`, `lmerTest`, `effectsize`, `bayestestR`, `afex`, `emmeans`, `marginaleffects`, `dplyr` |
 | [07 assumption check and non-parametric tests](07%20assumption%20check%20and%20non-parametric%20tests//) | `afex`, `ggeffects`, `performance`, `permuco` |
 | [08 ANOVA vs (G)LMMs](08%20ANOVA%20vs%20(G)LMMs//) | `patchwork`, `afex`, `emmeans`, `lmerTest` |
 
@@ -76,7 +77,7 @@ You can install all the R packages used by running:
         "cran::emmeans", # 2.0.2
         "cran::ggeffects", # 2.3.2
         "cran::lmerTest", # 3.2-1
-        "github::vincentarelbundock/marginaleffects", # 0.32.0.4
+        "github::vincentarelbundock/marginaleffects", # 0.32.0.5
         "cran::patchwork", # 1.3.2
         "cran::permuco", # 1.1.3
         "cran::tidyverse" # 2.0.0

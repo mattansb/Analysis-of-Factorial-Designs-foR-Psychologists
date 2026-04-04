@@ -1,6 +1,7 @@
 library(afex)
 
-library(emmeans) # TODO: add {marginaleffects} examples
+library(emmeans)
+library(marginaleffects)
 
 afex_options(
   es_aov = 'pes',
@@ -37,7 +38,7 @@ afex_plot(fit_alcohol_theta, ~Alcohol, ~Correctness)
 # Looks like no interaction. But we can't infer that based on
 # a lack of significance.
 
-# Equivalence testing for contrasts ---------------------------------------
+# Equivalence testing for contrasts with {emmeans} ----------------------------
 
 # Q: Is the effect for {L1} vs {L5} differ between {Control + ND} vs {PFAS vs
 # FAS}?
@@ -48,7 +49,6 @@ contr.alc <- data.frame(
   "P/FAS effect" = c(1, 1, -1, -1) / 2,
   check.names = FALSE
 )
-
 
 # Get conditional means:
 em_int <- emmeans(fit_alcohol_theta, ~ Correctness + Alcohol)
@@ -83,7 +83,7 @@ test(c_int, delta = SESOI)
 ?test.emmGrid
 
 
-# Using standardized differences ------------------------------------------
+## Using standardized differences ----------------------
 
 # As we saw last lesson, we can also compute standardized differences
 # We can then use these standardized differences to conduct equivalence tests.
@@ -92,3 +92,26 @@ edf <- fit_alcohol_theta$anova_table["Alcohol:Correctness", "den Df"]
 
 c_intz <- eff_size(c_int, method = "identity", sigma = sigma, edf = edf)
 test(c_intz, delta = 0.1)
+
+
+# Equivalence testing for contrasts with {marginaleffects} -------------------
+
+# Conduct interaction-contrast analysis
+mfx <- avg_predictions(
+  fit_alcohol_theta,
+  variables = c("Correctness", "Alcohol"),
+  hypothesis = ~ I(drop(t(contr.alc) %*% x)) | Correctness
+) |>
+  hypotheses(hypothesis = ~ I(drop(t(contr.corr) %*% x)))
+mfx
+
+# Test SESOI
+hypotheses(mfx, equivalence = SESOI)
+# Note the new columns: `p (NonSup)` and `p (Equiv)` - the latter giving the
+# TOST p-value for the equivalence test, and the former giving the p-value for
+# the test of non-superiority (i.e., is the effect significantly smaller than
+# the positive bound?)
+
+## Using standardized differences ----------------------
+
+hypotheses(mfx, hypothesis = ~ I(x / sigma), equivalence = 0.1)
