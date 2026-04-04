@@ -1,6 +1,9 @@
+library(ggplot2)
+
 library(afex)
 
-library(emmeans) # TODO: add {marginaleffects} examples
+library(emmeans)
+library(marginaleffects)
 
 afex_options(
   es_aov = 'pes',
@@ -29,32 +32,32 @@ afex_plot(fit, ~condition, ~Group)
 #
 # Read more: https://doi.org/10.3758/s13421-011-0158-0
 
-# Difference of differences -----------------------------------------------
+# With {emmeans} ------------------------------------------------------
+
+## Difference of differences -----------------------------------------------
 
 emmip(fit, Group ~ condition, CIs = TRUE)
 # Looks like an interaction to me...
 
 ## 1. Get conditional means
-em_ <- emmeans(fit, ~ condition + Group)
-em_
+ems <- emmeans(fit, ~ condition + Group)
+ems
 
 
 ## 2. Contrasts
 # 2a. Pairwise differences between the conditions, by group:
-c_cond_by_group <- contrast(em_, "pairwise", by = "Group")
-c_cond_by_group
+(c_cond_by_group <- contrast(ems, "pairwise", by = "Group"))
 
 # 2b. Pairwise differences between the groups by pairwise contrasts:
-c_diff_of_diff <- contrast(c_cond_by_group, "pairwise", by = "contrast")
-c_diff_of_diff
+contrast(c_cond_by_group, "pairwise", by = "contrast")
 
 
 # # Note that we could have just done:
-# contrast(em_, interaction = list(Group = "pairwise",
+# contrast(ems, interaction = list(Group = "pairwise",
 #                                  condition = "pairwise"))
 # # Which gives the same results.
 
-# Difference of ratios ----------------------------------------------------
+## Difference of ratios ----------------------------------------------------
 
 # But we can also compare RATIOS!
 # The is, instead of asking if {RT1 - RT2} is different than 0,
@@ -72,23 +75,21 @@ emmip(fit, Group ~ condition, CIs = TRUE, trans = "log")
 
 ## 2. Contrasts
 # 2a1. Transform to log scale:
-em_log <- regrid(em_, trans = "log", predict.type = "response")
-# 2a2. Pairwise differences between the log of conditions, by group:
-c_cond_by_group_log <- contrast(em_log, "pairwise", by = "Group")
-c_cond_by_group_log
+(c_cond_by_group_log <- regrid(ems, trans = "log", predict.type = "response") |>
+  # 2a2. Pairwise differences between the log of conditions, by group:
+  contrast(method = "pairwise", by = "Group"))
 
 # 2b1. Transform back to response scale:
-c_cond_by_group_ratio <- regrid(c_cond_by_group_log, trans = "response")
-# 2b2. Pairwise differences between the groups by pairwise ratio:
-c_diff_of_ratio <- contrast(c_cond_by_group_ratio, "pairwise", by = "contrast")
-c_diff_of_ratio
+regrid(c_cond_by_group_log, trans = "response") |>
+  # 2b2. Pairwise differences between the groups by pairwise ratio:
+  contrast(method = "pairwise", by = "contrast")
 
 
 # The difference of ratios is not significant!!
 # This result might suggest that the increased effect in the dyslexia group
 # is due to the slower overall RTs...
 
-# Ratio of ratios ---------------------------------------------------------
+## Ratio of ratios ---------------------------------------------------------
 
 # We can also compare the pairwise ratios by THEIR ratio.
 
@@ -100,8 +101,73 @@ c_diff_of_ratio
 # (Same as above)
 
 # 2b1. Pairwise ratio between the groups by pairwise ratio:
-c_diff_of_diff_log <- contrast(c_cond_by_group_log, "pairwise", by = "contrast")
-c_diff_of_diff_log
+contrast(c_cond_by_group_log, method = "pairwise", by = "contrast")
+
+
+# With {marginaleffects} ------------------------------------------------------
+# This is actually a lot easier to do with {marginaleffects}, which supports
+# many (arbitrary) types of comparisons... See
+?hypotheses(hypothesis = )
+
+## Difference of differences -----------------------------------------------
+
+plot_predictions(fit, condition = c("condition", "Group")) +
+  geom_line(
+    aes(condition, estimate, color = Group, group = Group),
+    position = position_dodge(0.15)
+  )
+
+
+# a. Pairwise differences between the conditions, by group:
+(mfx_cond_by_group <- avg_predictions(
+  fit,
+  variables = c("condition", "Group"),
+  hypothesis = ~ revpairwise | Group
+))
+
+# b. Pairwise differences between the groups by pairwise contrasts:
+hypotheses(mfx_cond_by_group, ~ revpairwise | hypothesis)
+
+
+## Difference of ratios ----------------------------------------------------
+
+# But we can also compare RATIOS!
+# The is, instead of asking if {RT1 - RT2} is different than 0,
+# We ask if {RT1 / RT2} is different than 1.
+#
+# We do this by looking at the differences between the the log(emmeans), since:
+# exp(log(x) - log(y)) == x / y
+
+# Will this matter?
+plot_predictions(fit, condition = c("condition", "Group")) +
+  geom_line(
+    aes(condition, estimate, color = Group, group = Group),
+    position = position_dodge(0.15)
+  ) +
+  coord_transform(y = "log10")
+# Where did the interaction go??
+
+## Contrasts
+# a. Pairwise ratios between the conditions, by group:
+(mfx_cond_by_group <- avg_predictions(
+  fit,
+  variables = c("condition", "Group"),
+  hypothesis = ratio ~ revpairwise | Group
+))
+
+# b. Pairwise differences between the groups by pairwise ratio:
+hypotheses(mfx_cond_by_group, ~ revpairwise | hypothesis)
+
+# The difference of ratios is not significant!!
+# This result might suggest that the increased effect in the dyslexia group
+# is due to the slower overall RTs...
+
+## Ratio of ratios ---------------------------------------------------------
+
+# We can also compare the pairwise ratios by THEIR ratio.
+
+# b. Pairwise ratio between the groups by pairwise ratio:
+hypotheses(mfx_cond_by_group, ratio ~ revpairwise | hypothesis)
 
 # Summary -----------------------------------------------------------------
 
