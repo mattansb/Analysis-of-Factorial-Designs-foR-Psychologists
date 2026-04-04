@@ -1,6 +1,7 @@
 library(afex)
 
-library(emmeans) # TODO: add {marginaleffects} examples
+library(emmeans)
+library(marginaleffects)
 library(effectsize)
 
 afex_options(
@@ -75,7 +76,7 @@ joint_tests(treatment_aov, by = "treatment") |>
 
 # 3. For contrasts --------------------------------------------------------
 
-### Eta and friends:
+## with {emmeans} -----------------------
 em_phase <- emmeans(treatment_aov, ~phase)
 c_phase <- contrast(em_phase, method = "pairwise")
 
@@ -94,3 +95,16 @@ sig.df <- treatment_aov$anova_table["phase", "den Df"]
 # We can then use the eff_size() function to convert our contrasts to
 # standardized differences:
 eff_size(c_phase, method = "identity", sigma = sig, edf = sig.df)
+
+## with {marginaleffects} -----------------------
+
+mfx <- avg_predictions(
+  treatment_aov,
+  variables = "phase",
+  hypothesis = ~revpairwise
+)
+
+# We can use the same sigma and df to get standardized differences (though
+# results differ slightly from the emmeans approach, due to different ways of
+# uncertainty of the error term):
+hypotheses(mfx, hypothesis = ~ I(x / sig))

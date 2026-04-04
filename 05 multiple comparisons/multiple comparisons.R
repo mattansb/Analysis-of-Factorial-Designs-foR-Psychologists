@@ -1,5 +1,9 @@
+library(dplyr)
+
 library(afex)
-library(emmeans) # TODO: add {marginaleffects} examples
+
+library(emmeans)
+library(marginaleffects)
 
 afex_options(
   es_aov = 'pes',
@@ -50,6 +54,24 @@ update(c_cond.by.pho, adjust = "holm", by = NULL)
 # Or split in some other way:
 update(c_cond.by.pho, adjust = "fdr", by = "contrast")
 
+# {marginaleffects} does not adjust p-values by default, but it does have some
+# support for multiple comparison adjustments, via the multcomp= argument:
+mfx <- avg_predictions(
+  fit,
+  variables = c("Condition", "Phobia"),
+  hypothesis = ~ revpairwise | Phobia
+)
+hypotheses(mfx, multcomp = "holm")
+hypotheses(mfx, multcomp = "fdr")
+
+# Note that adjustments are made across ALL contrasts, not within groups of
+# contrasts. If we want stratified adjustments, we would need to adjust p-values
+# manually, using the `p.adjust()` function:
+mfx |>
+  arrange(hypothesis) |>
+  group_by(hypothesis) |>
+  mutate(p_adj = p.adjust(p.value, method = "fdr"))
+# etc...
 
 # Combine contrasts -------------------------------------------------------
 
